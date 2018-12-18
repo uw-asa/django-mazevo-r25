@@ -1,0 +1,33 @@
+sudo: false
+language: python
+python:
+  - '2.7'
+  - '3.6'
+  - '3.7-dev'
+before_script:
+  - pip install -e .
+  - pip install pycodestyle
+  - pip install coverage
+  - pip install coveralls
+  - npm install -g jshint
+  - cp travis-ci/manage.py manage.py
+script:
+  - pycodestyle ems_r25/
+  - jshint ems_r25/static/ems_r25/js/ --verbose
+  - python -m compileall ems_r25/
+  - coverage run --source=ems_r25 manage.py test ems_r25
+after_script:
+  - coveralls
+before_deploy:
+  - find ems_r25/ -name \*.pyc -exec rm {} \;
+  - echo $TRAVIS_TAG > ems_r25/VERSION
+deploy:
+  provider: pypi
+  user: bradleyb
+  skip_cleanup: true
+  password:
+    secure: "VvbTBbwplkac9+5nBEFu9GndDipewfUrIPo3DIn224tgXUVPQeIeoTznTzYDFDuA0p0IeeRX6UbWFSn120txqyO010IxyPPRACwkDjHRnogxHPnS5Eu5Wq2xqolz/eUwsUvCHAsnHXFxgF+JRcKpyUdV/zM7lsT//SUG2Hy6vnoZx8Fd2Bz0l+hjk5aPKhIQpOGKH8iNSY5ccbN0pwbMRWAaHQFxG84+CjBcVxYMUU8lPg5hkaJk0yVOs6MBALgd6SsOjYZZgyQv1/8xOELHEUSQG1wtFHe2i+xOUsz45ACO8eRAwqOKt7a7KL7PP1PjG+EAAUu5wZugZg0yqS+sYW8HBB/96MZ+QSpn+PCXh9Eohk6GKixIs/BAEZNDVks9h3RF293tfvSzRT/U1ModdxX/VY+oOBBlsdAqrqZ5uYqGgYpstqCFaBHzrnx6ANh1giPPpz9DFrAoSWtRFtn/woH4QqvtEGJuJJbvOj6XJXw53Jn2sRDwl+DR8zSglYl7hFoMKHPpyaUpwkek+cTQrm6hUeCF/ZK2k4UVQut5pzODVhL8RoSO60ZdGjpBFNA8IuuKIXalxIkGJFfoDX5V7C3438LSoyHln9uN6PsovA2FTO9MJ2D0BIcREqiTCeNjtEfx3bDHo7GpM+0D80R6e00lb6cFnn5SGOFOMsEU4MQ="
+  on:
+    tags: true
+    python: '3.6'
+

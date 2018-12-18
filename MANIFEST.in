@@ -1,0 +1,2 @@
+include ems_r25/VERSION
+recursive-include ems_r25 *

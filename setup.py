@@ -22,9 +22,10 @@ setup(
     include_package_data=True,
     install_requires = [
         'AuthZ-Group',
-        'Django<2.0',
+        'Django>=1.11.18,<2.0',
         'Django-SupportTools<3.0 ; python_version < "3.0"',
         'Django-SupportTools ; python_version >= "3.0"',
+        'lxml',
         'UW-EMS-Client',
         'UW-RestClients-GWS<2.0 ; python_version < "3.0"',
         'UW-RestClients-GWS ; python_version >= "3.0"',

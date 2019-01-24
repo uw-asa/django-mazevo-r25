@@ -63,13 +63,13 @@ var EMSWhenIWork = (function ($) {
             event_search = false;
 
         if (event) {
-            button_group = $('.btn-group[data-reservation-name="' + event.reservation.name + '"]');
+            button_group = $('.btn-group[data-booking-id="' + event.booking_id + '"]');
             schedule_cluster = button_group.closest('.schedule-button-cluster');
             event_search = (schedule_cluster.parents('div.event-search').length > 0);
 
             schedule_cluster.find('.loading').hide();
 
-            if (event.reservation.id) {
+            if (event.r25_reservation.reservation_id) {
                 button_group.removeClass('unscheduled');
                 button_group.addClass('scheduled');
             } else {
@@ -85,7 +85,7 @@ var EMSWhenIWork = (function ($) {
         }
     }
 
-    function paint_serviceorder_schedule(events) {
+    function paint_event_schedule(events) {
         var tpl = Handlebars.compile($('#event-search-result-template').html()),
             context = {
                 unscheduled: false,
@@ -97,35 +97,33 @@ var EMSWhenIWork = (function ($) {
         window.scheduler.events = {};
 
         events.sort(function(a,b) {
-            return moment(a.reservation.start_time).unix() - moment(b.reservation.start_time).unix();
+            return moment(a.start_time).unix() - moment(b.start_time).unix();
         });
 
         $.each(events, function() {
 
-            var event_start_date = moment(this.reservation.start_time),
-                event_end_date = moment(this.reservation.end_time),
+            var event_start_date = moment(this.start_time),
+                event_end_date = moment(this.end_time),
                 now = moment();
 
-            window.scheduler.events[this.reservation.name] = this;
+            window.scheduler.events[this.booking_id] = this;
 
             if (!context.unscheduled) {
-                context.unscheduled = (this.reservation.id === null);
+                context.unscheduled = (this.r25_reservation_id === null);
             }
 
             context.schedule.push({
+                booking_id: this.booking_id,
                 month_num: event_start_date.format('M'),
                 day: event_start_date.format('D'),
                 weekday: event_start_date.format('ddd'),
                 start_time: event_start_date.format('h:mm a'),
                 end_time: event_end_date.format('h:mm a'),
                 room: this.room,
-                name: this.name,
-                reservation_name: this.reservation.name,
-                reservation_id: this.reservation.id,
-                site_id: this.reservation.site_id,
+                event_name: this.event_name,
                 in_the_past: false,
+                r25_reservation_id: this.r25_reservation_id,
                 disabled: (this.schedulable &&
-                           (this.reservation.id || true) &&
                            event_start_date.isAfter(now)) ? '' : 'disabled',
             });
         });
@@ -174,7 +172,7 @@ var EMSWhenIWork = (function ($) {
 
     function event_search_failure(xhr) {
         $(".event-search-result").empty();
-        failure_modal('Service Order Search Failure',
+        failure_modal('Event Search Failure',
                       'Please try again later.',
                       xhr);
     }
@@ -188,7 +186,7 @@ var EMSWhenIWork = (function ($) {
 
         $.ajax({
             type: 'GET',
-            url: api_path('events/',
+            url: api_path('schedule/',
                           {
                               StartDate: startdate,
                               EndDate: enddate,
@@ -198,27 +196,25 @@ var EMSWhenIWork = (function ($) {
         })
             .fail(event_search_failure)
             .done(function (msg) {
-                paint_serviceorder_schedule(msg);
+                paint_event_schedule(msg);
             });
 
     }
 
-    function schedule_r25_reservation(r25_event) {
+    function schedule_r25_reservation(event) {
         var request_data = {
-                name: r25_event.reservation.name,
-                user_id: r25_event.reservation.user_id,
-                account_id: r25_event.reservation.account_id,
-                site_id: r25_event.reservation.site_id,
-                location_id: r25_event.reservation.location_id,
-                position_id: r25_event.reservation.position_id,
-                start_time: r25_event.reservation.start_time,
-                end_time: r25_event.reservation.end_time
+                name: event.event_name,
+                user_id: event.user_id,
+                account_id: event.account_id,
+                site_id: event.site_id,
+                location_id: event.location_id,
+                position_id: event.position_id,
+                start_time: event.start_time,
+                end_time: event.end_time
             },
-            button = $('.btn-group[data-reservation-name="' +
-                       r25_event.reservation.name +
-                       '"] > button:first-child');
+            button = $('.btn-group[data-booking-id="' + event.event_name + '"] > button:first-child');
 
-        if (r25_event.reservation.id) {
+        if (event.r25_reservation_id) {
             return;
         }
 
@@ -236,7 +232,7 @@ var EMSWhenIWork = (function ($) {
                 var response = JSON.parse(xhr.responseText),
                     format = 'h:mm a';
 
-                failure_modal('Cannot Schedule Shift',
+                failure_modal('Cannot Schedule Reservation',
                               'This request conflicts with<p style="text-align: center;">' +
                               response.conflict_name +
                               '</p>scheduled from ' +
@@ -245,14 +241,14 @@ var EMSWhenIWork = (function ($) {
                               moment(response.conflict_end).format(format),
                               {});
             } else {
-                failure_modal('Cannot Schedule Shift',
+                failure_modal('Cannot Schedule Reservation',
                               'Please try again later.',
                               xhr);
             }
         }).done(function (msg) {
             if (msg.hasOwnProperty('reservation_id')) {
-                r25_event.reservation.id = msg.reservation_id;
-                update_schedule_buttons(r25_event);
+                event.reservation.id = msg.reservation_id;
+                update_schedule_buttons(event);
             }
         });
     }
@@ -268,7 +264,7 @@ var EMSWhenIWork = (function ($) {
         })
             .fail(function (xhr) {
                 button_stop_loading(button);
-                failure_modal('Cannot Delete Shift',
+                failure_modal('Cannot Delete Reservation',
                               'Please try again later',
                               xhr);
             })
@@ -284,7 +280,7 @@ var EMSWhenIWork = (function ($) {
     function r25_event(node) {
         return window.scheduler.events[node
                                        .closest('.btn-group')
-                                       .attr('data-reservation-name')];
+                                       .attr('data-booking-id')];
     }
 
     function r25_set_schedule(e) {
@@ -332,7 +328,7 @@ var EMSWhenIWork = (function ($) {
         });
 
         $("form.event-search").submit(do_event_search);
-        Handlebars.registerPartial('reservation-list', $('#reservation-list-partial').html());
+        Handlebars.registerPartial('event-list', $('#event-list-partial').html());
         Handlebars.registerPartial('schedule-button', $('#schedule-button-partial').html());
         $('body')
             .delegate('.batchswitch .btn-group > button:first-child', 'click', r25_schedule_all)

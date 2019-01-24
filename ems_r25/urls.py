@@ -1,12 +1,12 @@
 from django.conf.urls import url
 
-from .views import serviceorders
+from .views import events
 from .views.api.schedule import Schedule
-from .views.api.shift import Shift
+from .views.api.reservation import Reservation
 
 urlpatterns = [
-    url(r'^$', serviceorders.index, name='ems_r25'),
+    url(r'^$', events.index, name='ems_r25'),
 
-    url(r'^api/v1/shift/(?P<shift_id>\d+)?$', Shift().run),
+    url(r'^api/v1/reservation/(?P<shift_id>\d+)?$', Reservation().run),
     url(r'^api/v1/schedule/$', Schedule().run),
 ]

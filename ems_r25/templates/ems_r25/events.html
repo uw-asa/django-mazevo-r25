@@ -7,7 +7,7 @@
 {% block content %}
 <!-- page header -->
 <div role="main" class="container-fluid">
-<h2>Service Order Scheduler</h2>
+<h2>Event Scheduler</h2>
 
 	<!--  EVENT Search Block -->
 	<div id="panel2" class="tab-pane event-search" role="tabpanel" aria-labelledby="tab2">
@@ -29,7 +29,7 @@
 
 {% verbatim %}
 <script id="event-search-result-template" type="text/x-handlebars-template">
-  <div class="serviceorder-header"><!-- Rslt Header -->
+  <div class="event-header"><!-- Rslt Header -->
 	<h3><span class="sr-only"> Scheduling from</span> {{ search_startdate }} to {{ search_enddate }}</h3>
   </div>	<!-- .Rslt Header -->
 
@@ -40,7 +40,7 @@
         </div>
   	</div>
 
-    {{> reservation-list}}
+    {{> event-list}}
 
   </div>
 </script>
@@ -49,15 +49,15 @@
 
 {% verbatim %}
 <script id="event-search-result-empty-template" type="text/x-handlebars-template">
-  <div class="serviceorder-header"><!-- Rslt Header -->
-	<h3>No service orders from {{ search_startdate }} to {{ search_enddate }}</h3>
+  <div class="event-header"><!-- Rslt Header -->
+	<h3>No events from {{ search_startdate }} to {{ search_enddate }}</h3>
   </div>	<!-- .Rslt Header -->
 </script>
 {% endverbatim %}
 
 
 {% verbatim %}
-<script id="reservation-list-partial" type="text/x-handlebars-template">
+<script id="event-list-partial" type="text/x-handlebars-template">
 
   <ol class="list-group result-list-chunk">
     {{#each schedule}}
@@ -66,7 +66,7 @@
         <span class="result-row-day" title="day">{{ weekday }}</span> 
         <span class="result-row-time" title="time">{{ start_time }} - {{ end_time }}</span>
         <span class="result-row-room" title="room">{{ room }}</span>
-        <span class="result-row-event" title="event name">{{ name }}</span>
+        <span class="result-row-event" title="event name">{{ event_name }}</span>
         <!--Button Code-->
         <span class="pull-right result-row-switchbtn">
         {{> schedule-button}}
@@ -89,13 +89,13 @@
 
 
     <!-- container for scheduler button, toggle, and resulting modal -->
-    <div class="btn-group  {{#if shift_id}}scheduled{{else}}unscheduled{{/if}}" {{#if shift_name}}data-shift-name="{{ shift_name }}"{{/if}}>
+    <div class="btn-group  {{#if r25_reservation_id}}scheduled{{else}}unscheduled{{/if}}" {{#if booking_id}}data-booking-id="{{ booking_id }}"{{/if}}>
 
         <!-- scheduler button -->
         <button class="btn has-spinner" {{disabled}}>
-            <span class="text scheduled option-help" id="text" data-toggle="tooltip" title="Cancel this scheduled shift"><i class="glyphicon glyphicon-ok"></i> Scheduled</span>
-            <span class="text unscheduled option-help" id="text" data-toggle="tooltip" title="Schedule this session">Schedule</span>
-            <span class="text schedule-all option-help" id="text" data-toggle="tooltip" title="Schedule all sessions">Schedule All</span>
+            <span class="text scheduled option-help" id="text" data-toggle="tooltip" title="Unschedule this event"><i class="glyphicon glyphicon-ok"></i> Scheduled</span>
+            <span class="text unscheduled option-help" id="text" data-toggle="tooltip" title="Schedule this event">Schedule</span>
+            <span class="text schedule-all option-help" id="text" data-toggle="tooltip" title="Schedule all events">Schedule All</span>
         </button>
         <!-- end scheduler button -->
 

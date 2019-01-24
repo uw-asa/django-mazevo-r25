@@ -24,7 +24,7 @@ def index(request, template='ems_r25/events.html'):
 
     context = {
         'todays_date': strftime("%Y-%m-%d"),
-        'thirty_date': strftime("%Y-%m-%d", localtime(time() + 60*60*24*30)),
+        'thirty_date': strftime("%Y-%m-%d", localtime(time() + 60*60*24*1)),
         'STATIC_URL': settings.STATIC_URL,
     }
 

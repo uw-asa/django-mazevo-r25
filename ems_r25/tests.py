@@ -28,7 +28,7 @@ class EMSR25Test(unittest.TestCase):
         self.client.login(username=username,
                           password=get_user_pass(username))
 
-    def test_serviceorders(self):
+    def test_events(self):
         self.set_user('javerage')
 
         # Issue a GET request.

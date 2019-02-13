@@ -4,7 +4,7 @@
 @brand-purple: rgba(51, 0, 111, 1); //New UW purple
 @brand-gold: rgba(232, 211, 162, 1); //New UW gold
 @brand-litegold: rgba(250, 242, 223, 1); //lite version
-@green: rgba(3,153,3,1); //bright green
+@green: rgba(0,128,0,1); //darkish green for the scheduler
 @red: rgba(217, 83, 79, 1);  //#d9534f Bootstrap @brand-danger
 @warning-yellow: rgba(231, 213, 0, 1);
 @gray-darker:  lighten(#000, 13.5%); // #222
@@ -12,7 +12,9 @@
 @gray:         lighten(#000, 33.5%); // #555
 @gray-light:   lighten(#000, 46.7%); // #777
 @gray-lighter: lighten(#000, 93.5%); // #eee
+@gray-lightest: lighten(#000, 97%);
 @button-light: rgba(0, 0, 0, 0);
+@button-dark: lighten(#000, 93.5%); // #eee
 
 /*** global ***/
 
@@ -60,6 +62,31 @@ span.state-successful {
 .glyphicon {
 	padding-right: 5px;
 }
+
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.fa-rotate-315 {
+    -webkit-transform: rotate(315deg);
+    -moz-transform: rotate(315deg);
+    -ms-transform: rotate(315deg);
+    -o-transform: rotate(315deg);
+    transform: rotate(315deg);
+}
+
+.fa-rotate-225 {
+    -webkit-transform: rotate(225deg);
+    -moz-transform: rotate(225deg);
+    -ms-transform: rotate(225deg);
+    -o-transform: rotate(225deg);
+    transform: rotate(225deg);
+}
+
 
 /*** Quarter Header block ***/
 
@@ -239,6 +266,17 @@ span.state-successful {
                 a, span { padding-left: 8px; }
             }
         }
+        .list-group {
+            .list-group-item {
+                line-height: 35px;
+            }
+            .list-group-item:first-child {
+                display: block !important;
+            }
+            .list-group-item.scheduled {
+                background-color: #90EE90;
+            }
+        }
         .result-header {
             min-height: 52px;
 	        .fa-warning {
@@ -374,24 +412,92 @@ span.state-successful {
         cursor: default;
         margin-right: 8px;
     }
-
+    label {
+        margin-right: 10px;
+    }
     i.setting-active {
         color: @green;
     }
-
+	.btn-group {
+      .divider {
+        margin: 0 12px 12px 12px;
+      }
+      .dropdown-container.open {
+        button {
+          position: relative;
+          z-index: 1001;
+          border: 1px solid rgba(0,0,0,.15);
+          box-shadow: 0 6px 12px rgba(0,0,0,.175);
+          -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+          -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        }
+      }
+      .dropdown.open {
+        button {
+          border-bottom-width: 0;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        button:after { // hide bottom shadow
+            content: "";
+            position: absolute;
+            background-color: white;
+            height: 20px;
+            bottom: -20px;
+            left: -15px;
+            right: 0;
+        }
+        .dropdown-menu {
+          margin-top: -1px;
+          border-top-right-radius: 0;
+        }
+      }
+      .dropup.open {
+        button {
+          border-top-width: 0px;
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
+        button:before { // hide top shadow
+            content: "";
+            position: absolute;
+            background-color: white;
+            height: 10px;
+            top: -10px;
+            left: 0;
+            right: 0;
+        }
+        .dropdown-menu {
+          border-bottom-right-radius: 0;
+        }
+      }
+      button.dropdown-toggle {
+        background: white;
+        margin-left: 2px;
+        i { //the gear button
+            margin-top: -3px;
+            color: @gray-light;
+        }
+      }
+	}
     .btn-group.scheduled {
         > button:first-child { //scheduled button (depressed)
-			background-color:@green !important;
-			color:white;
+            color:@green !important;
+            background-color: @button-light;
             border:1px solid @gray-light;
             text-align: center;
             border-radius: 5px !important;
             -webkit-border-radius: 5px !important;
             -moz-border-radius: 5px !important;
             display: block;
+            box-shadow: /* 0px 1px 2px rgba(0, 0, 0, 0.4), */ 0 3px 0 rgba(0, 0, 0, 0.1) inset;
+            -webkit-box-shadow: /* 0 1px 2px rgba(0, 0, 0, 0.4), */ 0 3px 0 rgba(0, 0, 0, 0.1) inset;
+            -moz-box-shadow: /* 0 1px 2px rgba(0, 0, 0, 0.4), */ 0 3px 0 rgba(0, 0, 0, 0.1) inset;
+            background: -webkit-gradient(linear, left top, left bottom, from(@button-dark), to(@button-light));
+            background: -moz-linear-gradient(top, @button-dark, @button-light);
+            background: linear-gradient(@button-dark, @button-light);
             width: 120px;
             font-size: 15px;
-            margin: -5px;
             i { //checkmark inside the button
                 display: inline;
             }
@@ -411,9 +517,14 @@ span.state-successful {
             -webkit-border-radius: 5px !important;
             -moz-border-radius: 5px !important;
             display: block;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4)/*, 0 1px 0 rgba(255, 255, 255, 0.4) inset */;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4)/*, 0 1px 0 rgba(255, 255, 255, 0.4) inset */;
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4)/* , 0 1px 0 rgba(255, 255, 255, 0.4) inset */;
+            background: -webkit-gradient(linear, left top, left bottom, from(@button-light), to(@button-dark));
+            background: -moz-linear-gradient(top, @button-light, @button-dark);
+            background: linear-gradient(@button-light, @button-dark);
             width: 120px;
             font-size: 15px;
-            margin: -5px;
         }
     }
     .btn-group.unscheduled {
@@ -423,6 +534,38 @@ span.state-successful {
     }
     .schedule-all {
         display: none;
+    }
+    .dropdown-menu {
+        .title {
+          font-weight: bold;
+          opacity: .7;
+          padding-left: 12px;
+          line-height: 1.75em;
+          font-size: 16px;
+        }
+        > ul {
+            list-style: none;
+            padding: 0;
+            > li { width: 290px; padding-left: 10px; margin-bottom: 8px; line-height: normal;
+                > div:first-child {
+                    vertical-align: middle;
+                    height: 26px;
+                    line-height: 26px;
+                    > div:first-child {
+                        display: inline-block;
+                        width: 24px;
+                    }
+                }
+                .setting-description {
+                    margin-left: 30px;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
+                    color: @gray;
+                    font-size: smaller;
+                    line-height: 1;
+                }
+            }
+        }
     }
 }
 

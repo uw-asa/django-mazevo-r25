@@ -1,9 +1,10 @@
 import logging
 
 from ems_client.service import Service
+from uw_r25 import nsmap
 from uw_r25.reservations import get_reservations
 
-from more_r25 import create_new_event
+from more_r25 import create_new_event, update_event
 
 
 logger = logging.getLogger(__name__)
@@ -44,12 +45,14 @@ def bookings_and_reservations(params):
             'booking_id': b.id,
             'reservation_id': b.reservation_id,
             'schedulable': True,
-            'space_id': None,
+            'r25_space_id': None,
+            'r25_event_id': None,
+            'r25_event_name': None,
             'r25_reservation_id': None,
         }
 
         if b.room_id in space_ids:
-            event['space_id'] = space_ids[b.room_id]
+            event['r25_space_id'] = space_ids[b.room_id]
         else:
             event['schedulable'] = False
 
@@ -77,7 +80,26 @@ def mash_in_r25_reservations(event_data, params, space_ids, alien_uids):
     r25_reservations = get_reservations(**search)
     for r in r25_reservations if r25_reservations else []:
         for e in event_data:
-            if (r.space_reservation.space_id == e['space_id'] and
+            if (r.space_reservation.space_id == e['r25_space_id'] and
                     r.start_datetime == e['start_time'] and
                     r.end_datetime == e['end_time']):
                 e['r25_reservation_id'] = r.reservation_id
+                e['r25_event_id'] = r.event_id
+                e['r25_event_name'] = r.event_name
+
+
+def create_r25_reservation(event_data):
+    # TODO: check for existing R25 Event based on our EMS Reservation
+
+    # if no event, create blank
+    event_tree = create_new_event()
+
+    enode = event_tree.xpath("r25:event", namespaces=nsmap)[0]
+    event_id = enode.xpath("r25:event_id", namespaces=nsmap)[0].text
+
+    enode.attrib['status'] = 'mod'
+
+    element = enode.xpath("r25:event_name", namespaces=nsmap)[0]
+    element.text = event_data['event_name']
+
+    update_event(event_id, event_tree)

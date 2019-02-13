@@ -122,6 +122,8 @@ var EMSWhenIWork = (function ($) {
                 room: this.room,
                 event_name: this.event_name,
                 in_the_past: false,
+                r25_event_id: this.r25_event_id,
+                r25_event_name: this.r25_event_name,
                 r25_reservation_id: this.r25_reservation_id,
                 disabled: (this.schedulable &&
                            event_start_date.isAfter(now)) ? '' : 'disabled',
@@ -202,16 +204,7 @@ var EMSWhenIWork = (function ($) {
     }
 
     function schedule_r25_reservation(event) {
-        var request_data = {
-                name: event.event_name,
-                user_id: event.user_id,
-                account_id: event.account_id,
-                site_id: event.site_id,
-                location_id: event.location_id,
-                position_id: event.position_id,
-                start_time: event.start_time,
-                end_time: event.end_time
-            },
+        var request_data = event,
             button = $('.btn-group[data-booking-id="' + event.event_name + '"] > button:first-child');
 
         if (event.r25_reservation_id) {

@@ -2,8 +2,7 @@ import json
 import logging
 import re
 
-# from uw_r25.reservations import create_reservation, delete_reservations
-
+from ...utils import create_r25_reservation
 from .exceptions import InvalidParamException
 from . import RESTDispatch
 
@@ -17,24 +16,14 @@ class Reservation(RESTDispatch):
     def POST(self, request, **kwargs):
         try:
             data = json.loads(request.body)
-            name = self._valid_reservation_name(data.get("name", "").strip())
-            user_id = data.get("user_id", None)
-            account_id = data.get("account_id", None)
-            site_id = data.get("site_id", None)
-            location_id = data.get("location_id", None)
-            position_id = data.get("position_id", None)
-            start_time = self._valid_time(data.get("start_time", "").strip())
-            end_time = self._valid_time(data.get("end_time", "").strip())
+            data['event_name'] = self._valid_reservation_name(
+                data.get("event_name", "").strip())
+            data['start_time'] = self._valid_time(
+                data.get("start_time", "").strip())
+            data['end_time'] = self._valid_time(
+                data.get("end_time", "").strip())
 
-            reservation = create_reservation({'notes': name,
-                                              'start_time': start_time,
-                                              'end_time': end_time,
-                                              'user_id': user_id,
-                                              'account_id': account_id,
-                                              'site_id': site_id,
-                                              'location_id': location_id,
-                                              'position_id': position_id,
-                                              'published': True})
+            reservation = create_r25_reservation(data)
 
             reservation_id = reservation.reservation_id
 

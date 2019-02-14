@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<r25:reservations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:xl="http://www.w3.org/1999/xlink"
+                  xmlns:r25="http://www.collegenet.com/r25"
+                  pubdate="2018-12-18T18:31:10.250-08:00"
+                  engine="accl">
+   <r25:reservation xl:href="reservation.xml?rsrv_id=56143093">
+      <r25:reservation_id>56143093</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T00:00:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T00:00:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T00:00:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T23:59:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T23:59:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T23:59:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15290676</r25:profile_id>
+      <r25:profile_name>Rsrv_15290676</r25:profile_name>
+      <r25:profile_description>From 12:00 AM to 11:59 PM. Repeat on SAT DEC/15/2018, SUN DEC/16/2018, MON DEC/17/2018, TUE DEC/18/2018, WED DEC/19/2018, THU DEC/20/2018, FRI DEC/21/2018, SAT DEC/22/2018, SUN DEC/23/2018, MON DEC/24/2018, TUE DEC/25/2018, WED DEC/26/2018, THU DEC/27/2018, FRI DEC/28/2018, SAT DEC/29/2018, SUN DEC/30/2018, MON DEC/31/2018, TUE JAN/01/2019, WED JAN/02/2019, THU JAN/03/2019, FRI JAN/04/2019.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>10</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage</r25:last_mod_user>
+      <r25:last_mod_dt>2018-12-11T11:10:57-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15262837">
+         <r25:event_id>15262837</r25:event_id>
+         <r25:event_name>MGH MAINTENANCE STORAGE</r25:event_name>
+         <r25:event_title>MGH Maintenance Storage</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSMBPT</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=12711">
+               <r25:contact_id>12711</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=12711">
+               <r25:contact_id>12711</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5060">
+         <r25:space_id>5060</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  287</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 287</r25:formal_name>
+            <r25:max_capacity>35</r25:max_capacity>
+            <r25:partition_id>110</r25:partition_id>
+            <r25:partition_name>UWS Mary Gates Hall</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+   <r25:reservation xl:href="reservation.xml?rsrv_id=55762506">
+      <r25:reservation_id>55762506</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T07:30:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T07:30:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T07:30:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T12:00:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T12:00:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T12:00:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15273695</r25:profile_id>
+      <r25:profile_name>Rsrv_15273695</r25:profile_name>
+      <r25:profile_description>From 07:30 AM to 12:00 PM. Repeat on MON DEC/17/2018, TUE DEC/18/2018, WED DEC/19/2018, THU JAN/03/2019.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>20</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage2</r25:last_mod_user>
+      <r25:last_mod_dt>2018-11-14T12:50:44-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15252353">
+         <r25:event_id>15252353</r25:event_id>
+         <r25:event_name>FYP WINTER ADMIT 2018</r25:event_name>
+         <r25:event_title>FYP Winter Admit 2018</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSKXVN</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5912">
+         <r25:space_id>5912</r25:space_id>
+         <r25:space>
+            <r25:space_name>JHN  102</r25:space_name>
+            <r25:formal_name>Seattle- Johnson Hall 102</r25:formal_name>
+            <r25:max_capacity>195</r25:max_capacity>
+            <r25:partition_id>135</r25:partition_id>
+            <r25:partition_name>UWS Southwest Campus Auditorium</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+   <r25:reservation xl:href="reservation.xml?rsrv_id=55762511">
+      <r25:reservation_id>55762511</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T09:00:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T09:00:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T09:00:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T11:30:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T11:30:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T11:30:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15273699</r25:profile_id>
+      <r25:profile_name>Rsrv_15273699</r25:profile_name>
+      <r25:profile_description>From 09:00 AM to 11:30 AM. Repeat on MON DEC/17/2018, TUE DEC/18/2018, WED DEC/19/2018.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>20</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage2</r25:last_mod_user>
+      <r25:last_mod_dt>2018-11-14T12:57:28-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15252355">
+         <r25:event_id>15252355</r25:event_id>
+         <r25:event_name>FYP WINTER ADMIT 2018</r25:event_name>
+         <r25:event_title>FYP winter admit 2018</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSKXVQ</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5044">
+         <r25:space_id>5044</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  231</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 231</r25:formal_name>
+            <r25:max_capacity>60</r25:max_capacity>
+            <r25:partition_id>110</r25:partition_id>
+            <r25:partition_name>UWS Mary Gates Hall</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+      <r25:space_reservation xl:href="space.xml?space_id=5047">
+         <r25:space_id>5047</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  241</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 241</r25:formal_name>
+            <r25:max_capacity>90</r25:max_capacity>
+            <r25:partition_id>110</r25:partition_id>
+            <r25:partition_name>UWS Mary Gates Hall</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+      <r25:space_reservation xl:href="space.xml?space_id=5050">
+         <r25:space_id>5050</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  251</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 251</r25:formal_name>
+            <r25:max_capacity>40</r25:max_capacity>
+            <r25:partition_id>110</r25:partition_id>
+            <r25:partition_name>UWS Mary Gates Hall</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+   <r25:reservation xl:href="reservation.xml?rsrv_id=55884009">
+      <r25:reservation_id>55884009</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T09:00:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T09:00:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T09:00:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T12:30:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T12:30:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T12:30:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15283736</r25:profile_id>
+      <r25:profile_name>Rsrv_15283736</r25:profile_name>
+      <r25:profile_description>From 09:00 AM to 12:30 PM. Repeat on MON DEC/17/2018, TUE DEC/18/2018, WED DEC/19/2018, THU JAN/03/2019, FRI JAN/04/2019.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>20</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage2</r25:last_mod_user>
+      <r25:last_mod_dt>2018-11-14T15:29:16-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15258707">
+         <r25:event_id>15258707</r25:event_id>
+         <r25:event_name>FYP WINTER ADMIT 2018</r25:event_name>
+         <r25:event_title>fyp winter admit 2018</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSLQGC</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5068">
+         <r25:space_id>5068</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  389</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 389</r25:formal_name>
+            <r25:max_capacity>165</r25:max_capacity>
+            <r25:partition_id>135</r25:partition_id>
+            <r25:partition_name>UWS Southwest Campus Auditorium</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+   <r25:reservation xl:href="reservation.xml?rsrv_id=56145520">
+      <r25:reservation_id>56145520</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T09:00:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T09:00:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T09:00:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T13:00:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T13:00:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T13:00:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15290779</r25:profile_id>
+      <r25:profile_name>Rsrv_15290779</r25:profile_name>
+      <r25:profile_description>From 09:00 AM to 01:00 PM on TUE DEC/18/2018.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>20</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage</r25:last_mod_user>
+      <r25:last_mod_dt>2018-12-11T13:19:20-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15262894">
+         <r25:event_id>15262894</r25:event_id>
+         <r25:event_name>ROOM MAINTENANCE</r25:event_name>
+         <r25:event_title>Room Maintenance</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSMBSM</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=12711">
+               <r25:contact_id>12711</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=12711">
+               <r25:contact_id>12711</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5358">
+         <r25:space_id>5358</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  044</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 044</r25:formal_name>
+            <r25:max_capacity>45</r25:max_capacity>
+            <r25:partition_id>186</r25:partition_id>
+            <r25:partition_name>UWS Computer Labs</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+   <r25:reservation xl:href="reservation.xml?rsrv_id=55884119">
+      <r25:reservation_id>55884119</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T10:00:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T10:00:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T10:00:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T14:00:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T14:00:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T14:00:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15283738</r25:profile_id>
+      <r25:profile_name>Rsrv_15283738</r25:profile_name>
+      <r25:profile_description>From 10:00 AM to 02:00 PM. Repeat on MON DEC/17/2018, TUE DEC/18/2018, WED DEC/19/2018.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>20</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage2</r25:last_mod_user>
+      <r25:last_mod_dt>2018-11-14T15:50:34-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15258708">
+         <r25:event_id>15258708</r25:event_id>
+         <r25:event_name>FYP WINTER ADMIT</r25:event_name>
+         <r25:event_title>fyp winter admit 2018</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSLQGD</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5446">
+         <r25:space_id>5446</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  135</r25:space_name>
+            <r25:formal_name>Mary Gates Commons</r25:formal_name>
+            <r25:max_capacity>270</r25:max_capacity>
+            <r25:partition_id/>
+            <r25:partition_name/>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+   <r25:reservation xl:href="reservation.xml?rsrv_id=56171449">
+      <r25:reservation_id>56171449</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T12:00:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T12:00:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T12:00:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T13:00:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T13:00:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T13:00:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15291714</r25:profile_id>
+      <r25:profile_name>Rsrv_15291714</r25:profile_name>
+      <r25:profile_description>From 12:00 PM to 01:00 PM on TUE DEC/18/2018.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>20</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage</r25:last_mod_user>
+      <r25:last_mod_dt>2018-12-17T08:06:53-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15263385">
+         <r25:event_id>15263385</r25:event_id>
+         <r25:event_name>ESS DEPARTMENT MEETING</r25:event_name>
+         <r25:event_title>ESS Department Meeting</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSMCVW</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=12711">
+               <r25:contact_id>12711</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=12711">
+               <r25:contact_id>12711</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5911">
+         <r25:space_id>5911</r25:space_id>
+         <r25:space>
+            <r25:space_name>JHN  075</r25:space_name>
+            <r25:formal_name>Seattle- Johnson Hall 075</r25:formal_name>
+            <r25:max_capacity>100</r25:max_capacity>
+            <r25:partition_id>135</r25:partition_id>
+            <r25:partition_name>UWS Southwest Campus Auditorium</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+   <r25:reservation xl:href="reservation.xml?rsrv_id=55884133">
+      <r25:reservation_id>55884133</r25:reservation_id>
+      <r25:reservation_state>1</r25:reservation_state>
+      <r25:reservation_start_dt>2018-12-18T13:00:00-08:00</r25:reservation_start_dt>
+      <r25:pre_event_dt>2018-12-18T13:00:00-08:00</r25:pre_event_dt>
+      <r25:event_start_dt>2018-12-18T13:00:00-08:00</r25:event_start_dt>
+      <r25:event_end_dt>2018-12-18T17:00:00-08:00</r25:event_end_dt>
+      <r25:post_event_dt>2018-12-18T17:00:00-08:00</r25:post_event_dt>
+      <r25:reservation_end_dt>2018-12-18T17:00:00-08:00</r25:reservation_end_dt>
+      <r25:profile_id>15283749</r25:profile_id>
+      <r25:profile_name>Rsrv_15283749</r25:profile_name>
+      <r25:profile_description>From 01:00 PM to 05:00 PM. Repeat on MON DEC/17/2018, TUE DEC/18/2018, WED DEC/19/2018.</r25:profile_description>
+      <r25:profile_comment_id/>
+      <r25:profile_comments/>
+      <r25:expected_count>20</r25:expected_count>
+      <r25:registered_count/>
+      <r25:registration_url/>
+      <r25:registration_label/>
+      <r25:last_mod_user>javerage2</r25:last_mod_user>
+      <r25:last_mod_dt>2018-11-14T15:52:57-08:00</r25:last_mod_dt>
+      <r25:comment_id/>
+      <r25:comments/>
+      <r25:attendee_count>0</r25:attendee_count>
+      <r25:event xl:href="event.xml?event_id=15258716">
+         <r25:event_id>15258716</r25:event_id>
+         <r25:event_name>FYP WINTER ADMIT 2018</r25:event_name>
+         <r25:event_title>fyp winter admit 2018</r25:event_title>
+         <r25:favorite>F</r25:favorite>
+         <r25:event_locator>2018-DSLQGN</r25:event_locator>
+         <r25:event_type_id>433</r25:event_type_id>
+         <r25:event_type_name>UWS Event</r25:event_type_name>
+         <r25:event_type_class/>
+         <r25:state>2</r25:state>
+         <r25:state_name>Confirmed</r25:state_name>
+         <r25:organization xl:href="organization.xml?organization_id=4211">
+            <r25:organization_id>4211</r25:organization_id>
+            <r25:primary>T</r25:primary>
+            <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         </r25:organization>
+         <r25:role>
+            <r25:role_id>-2</r25:role_id>
+            <r25:role_name>Scheduler</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+         <r25:role>
+            <r25:role_id>-1</r25:role_id>
+            <r25:role_name>Requestor</r25:role_name>
+            <r25:contact xl:href="contact.xml?contact_id=14240">
+               <r25:contact_id>14240</r25:contact_id>
+               <r25:contact_name>AVERAGE, JOE II</r25:contact_name>
+               <r25:address>
+                  <r25:address_type>3</r25:address_type>
+                  <r25:formatted_address/>
+                  <r25:email>javerage2@uw.edu</r25:email>
+                  <r25:phone/>
+                  <r25:fax/>
+               </r25:address>
+            </r25:contact>
+         </r25:role>
+      </r25:event>
+      <r25:space_reservation xl:href="space.xml?space_id=5358">
+         <r25:space_id>5358</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  044</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 044</r25:formal_name>
+            <r25:max_capacity>45</r25:max_capacity>
+            <r25:partition_id>186</r25:partition_id>
+            <r25:partition_name>UWS Computer Labs</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+      <r25:space_reservation xl:href="space.xml?space_id=5370">
+         <r25:space_id>5370</r25:space_id>
+         <r25:space>
+            <r25:space_name>MGH  030</r25:space_name>
+            <r25:formal_name>Seattle- Mary Gates Hall 030</r25:formal_name>
+            <r25:max_capacity>43</r25:max_capacity>
+            <r25:partition_id>186</r25:partition_id>
+            <r25:partition_name>UWS Computer Labs</r25:partition_name>
+            <r25:default_layout_id>26</r25:default_layout_id>
+            <r25:default_layout_name>As Is</r25:default_layout_name>
+         </r25:space>
+         <r25:actual_count/>
+         <r25:layout_id>26</r25:layout_id>
+         <r25:layout_name>As Is</r25:layout_name>
+         <r25:shared>F</r25:shared>
+         <r25:space_comment_id/>
+         <r25:space_comments/>
+         <r25:space_instruction_id/>
+         <r25:space_instructions/>
+      </r25:space_reservation>
+   </r25:reservation>
+</r25:reservations>

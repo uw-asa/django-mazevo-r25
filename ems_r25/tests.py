@@ -40,11 +40,11 @@ class EMSR25Test(unittest.TestCase):
     def test_api_schedule(self):
         # Issue a GET request.
         response = self.client.get(
-            '/api/v1/schedule/?StartDate=2016-01-02&EndDate=2016-01-02')
+            '/api/v1/schedule/?StartDate=2018-12-18&EndDate=2018-12-18')
 
         # Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
 
         data = json.loads(response.content)
 
-        self.assertEquals(len(data), 3)
+        self.assertEquals(len(data), 18)

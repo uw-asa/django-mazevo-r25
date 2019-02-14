@@ -34,16 +34,19 @@ class Reservation(RESTDispatch):
         except InvalidParamException as ex:
             return self.error_response(400, "%s" % ex)
         except Exception as ex:
-            return self.error_response(500, "Unable to save reservation: %s" % ex)
+            return self.error_response(
+                500, "Unable to save reservation: %s" % ex)
 
     def DELETE(self, request, **kwargs):
         try:
-            reservation_id = self._valid_reservation_id(kwargs.get('reservation_id'))
+            reservation_id = self._valid_reservation_id(
+                kwargs.get('reservation_id'))
 
             delete_reservations([reservation_id])
             self._audit_log.info(
                 '%s deleted reservation %s' % (request.user, reservation_id))
-            return self.json_response({'deleted_reservation_id': reservation_id})
+            return self.json_response({
+                'deleted_reservation_id': reservation_id})
         except InvalidParamException as err:
             return self.error_response(400, "Invalid Parameter: %s" % err)
 

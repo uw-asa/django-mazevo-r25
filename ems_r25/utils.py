@@ -4,7 +4,7 @@ from ems_client.service import Service
 from uw_r25 import nsmap
 from uw_r25.reservations import get_reservations
 
-from more_r25 import create_new_event, update_event
+from .more_r25 import create_new_event, update_event
 
 
 logger = logging.getLogger(__name__)

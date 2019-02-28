@@ -2,9 +2,8 @@ import logging
 
 from ems_client.service import Service
 from uw_r25 import nsmap
-from uw_r25.reservations import get_reservations
 
-from .more_r25 import create_new_event, update_event
+from .more_r25 import create_new_event, update_event, get_reservations_multi
 
 
 logger = logging.getLogger(__name__)
@@ -72,21 +71,25 @@ def bookings_and_reservations(params):
 def mash_in_r25_reservations(event_data, params, space_ids, alien_uids):
     # mash in R25 reservation schedule
     search = {
-        'space_id': space_ids,
+        'space_id': space_ids,  # Should use a space_query_id or space_favorite
         # 'alien_uids': alien_uids,
         'start_dt': params.get('StartDate'),
         'end_dt': params.get('EndDate'),
     }
 
-    r25_reservations = get_reservations(**search)
+    # R25 reservations can have multiple spaces on a single reservation_id,
+    # get_reservations can't handle that.
+    # Are EMS Bookings analogous?
+    r25_reservations = get_reservations_multi(**search)
     for r in r25_reservations if r25_reservations else []:
-        for e in event_data:
-            if (r.space_reservation.space_id == e['r25_space_id'] and
-                    r.start_datetime == e['start_time'] and
-                    r.end_datetime == e['end_time']):
-                e['r25_reservation_id'] = r.reservation_id
-                e['r25_event_id'] = r.event_id
-                e['r25_event_name'] = r.event_name
+        for s in r.space_reservations:
+            for e in event_data:
+                if (s.space_id == e['r25_space_id'] and
+                        r.start_datetime == e['start_time'] and
+                        r.end_datetime == e['end_time']):
+                    e['r25_reservation_id'] = r.reservation_id
+                    e['r25_event_id'] = r.event_id
+                    e['r25_event_name'] = r.event_name
 
 
 def create_r25_reservation(event_data):
@@ -100,7 +103,23 @@ def create_r25_reservation(event_data):
 
     enode.attrib['status'] = 'mod'
 
+    # Required information:
+    # Event Name
+    # Event Type
+    # Primary Organization
+
     element = enode.xpath("r25:event_name", namespaces=nsmap)[0]
     element.text = event_data['event_name']
+
+    element = enode.xpath("r25:event_type_id", namespaces=nsmap)[0]
+    element.text = "402"
+
+    onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
+    element = onode.xpath("r25:organization_id", namespaces=nsmap)[0]
+    element.text = "4211"
+    element = onode.xpath("r25:primary", namespaces=nsmap)[0]
+    element.text = "T"
+
+    # Add reservation details (date and time) and space_reservation(s)
 
     update_event(event_id, event_tree)

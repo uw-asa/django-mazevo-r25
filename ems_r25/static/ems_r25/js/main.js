@@ -2,7 +2,7 @@
 /*global jQuery, Handlebars, moment */
 
 
-var EMSWhenIWork = (function ($) {
+var EMSR25 = (function ($) {
     "use strict";
 
     var term_lookahead = 4;

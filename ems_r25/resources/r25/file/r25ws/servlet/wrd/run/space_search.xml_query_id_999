@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<r25:space_search xmlns:xl="http://www.w3.org/1999/xlink"
+                  xmlns:r25="http://www.collegenet.com/r25"
+                  pubdate="2019-03-04T15:50:50-08:00"
+                  engine="accl">
+   <r25:search status="est" xl:href="spaces.xml?query_id=1898617">
+      <r25:query_id>999</r25:query_id>
+      <r25:query_name>CTE_EMS_Rooms_999</r25:query_name>
+      <r25:favorite>T</r25:favorite>
+      <r25:query_type_name>public</r25:query_type_name>
+      <r25:query_type_id>2</r25:query_type_id>
+      <r25:query_method>any</r25:query_method>
+      <r25:last_mod_user>javerage</r25:last_mod_user>
+      <r25:last_mod_dt>2015-07-01T11:51:31-07:00</r25:last_mod_dt>
+      <r25:step status="est">
+         <r25:step_number>1</r25:step_number>
+         <r25:step_type_id>407</r25:step_type_id>
+         <r25:step_type_name>Spaces</r25:step_type_name>
+         <r25:qualifier>1</r25:qualifier>
+         <r25:qualifier_name>Include Any</r25:qualifier_name>
+         <r25:step_priority>1</r25:step_priority>
+         <r25:step_factor>1.00</r25:step_factor>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>1</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5906">5906</r25:space_id>
+            <r25:space_name>JHN  022</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>2</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5907">5907</r25:space_id>
+            <r25:space_name>JHN  026</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>3</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5911">5911</r25:space_id>
+            <r25:space_name>JHN  075</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>4</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5912">5912</r25:space_id>
+            <r25:space_name>JHN  102</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>5</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5909">5909</r25:space_id>
+            <r25:space_name>JHN  111</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>6</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5910">5910</r25:space_id>
+            <r25:space_name>JHN  175</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>7</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=4990">4990</r25:space_id>
+            <r25:space_name>KNE  110</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>8</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=4991">4991</r25:space_id>
+            <r25:space_name>KNE  120</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>9</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=4992">4992</r25:space_id>
+            <r25:space_name>KNE  130</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>10</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=4993">4993</r25:space_id>
+            <r25:space_name>KNE  210</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>11</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=4994">4994</r25:space_id>
+            <r25:space_name>KNE  220</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>12</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5326">5326</r25:space_id>
+            <r25:space_name>KNE  225</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>13</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5325">5325</r25:space_id>
+            <r25:space_name>KNE  234</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>14</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5370">5370</r25:space_id>
+            <r25:space_name>MGH  030</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>15</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5358">5358</r25:space_id>
+            <r25:space_name>MGH  044</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>16</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5038">5038</r25:space_id>
+            <r25:space_name>MGH  074</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>17</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5041">5041</r25:space_id>
+            <r25:space_name>MGH  082A</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>18</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5042">5042</r25:space_id>
+            <r25:space_name>MGH  085</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>19</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=6411">6411</r25:space_id>
+            <r25:space_name>MGH  097</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>20</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5446">5446</r25:space_id>
+            <r25:space_name>MGH  135</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>21</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5043">5043</r25:space_id>
+            <r25:space_name>MGH  228</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>22</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5044">5044</r25:space_id>
+            <r25:space_name>MGH  231</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>23</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5045">5045</r25:space_id>
+            <r25:space_name>MGH  234</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>24</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5046">5046</r25:space_id>
+            <r25:space_name>MGH  238</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>25</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5047">5047</r25:space_id>
+            <r25:space_name>MGH  241</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>26</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5048">5048</r25:space_id>
+            <r25:space_name>MGH  242</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>27</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5049">5049</r25:space_id>
+            <r25:space_name>MGH  248</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>28</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5050">5050</r25:space_id>
+            <r25:space_name>MGH  251</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>29</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5051">5051</r25:space_id>
+            <r25:space_name>MGH  251A</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>30</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5052">5052</r25:space_id>
+            <r25:space_name>MGH  253</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>31</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5053">5053</r25:space_id>
+            <r25:space_name>MGH  254</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>32</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5054">5054</r25:space_id>
+            <r25:space_name>MGH  255</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>33</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5055">5055</r25:space_id>
+            <r25:space_name>MGH  271</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>34</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5056">5056</r25:space_id>
+            <r25:space_name>MGH  278</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>35</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5057">5057</r25:space_id>
+            <r25:space_name>MGH  282</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>36</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5058">5058</r25:space_id>
+            <r25:space_name>MGH  284</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>37</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5060">5060</r25:space_id>
+            <r25:space_name>MGH  287</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>38</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5059">5059</r25:space_id>
+            <r25:space_name>MGH  286</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>39</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5062">5062</r25:space_id>
+            <r25:space_name>MGH  288</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>40</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5064">5064</r25:space_id>
+            <r25:space_name>MGH  291</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>41</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5066">5066</r25:space_id>
+            <r25:space_name>MGH  295</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>42</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5068">5068</r25:space_id>
+            <r25:space_name>MGH  389</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>43</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=5591">5591</r25:space_id>
+            <r25:space_name>MGH  058</r25:space_name>
+         </r25:step_param>
+         <r25:step_param status="est">
+            <r25:step_param_nbr>44</r25:step_param_nbr>
+            <r25:space_id xl:href="space.xml?space_id=6916">6916</r25:space_id>
+            <r25:space_name>NAN  181</r25:space_name>
+         </r25:step_param>
+      </r25:step>
+   </r25:search>
+</r25:space_search>

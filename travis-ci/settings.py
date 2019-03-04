@@ -68,3 +68,4 @@ AUTHZ_GROUP_BACKEND = \
     'authz_group.authz_implementation.uw_group_service.UWGroupService'
 
 EMSTOOLS_SCHEDULER_GROUP = 'u_classrm_services_ems_schedulers'
+EMS_R25_SPACE_QUERY = '999'

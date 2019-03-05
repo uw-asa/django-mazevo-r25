@@ -6,7 +6,7 @@ from lxml import etree
 from uw_r25 import nsmap, get_resource
 
 from .more_r25 import (put_resource,
-    create_new_event, update_event, get_reservations_multi)
+                       create_new_event, update_event, get_reservations_multi)
 
 
 logger = logging.getLogger(__name__)

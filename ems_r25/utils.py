@@ -152,12 +152,12 @@ def update_get_space_ids():
     step_param_nbr = -1
     for pnode in snode.xpath("r25:step_param", namespaces=nsmap):
         space_id = pnode.xpath("r25:space_id", namespaces=nsmap)[0].text
-        temp = pnode.xpath("r25:step_param_nbr", namespaces=nsmap)[0].text
+        temp = int(pnode.xpath("r25:step_param_nbr", namespaces=nsmap)[0].text)
 
         found_space_ids.append(space_id)
 
         if temp > step_param_nbr:
-            step_param_nbr = int(temp)
+            step_param_nbr = temp
 
         if space_id not in space_ids.values():
             pnode.attrib['status'] = 'del'

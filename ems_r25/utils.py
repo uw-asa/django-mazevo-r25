@@ -101,15 +101,18 @@ def create_r25_reservation(event_data):
     enode = event_tree.xpath("r25:event", namespaces=nsmap)[0]
     event_id = enode.xpath("r25:event_id", namespaces=nsmap)[0].text
 
-    enode.attrib['status'] = 'mod'
+    # enode.attrib['status'] = 'mod'
+
+    element = enode.xpath("r25:node_type", namespaces=nsmap)[0]
+    element.text = 'E'
 
     # Required information:
     # Event Name
     # Event Type
     # Primary Organization
 
-    element = enode.xpath("r25:event_name", namespaces=nsmap)[0]
-    element.text = event_data['event_name']
+    # element = enode.xpath("r25:event_name", namespaces=nsmap)[0]
+    # element.text = event_data['event_name']
 
     element = enode.xpath("r25:event_type_id", namespaces=nsmap)[0]
     element.text = "402"
@@ -117,8 +120,8 @@ def create_r25_reservation(event_data):
     onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
     element = onode.xpath("r25:organization_id", namespaces=nsmap)[0]
     element.text = "4211"
-    element = onode.xpath("r25:primary", namespaces=nsmap)[0]
-    element.text = "T"
+    # element = onode.xpath("r25:primary", namespaces=nsmap)[0]
+    # element.text = "T"
 
     # Add reservation details (date and time) and space_reservation(s)
 

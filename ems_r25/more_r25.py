@@ -65,6 +65,37 @@ def put_resource(url, body):
     return tree
 
 
+def delete_resource(url):
+    """
+    Issue a DELETE request to R25 with the given url
+    and return a response as an etree element.
+    """
+
+    instance = R25_DAO().get_service_setting('INSTANCE')
+    if instance is not None:
+        url = "/r25ws/wrd/%s/run/%s" % (instance, url)
+    else:
+        url = "/r25ws/servlet/wrd/run/%s" % url
+
+    headers = {
+        "Accept": "text/xml",
+        "Content-Type": "text/xml",
+    }
+
+    response = R25_DAO().deleteURL(url, headers)
+    if response.status != 200:
+        raise DataFailureException(url, response.status, response.data)
+
+    tree = etree.fromstring(response.data.strip())
+
+    # XHTML response is an error response
+    xhtml = tree.xpath("//xhtml:html", namespaces=nsmap)
+    if len(xhtml):
+        raise DataFailureException(url, 500, response.data)
+
+    return tree
+
+
 def create_new_event():
     """
     Return a blank occurrence with a new event ID that is used to create a new
@@ -83,6 +114,14 @@ def update_event(event_id, event):
     url = "event.xml?event_id=%s" % event_id
 
     result = put_resource(url, etree.tostring(event))
+
+    return result
+
+
+def delete_event(event_id):
+    url = "event.xml?event_id=%s" % event_id
+
+    result = delete_resource(url)
 
     return result
 

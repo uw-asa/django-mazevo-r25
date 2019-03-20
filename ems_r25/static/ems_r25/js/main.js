@@ -28,9 +28,10 @@ var EMSR25 = (function ($) {
     }
 
     function button_loading(node) {
-        var cluster = node.closest('.schedule-button-cluster');
+        var cluster = node.closest('.schedule-button-cluster'),
+            btngrp = cluster.find('.btn-group');
 
-        $('.btn.group > button', cluster).attr('disabled', 'disabled');
+        btngrp.find('button, input').attr('disabled', 'disabled');
         $('.loading', cluster).show();
     }
 
@@ -55,6 +56,12 @@ var EMSR25 = (function ($) {
         }
 
         return url;
+    }
+
+    function r25_event_url(r25_event_id) {
+        return 'https://25live.collegenet.com/' + window.scheduler.r25_instance +
+            '/#details&obj_type=event&obj_id=' +
+            r25_event_id;
     }
 
     function update_schedule_buttons(event) {
@@ -121,6 +128,8 @@ var EMSR25 = (function ($) {
                 end_time: event_end_date.format('h:mm a'),
                 room: this.room,
                 event_name: this.event_name,
+                r25_event_url: (this.r25_event_id) ?
+                    r25_event_url(this.r25_event_id) : null,
                 in_the_past: false,
                 r25_event_id: this.r25_event_id,
                 r25_event_name: this.r25_event_name,
@@ -205,7 +214,7 @@ var EMSR25 = (function ($) {
 
     function schedule_r25_reservation(event) {
         var request_data = event,
-            button = $('.btn-group[data-booking-id="' + event.event_name + '"] > button:first-child');
+            button = $('.btn-group[data-booking-id="' + event.booking_id + '"] > button:first-child');
 
         if (event.r25_reservation_id) {
             return;

@@ -26,6 +26,7 @@ def index(request, template='ems_r25/events.html'):
         'todays_date': strftime("%Y-%m-%d"),
         'thirty_date': strftime("%Y-%m-%d", localtime(time() + 60*60*24*1)),
         'STATIC_URL': settings.STATIC_URL,
+        'r25_instance': getattr(settings, 'RESTCLIENTS_R25_INSTANCE', ''),
     }
 
     return render(request, template, context, status=status_code)

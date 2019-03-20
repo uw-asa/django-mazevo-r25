@@ -72,8 +72,7 @@ def bookings_and_reservations(params):
     alien_uids = ["AT_reservation_{}".format(r_id)
                   for r_id in ems_reservation_ids]
 
-    mash_in_r25_reservations(event_data, params,
-                             ','.join(alien_uids))
+    mash_in_r25_reservations(event_data, params, ','.join(alien_uids))
 
     return event_data
 

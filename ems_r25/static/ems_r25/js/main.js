@@ -240,7 +240,9 @@ var EMSR25 = (function ($) {
             }
         }).done(function (msg) {
             if (msg.hasOwnProperty('reservation_id')) {
-                event.reservation.id = msg.reservation_id;
+                event.r25_event_id = msg.r25_event_id;
+                event.r25_event_name = msg.r25_event_name;
+                event.r25_reservation_id = msg.r25_reservation_id;
                 update_schedule_buttons(event);
             }
         });

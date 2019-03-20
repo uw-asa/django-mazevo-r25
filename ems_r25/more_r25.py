@@ -4,6 +4,7 @@ from lxml import etree
 from restclients_core.exceptions import DataFailureException
 from uw_r25 import nsmap, get_resource
 from uw_r25.dao import R25_DAO
+from uw_r25.events import events_from_xml
 from uw_r25.models import Reservation
 from uw_r25.spaces import space_reservation_from_xml
 
@@ -113,9 +114,7 @@ def update_event(event_id, event):
     """
     url = "event.xml?event_id=%s" % event_id
 
-    result = put_resource(url, etree.tostring(event))
-
-    return result
+    return events_from_xml(put_resource(url, etree.tostring(event)))[0]
 
 
 def delete_event(event_id):

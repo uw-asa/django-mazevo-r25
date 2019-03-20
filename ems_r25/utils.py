@@ -134,7 +134,17 @@ def create_r25_reservation(event_data):
 
     # Add reservation details (date and time) and space_reservation(s)
 
-    update_event(event_id, event_tree)
+    r25_event = update_event(event_id, event_tree)
+
+    event_data['r25_event_id'] = r25_event.event_id
+    event_data['r25_event_name'] = r25_event.name
+    for res in r25_event.reservations:
+        if (res.space_reservation.space_id == event_data['r25_space_id'] and
+                res.start_datetime == event_data['start_time'] and
+                res.end_datetime == event_data['end_time']):
+            event_data['r25_reservation_id'] = res.reservation_id
+
+    return event_data
 
 
 def update_get_space_ids(ems_rooms):

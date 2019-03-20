@@ -26,6 +26,11 @@ def bookings_and_reservations(params):
 
     space_ids = update_get_space_ids(_ems.get_all_rooms())
 
+    statuses = _ems.get_statuses()
+    search['statuses'] = [status.id for status in statuses
+                          if (status.status_type_id ==
+                              status.STATUS_TYPE_BOOKED_SPACE)]
+
     ems_bookings = _ems.get_bookings(**search)
 
     ems_reservation_ids = []
@@ -36,10 +41,15 @@ def bookings_and_reservations(params):
         if b.reservation_id not in ems_reservation_ids:
             ems_reservation_ids.append(b.reservation_id)
 
+        for status in statuses:
+            if status.id == b.status_id:
+                b.status = status
+                continue
+
         event = {
             'room': b.room_description,
             'room_name': b.dv_room,
-            'event_name': b.event_name,
+            'event_name': "%s.%s" % (b.status.description, b.event_name),
             'start_time': b.time_booking_start.isoformat(),
             'end_time': b.time_booking_end.isoformat(),
             'booking_id': b.id,

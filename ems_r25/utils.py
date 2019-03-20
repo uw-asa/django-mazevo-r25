@@ -24,7 +24,7 @@ def bookings_and_reservations(params):
     if not (search['start_date'] and search['end_date']):
         return None
 
-    space_ids = update_get_space_ids()
+    space_ids = update_get_space_ids(_ems.get_all_rooms())
 
     ems_bookings = _ems.get_bookings(**search)
 
@@ -128,11 +128,7 @@ def create_r25_reservation(event_data):
     update_event(event_id, event_tree)
 
 
-def update_get_space_ids():
-    _ems = Service()
-
-    ems_rooms = _ems.get_all_rooms()
-
+def update_get_space_ids(ems_rooms):
     space_ids = {}
     for room in ems_rooms:
         if room.active and room.external_reference is not None:

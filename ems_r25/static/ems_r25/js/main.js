@@ -36,10 +36,11 @@ var EMSR25 = (function ($) {
     }
 
     function button_stop_loading(node) {
-        var cluster = node.closest('.schedule-button-cluster');
+        var cluster = node.closest('.schedule-button-cluster'),
+            btngrp = cluster.find('.btn-group');
 
         $('.loading', cluster).hide();
-        $('.btn.group > button', cluster).removeAttr('disabled');
+        btngrp.find('button, input').removeAttr('disabled');
     }
 
     function api_path(service, params) {

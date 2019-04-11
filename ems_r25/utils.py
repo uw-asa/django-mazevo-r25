@@ -142,9 +142,7 @@ def create_r25_reservation(event_data):
     r25_event = events_from_xml(update_event(event_tree))[0]
 
     for res in r25_event.reservations:
-        if (res.space_reservation.space_id == event_data['r25_space_id'] and
-                res.start_datetime == event_data['start_time'] and
-                res.end_datetime == event_data['end_time']):
+        if res.profile_name == event_data['r25_profile_name']:
             event_data['r25_reservation_id'] = res.reservation_id
 
     return event_data

@@ -97,6 +97,11 @@ def delete_resource(url):
     return tree
 
 
+def get_event_by_id_xml(event_id):
+    url = "event.xml?event_id=%s" % event_id
+    return get_resource(url)
+
+
 def create_new_event():
     """
     Return a blank occurrence with a new event ID that is used to create a new
@@ -106,15 +111,17 @@ def create_new_event():
     return post_resource(url)
 
 
-def update_event(event_id, event):
+def update_event(event):
     """
     Make changes to the given event
     :param event:
     :return:
     """
+    event_id = event.xpath("r25:event/r25:event_id", namespaces=nsmap)[0].text
+
     url = "event.xml?event_id=%s" % event_id
 
-    return events_from_xml(put_resource(url, etree.tostring(event)))[0]
+    return put_resource(url, etree.tostring(event))
 
 
 def delete_event(event_id):

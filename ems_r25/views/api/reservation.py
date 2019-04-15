@@ -30,9 +30,9 @@ class Reservation(RESTDispatch):
                 reservation['start_time'], reservation['end_time']))
 
             return self.json_response({
-                'r25_event_id': reservation.r25_event_id,
-                'r25_event_name': reservation.r25_event_name,
-                'r25_reservation_id': reservation.r25_reservation_id,
+                'r25_event_id': reservation['r25_event_id'],
+                'r25_event_name': reservation['r25_event_name'],
+                'r25_reservation_id': reservation['r25_reservation_id'],
             })
         except InvalidParamException as ex:
             return self.error_response(400, "%s" % ex)

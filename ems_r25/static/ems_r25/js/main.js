@@ -77,7 +77,7 @@ var EMSR25 = (function ($) {
 
             schedule_cluster.find('.loading').hide();
 
-            if (event.r25_reservation.reservation_id) {
+            if (event.r25_reservation_id) {
                 button_group.removeClass('unscheduled');
                 button_group.addClass('scheduled');
             } else {
@@ -230,7 +230,6 @@ var EMSR25 = (function ($) {
             contentType: 'application/json',
             data: JSON.stringify(request_data)
         }).fail(function (xhr) {
-            button_stop_loading(button);
             if (xhr.status == 409) {
                 var response = JSON.parse(xhr.responseText),
                     format = 'h:mm a';
@@ -249,12 +248,15 @@ var EMSR25 = (function ($) {
                               xhr);
             }
         }).done(function (msg) {
-            if (msg.hasOwnProperty('reservation_id')) {
+            if (msg.hasOwnProperty('r25_event_id')) {
                 event.r25_event_id = msg.r25_event_id;
-                event.r25_event_name = msg.r25_event_name;
-                event.r25_reservation_id = msg.r25_reservation_id;
-                update_schedule_buttons(event);
             }
+            if (msg.hasOwnProperty('r25_reservation_id')) {
+                event.r25_reservation_id = msg.r25_reservation_id;
+            }
+        }).always(function () {
+            button_stop_loading(button);
+            update_schedule_buttons(event);
         });
     }
 

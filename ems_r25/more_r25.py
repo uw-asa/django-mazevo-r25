@@ -97,8 +97,8 @@ def delete_resource(url):
     return tree
 
 
-def get_event_by_id_xml(event_id):
-    url = "event.xml?event_id=%s" % event_id
+def edit_event_by_id(event_id):
+    url = "event.xml?event_id=%s&mode=edit" % event_id
     return get_resource(url)
 
 

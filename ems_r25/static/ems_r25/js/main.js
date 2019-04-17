@@ -264,10 +264,7 @@ var EMSR25 = (function ($) {
         button_loading(button);
         $.ajax({
             type: 'DELETE',
-            url: api_path('reservation/' + r25_event.reservation.id,
-                          {
-                              name: r25_event.reservation.name,
-                          })
+            url: api_path('reservation/' + r25_event.r25_reservation_id)
         })
             .fail(function (xhr) {
                 button_stop_loading(button);
@@ -277,8 +274,8 @@ var EMSR25 = (function ($) {
             })
             .done(function (msg) {
                 if (msg.hasOwnProperty('deleted_reservation_id') &&
-                        msg.deleted_reservation_id == r25_event.reservation.id) {
-                    r25_event.reservation.id = null;
+                        msg.deleted_reservation_id == r25_event.r25_reservation_id) {
+                    r25_event.r25_reservation_id = null;
                     update_schedule_buttons(r25_event);
                 }
             });
@@ -301,7 +298,7 @@ var EMSR25 = (function ($) {
         var button = $(this),
             pe = r25_event(button);
 
-        if (pe.reservation.id) {
+        if (pe.r25_reservation_id) {
             remove_r25_reservation(pe, button);
         }
     }

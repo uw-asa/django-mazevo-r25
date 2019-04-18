@@ -62,6 +62,7 @@ def bookings_and_reservations(params):
             'r25_event_name': "AT_EMS_RSRV_%s" % b.reservation_id,
             'r25_profile_name': "AT_EMS_BOOK_%s" % b.id,
             'r25_reservation_id': None,
+            'synchronized': None,
         }
 
         if b.room_id in space_ids:
@@ -91,13 +92,21 @@ def mash_in_r25_reservations(event_data, params):
                                    state='+'.join([Event.TENTATIVE_STATE,
                                                    Event.CONFIRMED_STATE,
                                                    Event.SEALED_STATE,
-                                                   ]))[0]
+                                                   ]),
+                                   scope='extended', include='reservations')[0]
         except IndexError:
             continue
         e['r25_event_id'] = r25_event.event_id
         for res in r25_event.reservations:
             if res.profile_name == e['r25_profile_name']:
                 e['r25_reservation_id'] = res.reservation_id
+                e['synchronized'] = (
+                    e['start_time'] == res.start_datetime and
+                    e['end_time'] == res.end_datetime and
+                    e['r25_space_id'] == (res.space_reservation.space_id
+                                          if res.space_reservation is not None
+                                          else None)
+                )
 
     return
 
@@ -117,6 +126,8 @@ def mash_in_r25_reservations(event_data, params):
 
 
 def create_r25_reservation(event_data):
+    # The event_data we take is mapped to a reservation (with its own profile)
+    # on the R25 event
 
     _ems = Service()
 
@@ -127,27 +138,35 @@ def create_r25_reservation(event_data):
     else:
         event_tree = create_r25_event(event_data)
 
-    r25_event = events_from_xml(update_event(event_tree))[0]
+    r25_event = events_from_xml(event_tree)[0]
 
+    r25_reservation = None
     for res in r25_event.reservations:
         if res.profile_name == event_data['r25_profile_name']:
+            # This is an existing reservation
             event_data['r25_reservation_id'] = res.reservation_id
-            raise Exception('Reservation already exists')
+            r25_reservation = res
 
-    r25_reservation = Reservation()
-    r25_reservation.profile_name = event_data['r25_profile_name']
-    r25_reservation.start_datetime = event_data['start_time']
-    r25_reservation.end_datetime = event_data['end_time']
-    r25_reservation.state = r25_reservation.STANDARD_STATE
-    r25_reservation.space_reservation = Space()
-    r25_reservation.space_reservation.space_id = event_data['r25_space_id']
+    if r25_reservation is None:
+        # This is a new reservation
+        r25_reservation = Reservation()
+        r25_reservation.profile_name = event_data['r25_profile_name']
+        r25_reservation.start_datetime = event_data['start_time']
+        r25_reservation.end_datetime = event_data['end_time']
+        r25_reservation.state = r25_reservation.STANDARD_STATE
+        r25_reservation.space_reservation = Space()
+        r25_reservation.space_reservation.space_id = event_data['r25_space_id']
 
-    r25_event.reservations.append(r25_reservation)
+        r25_event.reservations.append(r25_reservation)
+
+    # Make sure event dates encompass all reservations
     for res in r25_event.reservations:
-        if res.start_datetime < r25_event.start_date:
-            r25_event.start_date = res.start_datetime
-        if res.end_datetime > r25_event.end_date:
-            r25_event.end_date = res.end_datetime
+        res_start_date = res.start_datetime.split('T')[0]
+        res_end_date = res.end_datetime.split('T')[0]
+        if res_start_date < r25_event.start_date:
+            r25_event.start_date = res_start_date.isoformat()
+        if res_end_date > r25_event.end_date:
+            r25_event.end_date = res_end_date
 
     enode = event_tree.xpath("r25:event", namespaces=nsmap)[0]
     enode.attrib['status'] = 'mod'
@@ -156,15 +175,26 @@ def create_r25_reservation(event_data):
     enode.xpath("r25:end_date", namespaces=nsmap)[0].text = \
         r25_event.end_date
 
-    # add new profile
-    pnode = etree.SubElement(enode, "{%s}profile" % nsmap['r25'],
-                             attrib={'status': 'new'}, nsmap=nsmap)
-    etree.SubElement(pnode, "{%s}profile_name" % nsmap['r25'], nsmap=nsmap)\
-        .text = event_data['r25_profile_name']
-    etree.SubElement(pnode, "{%s}init_start_dt" % nsmap['r25'], nsmap=nsmap)\
-        .text = event_data['start_time']
-    etree.SubElement(pnode, "{%s}init_end_dt" % nsmap['r25'], nsmap=nsmap)\
-        .text = event_data['end_time']
+    if event_data['r25_reservation_id']:
+        # find existing profile
+        xpath = "r25:profile[./r25:profile_name = '%s']" % \
+                event_data['r25_profile_name']
+        pnode = enode.xpath(xpath, namespaces=nsmap)[0]
+        pnode.xpath("r25:init_start_dt", namespaces=nsmap)[0].text = \
+            event_data['start_time']
+        pnode.xpath("r25:init_end_dt", namespaces=nsmap)[0].text = \
+            event_data['end_time']
+
+    else:
+        # add new profile
+        pnode = etree.SubElement(enode, "{%s}profile" % nsmap['r25'],
+                                 attrib={'status': 'new'}, nsmap=nsmap)
+        etree.SubElement(pnode, "{%s}profile_name" % nsmap['r25'],
+                         nsmap=nsmap).text = event_data['r25_profile_name']
+        etree.SubElement(pnode, "{%s}init_start_dt" % nsmap['r25'],
+                         nsmap=nsmap).text = event_data['start_time']
+        etree.SubElement(pnode, "{%s}init_end_dt" % nsmap['r25'],
+                         nsmap=nsmap).text = event_data['end_time']
 
     update_event(event_tree)
 

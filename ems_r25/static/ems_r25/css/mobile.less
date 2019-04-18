@@ -508,6 +508,19 @@ span.state-successful {
             display: none;
         }
     }
+    .btn-group.synchronized {
+        span.unsynchronized {
+            display: none;
+        }
+    }
+    .btn-group.unsynchronized {
+        > button:first-child {
+            color: @red !important;
+        }
+        span.synchronized {
+            display: none;
+        }
+    }
     .btn-group.unscheduled {
         > button:first-child { //unscheduled button (not depressed)
             background-color: @button-light;

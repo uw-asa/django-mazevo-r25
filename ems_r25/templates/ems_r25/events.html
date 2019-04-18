@@ -89,11 +89,12 @@
 
 
     <!-- container for scheduler button, toggle, and resulting modal -->
-    <div class="btn-group  {{#if r25_reservation_id}}scheduled{{else}}unscheduled{{/if}}" {{#if booking_id}}data-booking-id="{{ booking_id }}"{{/if}}>
+    <div class="btn-group  {{#if r25_reservation_id}}scheduled {{#if synchronized}}synchronized{{else}}unsynchronized{{/if}}{{else}}unscheduled{{/if}}" {{#if booking_id}}data-booking-id="{{ booking_id }}"{{/if}}>
 
         <!-- scheduler button -->
         <button class="btn has-spinner" {{disabled}}>
-            <span class="text scheduled option-help" id="text" data-toggle="tooltip" title="Unschedule this event"><i class="glyphicon glyphicon-ok"></i> Scheduled</span>
+            <span class="text scheduled synchronized option-help" id="text" data-toggle="tooltip" title="Unschedule this event"><i class="glyphicon glyphicon-ok"></i> Scheduled</span>
+            <span class="text scheduled unsynchronized option-help" id="text" data-toggle="tooltip" title="Update this event"><i class="glyphicon glyphicon-refresh"></i> Scheduled</span>
             <span class="text unscheduled option-help" id="text" data-toggle="tooltip" title="Schedule this event">Schedule</span>
             <span class="text schedule-all option-help" id="text" data-toggle="tooltip" title="Schedule all events">Schedule All</span>
         </button>
@@ -121,7 +122,7 @@
                     <div>
                         <a href="javascript:void(0);" title="Copy URL to clipboard" class="clipboard-copy xpull-right" onclick="copyToClipboard('.r25-event-url')"><i class="fa fa-clipboard"></i></a>
                     </div>
-                  <a href="{{r25_event_url}}" class="r25-event-url" target="_blank">{{r25_event_name}}</a>
+                    <a href="{{r25_event_url}}" class="r25-event-url" target="_blank">{{r25_event_name}}</a>
                 </div></li>
                 <li><div>Event ID:
                     <span class="pull-right"><input name="r25_event_id" value="{{ r25_event_id }}" /></span>

@@ -80,6 +80,14 @@ var EMSR25 = (function ($) {
             if (event.r25_reservation_id) {
                 button_group.removeClass('unscheduled');
                 button_group.addClass('scheduled');
+
+                if (event.synchronized) {
+                    button_group.removeClass('unsynchronized');
+                    button_group.addClass('synchronized');
+                } else {
+                    button_group.removeClass('synchronized');
+                    button_group.addClass('unsynchronized');
+                }
             } else {
                 button_group.removeClass('scheduled');
                 button_group.addClass('unscheduled');
@@ -135,6 +143,7 @@ var EMSR25 = (function ($) {
                 r25_event_id: this.r25_event_id,
                 r25_event_name: this.r25_event_name,
                 r25_reservation_id: this.r25_reservation_id,
+                synchronized: this.synchronized,
                 disabled: (this.schedulable &&
                            event_start_date.isAfter(now)) ? '' : 'disabled',
             });
@@ -213,11 +222,11 @@ var EMSR25 = (function ($) {
 
     }
 
-    function schedule_r25_reservation(event) {
+    function schedule_r25_reservation(event, resync=false) {
         var request_data = event,
             button = $('.btn-group[data-booking-id="' + event.booking_id + '"] > button:first-child');
 
-        if (event.r25_reservation_id) {
+        if (event.r25_reservation_id && !resync) {
             return;
         }
 
@@ -293,6 +302,12 @@ var EMSR25 = (function ($) {
         schedule_r25_reservation(pe);
     }
 
+    function r25_reset_schedule(e) {
+        var pe = r25_event($(e.target));
+
+        schedule_r25_reservation(pe, true);
+    }
+
     function r25_clear_schedule(e) {
         /* jshint validthis: true */
         var button = $(this),
@@ -337,7 +352,8 @@ var EMSR25 = (function ($) {
         $('body')
             .delegate('.batchswitch .btn-group > button:first-child', 'click', r25_schedule_all)
             .delegate('.list-group .btn-group.unscheduled > button:first-child', 'click', r25_set_schedule)
-            .delegate('.list-group .btn-group.scheduled > button:first-child', 'click', r25_clear_schedule);
+            .delegate('.list-group .btn-group.scheduled.unsynchronized > button:first-child', 'click', r25_reset_schedule)
+            .delegate('.list-group .btn-group.scheduled.synchronized > button:first-child', 'click', r25_clear_schedule);
     }
 
     $(document).ready(initialize);

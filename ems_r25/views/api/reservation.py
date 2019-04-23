@@ -26,13 +26,13 @@ class Reservation(RESTDispatch):
             reservation = create_r25_reservation(data)
 
             self._audit_log.info('%s scheduled %s from %s to %s' % (
-                request.user, reservation['r25_event_name'],
+                request.user, reservation['r25_alien_uid'],
                 reservation['start_time'], reservation['end_time']))
 
             return self.json_response({
                 'r25_event_id': reservation['r25_event_id'],
-                'r25_event_name': reservation['r25_event_name'],
                 'r25_reservation_id': reservation['r25_reservation_id'],
+                'synchronized': reservation['synchronized'],
             })
         except InvalidParamException as ex:
             return self.error_response(400, "%s" % ex)

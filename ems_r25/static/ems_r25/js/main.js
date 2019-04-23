@@ -141,7 +141,7 @@ var EMSR25 = (function ($) {
                     r25_event_url(this.r25_event_id) : null,
                 in_the_past: false,
                 r25_event_id: this.r25_event_id,
-                r25_event_name: this.r25_event_name,
+                r25_alien_uid: this.r25_alien_uid,
                 r25_reservation_id: this.r25_reservation_id,
                 synchronized: this.synchronized,
                 disabled: (this.schedulable &&
@@ -262,6 +262,9 @@ var EMSR25 = (function ($) {
             }
             if (msg.hasOwnProperty('r25_reservation_id')) {
                 event.r25_reservation_id = msg.r25_reservation_id;
+            }
+            if (msg.hasOwnProperty('synchronized')) {
+                event.synchronized = msg.synchronized;
             }
         }).always(function () {
             button_stop_loading(button);

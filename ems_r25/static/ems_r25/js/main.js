@@ -1,4 +1,4 @@
-/*jslint browser: true, plusplus: true */
+/*jslint browser: true, plusplus: true, esversion: 6 */
 /*global jQuery, Handlebars, moment */
 
 

@@ -5,6 +5,34 @@ from uw_r25.dao import R25_DAO
 from uw_r25.events import events_from_xml
 
 
+class R25ErrorException(Exception):
+    """
+    This exception means r25 returned <error> elements in a response.
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <r25:results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:xl="http://www.w3.org/1999/xlink"
+                 xmlns:r25="http://www.collegenet.com/r25"
+                 pubdate="2019-05-24T00:27:08-07:00"
+                 engine="accl">
+       <r25:error>
+          <r25:msg_id>SY_E_DATAERROR</r25:msg_id>
+          <r25:msg>Error saving; data format/validation error</r25:msg>
+          <r25:id>789166</r25:id>
+       </r25:error>
+       <r25:error_details>
+          <r25:error_detail table="events"
+                            field="event_type_id"
+                            value="306"
+                            object_id="789166"
+                            object_type="4">
+            Inactive event_type_id
+          </r25:error_detail>
+       </r25:error_details>
+    </r25:results>
+    """
+
+
 class R25MessageException(Exception):
     """
     This exception means r25 returned <messages> elements in a response.
@@ -18,16 +46,19 @@ class R25MessageException(Exception):
       <r25:msg_object_id>5326</r25:msg_object_id>
     </r25:messages>
     """
-    def __init__(self, num, id, text, entity_name, object_id):
+    def __init__(self, num, msg_id, text, entity_name, object_id,
+                 next_msg=None):
         self.num = num
-        self.id = id
+        self.msg_id = msg_id
         self.text = text
         self.entity_name = entity_name
         self.object_id = object_id
+        self.next_msg = next_msg
 
     def __str__(self):
-        return ("Error %s with %s %s: %s." %
-                (self.msg_id, self.entity_name, self.object_id, self.text))
+        return ("Error %s with %s %s: %s%s" %
+                (self.msg_id, self.entity_name, self.object_id, self.text,
+                 ' [more...]' if self.next_msg else ''))
 
 
 def post_resource(url):
@@ -84,14 +115,18 @@ def put_resource(url, body):
     if len(xhtml):
         raise DataFailureException(url, 500, response.data)
 
-    for mnode in tree.xpath("r25:messages", namespaces=nsmap):
-        raise R25MessageException(
-            mnode.xpath("r25:msg_num", namespaces=nsmap)[0].text,
-            mnode.xpath("r25:msg_id", namespaces=nsmap)[0].text,
-            mnode.xpath("r25:msg_text", namespaces=nsmap)[0].text,
-            mnode.xpath("r25:msg_entity_name", namespaces=nsmap)[0].text,
-            mnode.xpath("r25:msg_object_id", namespaces=nsmap)[0].text,
-        )
+    mnodes = tree.xpath("r25:messages", namespaces=nsmap)
+    if len(mnodes):
+        next_ex = None
+        for mnode in reversed(mnodes):
+            next_ex = R25MessageException(
+                mnode.xpath("r25:msg_num", namespaces=nsmap)[0].text,
+                mnode.xpath("r25:msg_id", namespaces=nsmap)[0].text,
+                mnode.xpath("r25:msg_text", namespaces=nsmap)[0].text,
+                mnode.xpath("r25:msg_entity_name", namespaces=nsmap)[0].text,
+                mnode.xpath("r25:msg_object_id", namespaces=nsmap)[0].text,
+                next_ex)
+        raise next_ex
 
     return tree
 

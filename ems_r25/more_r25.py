@@ -5,6 +5,30 @@ from uw_r25.dao import R25_DAO
 from uw_r25.events import events_from_xml
 
 
+class R25MessageException(Exception):
+    """
+    This exception means r25 returned <messages> elements in a response.
+
+    <r25:messages>
+      <r25:msg_num>1</r25:msg_num>
+      <r25:msg_id>EV_I_SPACECON</r25:msg_id>
+      <r25:msg_text>Space KNE  225 unavailable due to [rsrv] conflict with CENTER FOR HUMAN RIGHTS 10TH ANNIVERSARY [15236046]</r25:msg_text>
+      <r25:msg_entity_name>sp_reservations</r25:msg_entity_name>
+      <r25:msg_object_id>5326</r25:msg_object_id>
+    </r25:messages>
+    """
+    def __init__(self, num, id, text, entity_name, object_id):
+        self.num = num
+        self.id = id
+        self.text = text
+        self.entity_name = entity_name
+        self.object_id = object_id
+
+    def __str__(self):
+        return ("Error %s with %s %s: %s." %
+                (self.msg_id, self.entity_name, self.object_id, self.text))
+
+
 def post_resource(url):
     """
     Issue a POST request to R25 with the given url
@@ -58,6 +82,16 @@ def put_resource(url, body):
     xhtml = tree.xpath("//xhtml:html", namespaces=nsmap)
     if len(xhtml):
         raise DataFailureException(url, 500, response.data)
+
+    for mnode in tree.xpath("r25:messages", namespaces=nsmap):
+        raise R25MessageException(
+            mnode.xpath("r25:msg_num", namespaces=nsmap)[0].text,
+            mnode.xpath("r25:msg_id", namespaces=nsmap)[0].text,
+            mnode.xpath("r25:msg_text", namespaces=nsmap)[0].text,
+            mnode.xpath("r25:msg_entity_name", namespaces=nsmap)[0].text,
+            mnode.xpath("r25:msg_object_id", namespaces=nsmap)[0].text,
+        )
+
 
     return tree
 

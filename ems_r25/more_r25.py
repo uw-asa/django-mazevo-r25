@@ -12,7 +12,8 @@ class R25MessageException(Exception):
     <r25:messages>
       <r25:msg_num>1</r25:msg_num>
       <r25:msg_id>EV_I_SPACECON</r25:msg_id>
-      <r25:msg_text>Space KNE  225 unavailable due to [rsrv] conflict with CENTER FOR HUMAN RIGHTS 10TH ANNIVERSARY [15236046]</r25:msg_text>
+      <r25:msg_text>Space KNE  225 unavailable due to [rsrv] conflict with
+       CENTER FOR HUMAN RIGHTS 10TH ANNIVERSARY [15236046]</r25:msg_text>
       <r25:msg_entity_name>sp_reservations</r25:msg_entity_name>
       <r25:msg_object_id>5326</r25:msg_object_id>
     </r25:messages>
@@ -91,7 +92,6 @@ def put_resource(url, body):
             mnode.xpath("r25:msg_entity_name", namespaces=nsmap)[0].text,
             mnode.xpath("r25:msg_object_id", namespaces=nsmap)[0].text,
         )
-
 
     return tree
 
@@ -208,8 +208,9 @@ def update_event(event):
     for res in event.reservations:
         if res.reservation_id:
             # find existing profile
-            xpath = "r25:profile[./r25:reservation/r25:reservation_id = '%s']" \
-                    % res.reservation_id
+            xpath = \
+                "r25:profile[./r25:reservation/r25:reservation_id = '%s']" % \
+                res.reservation_id
             pnode = enode.xpath(xpath, namespaces=nsmap)[0]
             rnode = pnode.xpath("r25:reservation", namespaces=nsmap)[0]
 

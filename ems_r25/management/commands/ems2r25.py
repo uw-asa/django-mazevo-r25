@@ -28,7 +28,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         search = {
-            'start_date': options['start'] or datetime.date.today().isoformat(),
+            'start_date':
+                options['start'] or datetime.date.today().isoformat(),
             'end_date': options['end'] or datetime.date.today().isoformat(),
         }
         _ems = Service()
@@ -86,7 +87,7 @@ class Command(BaseCommand):
                 r25_res.end_datetime = ems_booking.time_booking_end.isoformat()
                 r25_res.state = (Reservation.STANDARD_STATE
                                  if ems_booking.status_type_id ==
-                                    Status.STATUS_TYPE_BOOKED_SPACE
+                                 Status.STATUS_TYPE_BOOKED_SPACE
                                  else Reservation.CANCELLED_STATE)
                 if ems_booking.room_id in space_ids:
                     if r25_res.space_reservation is None:
@@ -109,9 +110,3 @@ class Command(BaseCommand):
             #     e['synchronized'] = True
             #
             # continue
-
-
-
-
-
-

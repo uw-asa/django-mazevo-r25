@@ -50,7 +50,14 @@ def r25_event_type_id(booking):
                               '433')    # default to 'UWS Event'
 
 
+def r25_reservation_state(booking):
+    return (Reservation.STANDARD_STATE
+            if booking.status_type_id == Status.STATUS_TYPE_BOOKED_SPACE
+            else Reservation.CANCELLED_STATE)
+
+
 Booking.r25_evtype_id = r25_event_type_id
+Booking.r25_rsrv_state = r25_reservation_state
 
 
 class Command(BaseCommand):
@@ -148,9 +155,9 @@ class Command(BaseCommand):
                 r25_event.alien_uid = r25_alien_uid
                 r25_event.reservations = []
 
-            r25_event.name = ems_reservation.event_name
-            r25_event.title = ems_reservation.event_name
-            r25_event.event_type_id = ems_reservation.r25_evtype_id()
+                r25_event.name = ems_reservation.event_name
+                r25_event.title = ems_reservation.event_name
+                r25_event.event_type_id = ems_reservation.r25_evtype_id()
 
             ems_bookings = ems_reservation.bookings
             for ems_bk_id in ems_bookings:
@@ -178,10 +185,7 @@ class Command(BaseCommand):
                 r25_res.start_datetime = \
                     ems_booking.time_booking_start.isoformat()
                 r25_res.end_datetime = ems_booking.time_booking_end.isoformat()
-                r25_res.state = (Reservation.STANDARD_STATE
-                                 if ems_booking.status_type_id ==
-                                 Status.STATUS_TYPE_BOOKED_SPACE
-                                 else Reservation.CANCELLED_STATE)
+                r25_res.state = ems_booking.r25_rsrv_state()
                 if ems_booking.room_id in space_ids:
                     if r25_res.space_reservation is None:
                         r25_res.space_reservation = Space()
@@ -239,9 +243,3 @@ class Command(BaseCommand):
                         print ex
 
                     ex = ex.next_msg
-
-            # # If not booked space, no need to create in R25
-            # if e['status_type'] != Status.STATUS_TYPE_BOOKED_SPACE:
-            #     e['synchronized'] = True
-            #
-            # continue

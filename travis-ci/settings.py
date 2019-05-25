@@ -69,3 +69,19 @@ AUTHZ_GROUP_BACKEND = \
 
 EMSTOOLS_SCHEDULER_GROUP = 'u_classrm_services_ems_schedulers'
 EMS_R25_SPACE_QUERY = '999'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'ems_r25': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}

@@ -8,7 +8,7 @@ from restclients_core.exceptions import DataFailureException
 from uw_r25.events import get_event_by_alien_id, get_event_by_id
 from uw_r25.models import Event, Reservation, Space
 
-from ems_r25.more_r25 import update_event, R25MessageException
+from ems_r25.more_r25 import delete_event, update_event, R25MessageException
 from ems_r25.utils import update_get_space_ids
 
 
@@ -48,6 +48,13 @@ class Command(BaseCommand):
             help='Try to claim conflicting R25 Events',
         )
 
+        parser.add_argument(
+            '-d',
+            '--delete',
+            action='store_true',
+            help='Delete matched R25 Events',
+        )
+
     def handle(self, *args, **options):
         search = {
             'start_date':
@@ -81,6 +88,7 @@ class Command(BaseCommand):
             r25_alien_uid = "AT_EMS_RSRV_%s" % ems_res_id
             ems_bookings = ems_reservations[ems_res_id]['bookings']
 
+            r25_event = None
             try:
                 r25_event = get_event_by_alien_id(r25_alien_uid)
                 print "\tFound R25 event %s: '%s'" % (
@@ -88,7 +96,17 @@ class Command(BaseCommand):
 
             except DataFailureException:
                 # No R25 event matching this EMS event
-                print "\tCreating new R25 event"
+                pass
+
+            if options['delete']:
+                if r25_event:
+                    print "\tDeleting!"
+                    delete_event(r25_event.event_id)
+                else:
+                    print "\tNothing to delete."
+                continue
+
+            if r25_event is None:
                 r25_event = Event()
                 r25_event.alien_uid = r25_alien_uid
                 r25_event.reservations = []
@@ -115,7 +133,6 @@ class Command(BaseCommand):
                         break
 
                 if r25_res is None:
-                    print "\t\tCreating new R25 reservation/profile"
                     r25_res = Reservation()
                     r25_res.profile_name = r25_profile_name
                     r25_res.space_reservation = None

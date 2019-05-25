@@ -1,8 +1,13 @@
+import logging
 from lxml import etree
+
 from restclients_core.exceptions import DataFailureException
 from uw_r25 import nsmap, get_resource
 from uw_r25.dao import R25_DAO
 from uw_r25.events import events_from_xml
+
+
+logger = logging.getLogger(__name__)
 
 
 class R25ErrorException(Exception):
@@ -175,8 +180,8 @@ def update_value(node, name, value):
         # no change
         return element
 
-    print "changing %s from %s to %s" % (element.getroottree().getpath(element),
-                                         element.text, value)
+    logger.debug("changing %s from %s to %s" %
+                 (element.getroottree().getpath(element), element.text, value))
     element.text = value
 
     # mark ancestors as modified
@@ -189,7 +194,7 @@ def update_value(node, name, value):
 
 # Adds a new element
 def add_node(node, name):
-    print "adding %s to %s" % (name, node.getroottree().getpath(node))
+    logger.debug("adding %s to %s" % (name, node.getroottree().getpath(node)))
 
     element = etree.SubElement(node, "{%s}%s" % (nsmap['r25'], name),
                                attrib={'status': 'new'}, nsmap=nsmap)

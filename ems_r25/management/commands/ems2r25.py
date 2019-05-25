@@ -1,4 +1,5 @@
 import datetime
+import logging
 import re
 
 from django.core.management.base import BaseCommand, CommandError
@@ -11,6 +12,8 @@ from uw_r25.models import Event, Reservation, Space
 from ems_r25.more_r25 import delete_event, update_event, R25MessageException
 from ems_r25.utils import update_get_space_ids
 
+
+logger = logging.getLogger(__name__)
 
 
 def r25_event_type_id(booking):
@@ -25,7 +28,7 @@ def r25_event_type_id(booking):
 
     event_type_map = {
         'Breakfast':            '395',  # 'Meal Service'
-        'Class (charge)':       '432',  # 'UWS Continuing Education/Non-Credit..
+        'Class (charge)':       '432',  # 'UWS Continuing Education/Non-Cred...
         'Class (no charge)':    '412',  # 'Meeting - Class'
         'Class Review Session': '430',  # 'UWS Course Breakout/Review'
         'Concert/Performance':  '397',  # 'Concert/Performance'
@@ -128,15 +131,15 @@ class Command(BaseCommand):
 
         for ems_res_id in ems_reservations:
             ems_reservation = ems_reservations[ems_res_id]
-            print "Processing EMS Reservation %d" % ems_res_id
+            logger.debug("Processing EMS Reservation %d" % ems_res_id)
 
             r25_alien_uid = "AT_EMS_RSRV_%s" % ems_res_id
 
             r25_event = None
             try:
                 r25_event = get_event_by_alien_id(r25_alien_uid)
-                print "\tFound R25 event %s: '%s'" % (
-                    r25_event.event_id, r25_event.name)
+                logger.debug("\tFound R25 event %s: '%s'" %
+                             (r25_event.event_id, r25_event.name))
 
             except DataFailureException:
                 # No R25 event matching this EMS event
@@ -144,10 +147,10 @@ class Command(BaseCommand):
 
             if options['delete']:
                 if r25_event:
-                    print "\tDeleting!"
+                    logger.debug("\tDeleting!")
                     delete_event(r25_event.event_id)
                 else:
-                    print "\tNothing to delete."
+                    logger.debug("\tNothing to delete.")
                 continue
 
             if r25_event is None:
@@ -163,16 +166,17 @@ class Command(BaseCommand):
             for ems_bk_id in ems_bookings:
                 ems_booking = ems_bookings[ems_bk_id]
 
-                print "\tProcessing EMS Booking %d: '%s'" % (
-                    ems_bk_id, ems_booking.event_name)
+                logger.debug("\tProcessing EMS Booking %d: '%s'" %
+                             (ems_bk_id, ems_booking.event_name))
 
                 r25_profile_name = "AT_EMS_BOOK_%s" % ems_bk_id
 
                 r25_res = None
                 for r in r25_event.reservations:
                     if r.profile_name == r25_profile_name:
-                        print "\t\tFound R25 reservation/profile %s: '%s'" % (
-                            r.reservation_id, r.profile_name)
+                        logger.debug(
+                            "\t\tFound R25 reservation/profile %s: '%s'" %
+                            (r.reservation_id, r.profile_name))
                         r25_res = r
                         break
 
@@ -199,18 +203,19 @@ class Command(BaseCommand):
                 continue
 
             try:
-                print "\tUpdating event"
+                logger.debug("\tUpdating event")
                 updated = update_event(r25_event)
 
             except R25MessageException as ex:
                 while ex:
                     if ex.msg_id == 'EV_I_SPACECON':
-                        print "\t\tConflict: %s" % ex.text
+                        logger.debug("\t\tConflict: %s" % ex.text)
                         if options['claim']:
-                            print "\t\t\tTrying to claim existing event"
+                            logger.debug(
+                                "\t\t\tTrying to claim existing event")
                             match = re.match(
-                                "Space (.+) unavailable due to \[rsrv\] "
-                                "conflict with (.+) \[(?P<event_id>\d+)\]",
+                                r"Space (.+) unavailable due to \[rsrv\] "
+                                r"conflict with (.+) \[(?P<event_id>\d+)\]",
                                 ex.text)
                             if not match:
                                 raise Exception("didn't match message text")
@@ -229,17 +234,18 @@ class Command(BaseCommand):
                                     break
 
                             if matched:
-                                print "\t\t\tReleasing our created event"
+                                logger.debug(
+                                    "\t\t\tReleasing our created event")
                                 r25_event.alien_uid = None
                                 r25_event.reservations = []
                                 update_event(r25_event)
 
-                                print "\t\t\tClaiming the existing event"
+                                logger.debug(
+                                    "\t\t\tClaiming the existing event")
                                 ev.alien_uid = r25_alien_uid
                                 update_event(ev)
 
-
                     else:
-                        print ex
+                        logger.debug(ex)
 
                     ex = ex.next_msg

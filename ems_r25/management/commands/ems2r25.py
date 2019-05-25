@@ -45,7 +45,7 @@ class Command(BaseCommand):
             '-c',
             '--claim',
             action='store_true',
-            help='Try to claim conflicting R25 Events',
+            help='Try to claim conflicting R25 Events (requires --update)',
         )
 
         parser.add_argument(
@@ -53,6 +53,13 @@ class Command(BaseCommand):
             '--delete',
             action='store_true',
             help='Delete matched R25 Events',
+        )
+
+        parser.add_argument(
+            '-u',
+            '--update',
+            action='store_true',
+            help='Update R25 Events',
         )
 
     def handle(self, *args, **options):
@@ -153,6 +160,9 @@ class Command(BaseCommand):
                         ems_booking.room_id]
                 else:
                     r25_res.space_reservation = None
+
+            if not options['update']:
+                continue
 
             try:
                 print "\tUpdating event"

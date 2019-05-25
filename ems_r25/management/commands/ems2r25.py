@@ -111,15 +111,19 @@ class Command(BaseCommand):
                 continue
 
             if booking.reservation_id not in ems_reservations:
-                ems_reservations[booking.reservation_id] = {'bookings': {}}
+                # Use data from first booking as reservation data.
+                # FIXME: we need a way to grab actual EMS Reservation data
+                # FIXME: instead of just Bookings
+                ems_reservations[booking.reservation_id] = booking
+                ems_reservations[booking.reservation_id].bookings = {}
             ems_reservations[
-                booking.reservation_id]['bookings'][booking.id] = booking
+                booking.reservation_id].bookings[booking.id] = booking
 
         for ems_res_id in ems_reservations:
+            ems_reservation = ems_reservations[ems_res_id]
             print "Processing EMS Reservation %d" % ems_res_id
 
             r25_alien_uid = "AT_EMS_RSRV_%s" % ems_res_id
-            ems_bookings = ems_reservations[ems_res_id]['bookings']
 
             r25_event = None
             try:
@@ -144,13 +148,13 @@ class Command(BaseCommand):
                 r25_event.alien_uid = r25_alien_uid
                 r25_event.reservations = []
 
+            r25_event.name = ems_reservation.event_name
+            r25_event.title = ems_reservation.event_name
+            r25_event.event_type_id = ems_reservation.r25_evtype_id()
+
+            ems_bookings = ems_reservation.bookings
             for ems_bk_id in ems_bookings:
                 ems_booking = ems_bookings[ems_bk_id]
-
-                if len(ems_bookings) == 1:
-                    r25_event.name = ems_booking.event_name
-                    r25_event.title = ems_booking.event_name
-                    r25_event.event_type_id = ems_booking.r25_evtype_id()
 
                 print "\tProcessing EMS Booking %d: '%s'" % (
                     ems_bk_id, ems_booking.event_name)

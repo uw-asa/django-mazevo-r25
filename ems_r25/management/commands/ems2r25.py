@@ -16,11 +16,38 @@ from ems_r25.utils import update_get_space_ids
 def r25_event_type_id(booking):
     """map EMS event type to R25 event type id"""
 
+    if booking.event_type_description in [
+        None,
+        'Blackout',
+        'Class (import)',
+    ]:  # Do not import
+        return None
+
     event_type_map = {
+        'Breakfast':            '395',  # 'Meal Service'
+        'Class (charge)':       '432',  # 'UWS Continuing Education/Non-Credit..
+        'Class (no charge)':    '412',  # 'Meeting - Class'
+        'Class Review Session': '430',  # 'UWS Course Breakout/Review'
         'Concert/Performance':  '397',  # 'Concert/Performance'
+        'Conference':           '402',  # 'Conference'
+        'Dinner':               '395',  # 'Meal Service'
         'Exam/Test':            '405',  # 'Examination/Test'
+        'Fair':                 '406',  # 'Fair'
+        'Film Showing':         '408',  # 'Film (Showing)'
+        'Graduation/Commencement': '409',  # 'Ceremony'
+        'Lecture':              '400',  # 'Guest Speaker/Lecture/Seminar'
+        'Luncheon':             '395',  # 'Meal Service'
+        'Maintenance':          '416',  # 'Repair/Maintenance'
+        'Meeting':              '411',  # 'Meeting'
+        'Orientation':          '415',  # 'Orientation'
+        'Other':                '433',  # 'UWS Event'
+        'Poster Session':       '392',  # 'Exhibit'
+        'Reception':            '417',  # 'Reception'
+        'Seminar':              '400',  # 'Guest Speaker/Lecture/Seminar'
+        'Symposium':            '402',  # 'Conference'
     }
-    return event_type_map[booking.event_type_description]
+    return event_type_map.get(booking.event_type_description,
+                              '433')    # default to 'UWS Event'
 
 
 Booking.r25_evtype_id = r25_event_type_id
@@ -80,8 +107,7 @@ class Command(BaseCommand):
                 # Room not in R25, skip it
                 continue
 
-            if booking.event_type_description == 'Class (import)':
-                # Don't try to sync academic import
+            if not booking.r25_evtype_id():
                 continue
 
             if booking.reservation_id not in ems_reservations:

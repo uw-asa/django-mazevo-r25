@@ -2,7 +2,7 @@ import datetime
 import re
 
 from django.core.management.base import BaseCommand, CommandError
-from ems_client.models import Status
+from ems_client.models import Booking, Status
 from ems_client.service import Service
 from restclients_core.exceptions import DataFailureException
 from uw_r25.events import get_event_by_alien_id, get_event_by_id
@@ -10,6 +10,20 @@ from uw_r25.models import Event, Reservation, Space
 
 from ems_r25.more_r25 import update_event, R25MessageException
 from ems_r25.utils import update_get_space_ids
+
+
+
+def r25_event_type_id(booking):
+    """map EMS event type to R25 event type id"""
+
+    event_type_map = {
+        'Concert/Performance':  '397',  # 'Concert/Performance'
+        'Exam/Test':            '405',  # 'Examination/Test'
+    }
+    return event_type_map[booking.event_type_description]
+
+
+Booking.r25_evtype_id = r25_event_type_id
 
 
 class Command(BaseCommand):
@@ -81,6 +95,11 @@ class Command(BaseCommand):
 
             for ems_bk_id in ems_bookings:
                 ems_booking = ems_bookings[ems_bk_id]
+
+                if len(ems_bookings) == 1:
+                    r25_event.name = ems_booking.event_name
+                    r25_event.title = ems_booking.event_name
+                    r25_event.event_type_id = ems_booking.r25_evtype_id()
 
                 print "\tProcessing EMS Booking %d: '%s'" % (
                     ems_bk_id, ems_booking.event_name)

@@ -175,6 +175,8 @@ def update_value(node, name, value):
         # no change
         return element
 
+    print "changing %s from %s to %s" % (element.getroottree().getpath(element),
+                                         element.text, value)
     element.text = value
 
     # mark ancestors as modified
@@ -187,6 +189,8 @@ def update_value(node, name, value):
 
 # Adds a new element
 def add_node(node, name):
+    print "adding %s to %s" % (name, node.getroottree().getpath(node))
+
     element = etree.SubElement(node, "{%s}%s" % (nsmap['r25'], name),
                                attrib={'status': 'new'}, nsmap=nsmap)
 
@@ -215,7 +219,7 @@ def update_event(event):
 
         # initialize some things that aren't kept in the uw_r25 model
         update_value(enode, 'node_type', 'E')
-        update_value(enode, 'event_type_id', '402')
+        # update_value(enode, 'event_type_id', '402')
 
         onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
         update_value(onode, 'organization_id', '4211')
@@ -239,6 +243,7 @@ def update_event(event):
     update_value(enode, 'parent_id', event.parent_id)
     update_value(enode, 'cabinet_id', event.cabinet_id)
     update_value(enode, 'cabinet_name', event.cabinet_name)
+    update_value(enode, 'event_type_id', event.event_type_id)
 
     for res in event.reservations:
         if res.reservation_id:

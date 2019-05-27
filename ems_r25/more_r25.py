@@ -290,6 +290,10 @@ def update_event(event):
     #     if res_end_date > r25_event.end_date:
     #         r25_event.end_date = res_end_date
 
+    if enode.attrib['status'] == 'est':
+        logger.debug("Event unchanged")
+        return event
+
     url = "event.xml?event_id=%s" % event.event_id
 
     return events_from_xml(put_resource(url, etree.tostring(event_tree)))[0]

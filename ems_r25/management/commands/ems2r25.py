@@ -221,7 +221,7 @@ class Command(BaseCommand):
             except R25MessageException as ex:
                 while ex:
                     if ex.msg_id == 'EV_I_SPACECON':
-                        logger.warning("\t\tConflict: %s" % ex.text)
+                        logger.warning("Conflict: %s" % ex.text)
                         if options['claim']:
                             logger.debug(
                                 "\t\t\tTrying to claim existing event")
@@ -230,7 +230,8 @@ class Command(BaseCommand):
                                 r"conflict with (.+) \[(?P<event_id>\d+)\]",
                                 ex.text)
                             if not match:
-                                raise Exception("didn't match message text")
+                                raise CommandError("Unrecognized conflict "
+                                                   "message format")
                             event_id = match.group('event_id')
                             ev = get_event_by_id(event_id)
                             matched = False
@@ -257,14 +258,12 @@ class Command(BaseCommand):
                                 ev.alien_uid = r25_alien_uid
                                 update_event(ev)
                         else:
-                            logger.error("\t\tEvent not synchronized")
+                            raise CommandError("Unresolved conflict")
 
                     elif ex.msg_id == 'EV_I_SPACEREQ':
-                        logger.error("\t\tSpace not booked: %s" % ex.text)
-
-                        raise ex
+                        raise CommandError("Space not booked: %s" % ex.text)
 
                     else:
-                        raise ex
+                        raise CommandError(ex)
 
                     ex = ex.next_msg

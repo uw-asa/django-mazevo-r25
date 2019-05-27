@@ -207,7 +207,7 @@ class Command(BaseCommand):
                     r25_res.space_reservation = None
 
             if not r25_event.reservations:
-                logger.debug("\tevent has no exiting reservations and no "
+                logger.debug("\tevent has no existing reservations and no "
                              "wanted new reservations")
                 continue
 

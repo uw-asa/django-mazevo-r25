@@ -53,6 +53,12 @@ def r25_event_type_id(booking):
                               '433')    # default to 'UWS Event'
 
 
+def r25_event_state(booking):
+    return (Event.CONFIRMED_STATE
+            if booking.status_type_id == Status.STATUS_TYPE_BOOKED_SPACE
+            else Event.CANCELLED_STATE)
+
+
 def r25_reservation_state(booking):
     return (Reservation.STANDARD_STATE
             if booking.status_type_id == Status.STATUS_TYPE_BOOKED_SPACE
@@ -60,6 +66,7 @@ def r25_reservation_state(booking):
 
 
 Booking.r25_evtype_id = r25_event_type_id
+Booking.r25_event_state = r25_event_state
 Booking.r25_rsrv_state = r25_reservation_state
 
 
@@ -158,9 +165,10 @@ class Command(BaseCommand):
                 r25_event.alien_uid = r25_alien_uid
                 r25_event.reservations = []
 
-                r25_event.name = ems_reservation.event_name
-                r25_event.title = ems_reservation.event_name
-                r25_event.event_type_id = ems_reservation.r25_evtype_id()
+            r25_event.name = ems_reservation.event_name
+            r25_event.title = ems_reservation.event_name
+            r25_event.event_type_id = ems_reservation.r25_evtype_id()
+            r25_event.state = ems_reservation.r25_event_state()
 
             ems_bookings = ems_reservation.bookings
             for ems_bk_id in ems_bookings:
@@ -246,6 +254,6 @@ class Command(BaseCommand):
                                 update_event(ev)
 
                     else:
-                        logger.debug(ex)
+                        raise ex
 
                     ex = ex.next_msg

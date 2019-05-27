@@ -114,7 +114,7 @@ class Command(BaseCommand):
 
         ems_reservations = {}
         for booking in bookings:
-            if not booking.r25_evtype_id():
+            if booking.event_type_description == 'Class (import)':
                 continue
 
             if booking.reservation_id not in ems_reservations:

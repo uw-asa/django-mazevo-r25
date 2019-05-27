@@ -260,9 +260,9 @@ class Command(BaseCommand):
                             logger.error("\t\tEvent not synchronized")
 
                     elif ex.msg_id == 'EV_I_SPACEREQ':
-                        logger.warning("\t\tSpace not booked: %s" % ex.text)
-                        logger.warning("\t\t\tReservation %d is cancelled?" %
-                                       ems_reservation.reservation_id)
+                        logger.error("\t\tSpace not booked: %s" % ex.text)
+
+                        raise ex
 
                     else:
                         raise ex

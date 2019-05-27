@@ -59,15 +59,8 @@ def r25_event_state(booking):
             else Event.CANCELLED_STATE)
 
 
-def r25_reservation_state(booking):
-    return (Reservation.STANDARD_STATE
-            if booking.status_type_id == Status.STATUS_TYPE_BOOKED_SPACE
-            else Reservation.CANCELLED_STATE)
-
-
 Booking.r25_evtype_id = r25_event_type_id
 Booking.r25_event_state = r25_event_state
-Booking.r25_rsrv_state = r25_reservation_state
 
 
 class Command(BaseCommand):
@@ -121,10 +114,6 @@ class Command(BaseCommand):
 
         ems_reservations = {}
         for booking in bookings:
-            if booking.room_id not in space_ids:
-                # Room not in R25, skip it
-                continue
-
             if not booking.r25_evtype_id():
                 continue
 
@@ -189,24 +178,38 @@ class Command(BaseCommand):
                         r25_res = r
                         break
 
-                if r25_res is None:
-                    r25_res = Reservation()
-                    r25_res.profile_name = r25_profile_name
-                    r25_res.space_reservation = None
-                    r25_event.reservations.append(r25_res)
+                if (ems_booking.status_type_id ==
+                        Status.STATUS_TYPE_BOOKED_SPACE and
+                        ems_booking.room_id in space_ids and
+                        ems_booking.r25_evtype_id()):
 
-                r25_res.start_datetime = \
-                    ems_booking.time_booking_start.isoformat()
-                r25_res.end_datetime = ems_booking.time_booking_end.isoformat()
-                r25_res.state = ems_booking.r25_rsrv_state()
-                if ems_booking.room_id in space_ids:
+                    # We want a reservation. Create if necessary.
+                    if r25_res is None:
+                        r25_res = Reservation()
+                        r25_res.profile_name = r25_profile_name
+                        r25_res.space_reservation = None
+                        r25_event.reservations.append(r25_res)
+
+                    r25_res.start_datetime = \
+                        ems_booking.time_booking_start.isoformat()
+                    r25_res.end_datetime = \
+                        ems_booking.time_booking_end.isoformat()
+                    r25_res.state = r25_res.STANDARD_STATE
                     if r25_res.space_reservation is None:
                         r25_res.space_reservation = Space()
 
                     r25_res.space_reservation.space_id = space_ids[
                         ems_booking.room_id]
-                else:
+
+                elif r25_res is not None:
+                    # Cancel this unwanted r25 reservation
+                    r25_res.state = r25_res.CANCELLED_STATE
                     r25_res.space_reservation = None
+
+            if not r25_event.reservations:
+                logger.debug("\tevent has no exiting reservations and no "
+                             "wanted new reservations")
+                continue
 
             if not options['update']:
                 continue

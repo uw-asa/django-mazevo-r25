@@ -224,7 +224,7 @@ def update_event(event):
 
         # initialize some things that aren't kept in the uw_r25 model
         update_value(enode, 'node_type', 'E')
-        # update_value(enode, 'event_type_id', '402')
+        update_value(enode, 'event_type_id', '433')  # UWS Event
 
         onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
         update_value(onode, 'organization_id', '4211')
@@ -248,7 +248,7 @@ def update_event(event):
     update_value(enode, 'parent_id', event.parent_id)
     update_value(enode, 'cabinet_id', event.cabinet_id)
     update_value(enode, 'cabinet_name', event.cabinet_name)
-    update_value(enode, 'event_type_id', event.event_type_id)
+    # update_value(enode, 'event_type_id', event.event_type_id)
 
     for res in event.reservations:
         if res.reservation_id:

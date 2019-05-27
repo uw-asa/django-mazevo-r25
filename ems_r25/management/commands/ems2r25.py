@@ -157,7 +157,7 @@ class Command(BaseCommand):
 
             r25_event.name = ems_reservation.event_name
             r25_event.title = ems_reservation.event_name
-            r25_event.event_type_id = ems_reservation.r25_evtype_id()
+            # r25_event.event_type_id = ems_reservation.r25_evtype_id()
             r25_event.state = ems_reservation.r25_event_state()
 
             ems_bookings = ems_reservation.bookings

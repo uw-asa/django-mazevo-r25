@@ -53,14 +53,7 @@ def r25_event_type_id(booking):
                               '433')    # default to 'UWS Event'
 
 
-def r25_event_state(booking):
-    return (Event.CONFIRMED_STATE
-            if booking.status_type_id == Status.STATUS_TYPE_BOOKED_SPACE
-            else Event.CANCELLED_STATE)
-
-
 Booking.r25_evtype_id = r25_event_type_id
-Booking.r25_event_state = r25_event_state
 
 
 class Command(BaseCommand):
@@ -158,7 +151,7 @@ class Command(BaseCommand):
             r25_event.name = ems_reservation.event_name
             r25_event.title = ems_reservation.event_name
             # r25_event.event_type_id = ems_reservation.r25_evtype_id()
-            r25_event.state = ems_reservation.r25_event_state()
+            r25_event.state = r25_event.CONFIRMED_STATE
 
             ems_bookings = ems_reservation.bookings
             for ems_bk_id in ems_bookings:

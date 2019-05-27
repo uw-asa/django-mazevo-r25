@@ -148,8 +148,8 @@ class Command(BaseCommand):
                 r25_event.alien_uid = r25_alien_uid
                 r25_event.reservations = []
 
-            r25_event.name = ems_reservation.event_name
-            r25_event.title = ems_reservation.event_name
+            r25_event.name = ems_reservation.event_name[:40].strip()
+            r25_event.title = ems_reservation.event_name.strip()
             # r25_event.event_type_id = ems_reservation.r25_evtype_id()
             r25_event.state = r25_event.CONFIRMED_STATE
 

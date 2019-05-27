@@ -107,16 +107,17 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        search = {
-            'start_date':
-                options['start'] or datetime.date.today().isoformat(),
-            'end_date': options['end'] or datetime.date.today().isoformat(),
-        }
+        start_date = options['start'] or datetime.date.today().isoformat()
+        end_date = options['end'] or (
+                datetime.datetime.strptime(start_date, "%Y-%m-%d") +
+                datetime.timedelta(days=7)
+        ).date().isoformat()
+
         _ems = Service()
 
         space_ids = update_get_space_ids(_ems.get_all_rooms())
 
-        bookings = _ems.get_bookings(**search)
+        bookings = _ems.get_bookings(start_date=start_date, end_date=end_date)
 
         ems_reservations = {}
         for booking in bookings:
@@ -217,7 +218,7 @@ class Command(BaseCommand):
             except R25MessageException as ex:
                 while ex:
                     if ex.msg_id == 'EV_I_SPACECON':
-                        logger.debug("\t\tConflict: %s" % ex.text)
+                        logger.warning("\t\tConflict: %s" % ex.text)
                         if options['claim']:
                             logger.debug(
                                 "\t\t\tTrying to claim existing event")
@@ -252,6 +253,13 @@ class Command(BaseCommand):
                                     "\t\t\tClaiming the existing event")
                                 ev.alien_uid = r25_alien_uid
                                 update_event(ev)
+                        else:
+                            logger.error("\t\tEvent not synchronized")
+
+                    elif ex.msg_id == 'EV_I_SPACEREQ':
+                        logger.warning("\t\tSpace not booked: %s" % ex.text)
+                        logger.warning("\t\t\tReservation %d is cancelled?" %
+                                       ems_reservation.reservation_id)
 
                     else:
                         raise ex

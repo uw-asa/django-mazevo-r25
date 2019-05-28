@@ -311,7 +311,6 @@ def update_event(event):
         update_value(rnode, 'reservation_start_dt', res.start_datetime)
         update_value(rnode, 'reservation_end_dt', res.end_datetime)
         update_value(rnode, 'reservation_state', res.state)
-        # FIXME: support contact_name, contact_email?
 
         # add or update space_reservation
         # only one space_reservation per reservation is supported

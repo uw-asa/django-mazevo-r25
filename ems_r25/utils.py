@@ -144,6 +144,12 @@ def create_r25_reservation(event_data):
 
 
 def update_get_space_ids(ems_rooms):
+    """
+    Get R25 space_ids for EMS Rooms.
+
+    :param ems_rooms: A collection of ems_client.models.Room
+    :return: A dictionary of Room.id: space_id
+    """
     space_ids = {}
     for room in ems_rooms:
         if room.active and room.external_reference is not None:

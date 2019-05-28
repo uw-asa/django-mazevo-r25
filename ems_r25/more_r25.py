@@ -42,6 +42,9 @@ class R25MessageException(Exception):
     """
     This exception means r25 returned <messages> elements in a response.
 
+    If the response contains more than one message, the next message is linked
+    as 'next_msg'
+
     <r25:messages>
       <r25:msg_num>1</r25:msg_num>
       <r25:msg_id>EV_I_SPACECON</r25:msg_id>
@@ -68,8 +71,10 @@ class R25MessageException(Exception):
 
 def post_resource(url):
     """
-    Issue a POST request to R25 with the given url
-    and return a response as an etree element.
+    Issue a POST request to R25
+
+    :param url: endpoint to POST to
+    :return: the response as an lxml.etree
     """
 
     instance = R25_DAO().get_service_setting('INSTANCE')
@@ -94,8 +99,11 @@ def post_resource(url):
 
 def put_resource(url, body):
     """
-    Issue a PUT request to R25 with the given url
-    and return a response as an etree element.
+    Issue a PUT request to R25
+
+    :param url: endpoint to PUT to
+    :param body: text to PUT
+    :return: the response as an lxml.etree
     """
 
     instance = R25_DAO().get_service_setting('INSTANCE')
@@ -138,8 +146,10 @@ def put_resource(url, body):
 
 def delete_resource(url):
     """
-    Issue a DELETE request to R25 with the given url
-    and return a response as an etree element.
+    Issue a DELETE request to R25
+
+    :param url: endpoint to DELETE
+    :return: the response as an lxml.etree
     """
 
     instance = R25_DAO().get_service_setting('INSTANCE')
@@ -167,8 +177,19 @@ def delete_resource(url):
     return tree
 
 
-# Adds or updates the value of a basic text element
 def update_value(node, name, value):
+    """
+    Adds or updates the value of a basic text element in an R25 etree.
+
+    Adds 'status="mod"' to all ancestor elements so that R25 recognizes our
+    change.
+
+    :param node: The node which contains our element
+    :param name: The element's name
+    :param value: The new value for the element
+    :return: The new or updated element
+    """
+
     try:
         element = node.xpath("r25:%s" % name, namespaces=nsmap)[0]
     except IndexError:
@@ -192,8 +213,18 @@ def update_value(node, name, value):
     return element
 
 
-# Adds a new element
 def add_node(node, name):
+    """
+    Adds a new node to an R25 etree
+
+    Adds 'status="mod"' to all ancestor elements so that R25 recognizes our
+    change.
+
+    :param node: The parent of our new node
+    :param name: The new node's name
+    :return: The new node
+    """
+
     logger.debug("adding %s to %s" % (name, node.getroottree().getpath(node)))
 
     element = etree.SubElement(node, "{%s}%s" % (nsmap['r25'], name),
@@ -209,13 +240,20 @@ def add_node(node, name):
 
 def update_event(event):
     """
-    Make changes to the given event
-    :param event:
-    :return:
+    Create or update the given event in R25
+
+    Only the features supported by uw_r25 are supported here.
+    Some unsupported fields are initialized with hard-coded values suitable for
+    events from ASA's EMS.
+
+    :param event: a uw_r25.models.event
+    :return: the new or updated event from R25, as a uw_r25.models.event
     """
 
+    # Start with xml from R25, by requesting a new blank event, or getting the
+    # editable version of our existing event
     if event.event_id is None:
-        # Create event from scratch
+        # Create a new event
         url = "events.xml"
         event_tree = post_resource(url)
         enode = event_tree.xpath("r25:event", namespaces=nsmap)[0]
@@ -250,6 +288,8 @@ def update_event(event):
     update_value(enode, 'cabinet_name', event.cabinet_name)
     # update_value(enode, 'event_type_id', event.event_type_id)
 
+    # add or update each reservation/profile
+    # only one reservation per profile is supported
     for res in event.reservations:
         if res.reservation_id:
             # find existing profile
@@ -271,7 +311,10 @@ def update_event(event):
         update_value(rnode, 'reservation_start_dt', res.start_datetime)
         update_value(rnode, 'reservation_end_dt', res.end_datetime)
         update_value(rnode, 'reservation_state', res.state)
+        # FIXME: support contact_name, contact_email?
 
+        # add or update space_reservation
+        # only one space_reservation per reservation is supported
         if res.space_reservation is not None:
             try:
                 srnode = rnode.xpath("r25:space_reservation",
@@ -300,6 +343,13 @@ def update_event(event):
 
 
 def delete_event(event_id):
+    """
+    Delete event from R25
+
+    :param event_id: an R25 event id
+    :return: the response from R25, as an lxml.etree
+    """
+
     url = "event.xml?event_id=%s" % event_id
 
     result = delete_resource(url)

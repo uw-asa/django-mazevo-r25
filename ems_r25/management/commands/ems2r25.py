@@ -103,10 +103,16 @@ class Command(BaseCommand):
 
         space_ids = update_get_space_ids(_ems.get_all_rooms())
 
+        # Get all bookings in range, regardless of room, status, or event type.
+        # We do this because a now-unwanted bookings might already have been
+        # Created in R25, and we need to cancel it there.
         bookings = _ems.get_bookings(start_date=start_date, end_date=end_date)
 
         ems_reservations = {}
         for booking in bookings:
+            # The vast majority of unwanted bookings are academic import.
+            # Skip them because we don't want to sync them, and there should
+            # never be a case where one was already synced.
             if booking.event_type_description == 'Class (import)':
                 continue
 
@@ -123,6 +129,7 @@ class Command(BaseCommand):
             ems_reservation = ems_reservations[ems_res_id]
             logger.debug("Processing EMS Reservation %d" % ems_res_id)
 
+            # alien_uid is how we tie EMS Reservation to R25 Event.
             r25_alien_uid = "AT_EMS_RSRV_%s" % ems_res_id
 
             r25_event = None
@@ -160,6 +167,9 @@ class Command(BaseCommand):
                 logger.debug("\tProcessing EMS Booking %d: '%s'" %
                              (ems_bk_id, ems_booking.event_name))
 
+                # profile_name is how we tie EMS Booking to R25 Reservation.
+                # We only use the most basic type of profile, so profile to
+                # reservation is a 1:1 relationship.
                 r25_profile_name = "AT_EMS_BOOK_%s" % ems_bk_id
 
                 r25_res = None
@@ -171,6 +181,7 @@ class Command(BaseCommand):
                         r25_res = r
                         break
 
+                # does this Booking belong in R25?
                 if (ems_booking.status_type_id ==
                         Status.STATUS_TYPE_BOOKED_SPACE and
                         ems_booking.room_id in space_ids and
@@ -194,16 +205,19 @@ class Command(BaseCommand):
                     r25_res.space_reservation.space_id = space_ids[
                         ems_booking.room_id]
 
+                # does not belong. Does one already exist?
                 elif r25_res is not None:
                     # Cancel this unwanted r25 reservation
                     r25_res.state = r25_res.CANCELLED_STATE
                     r25_res.space_reservation = None
 
+            # if this R25 Event is empty, there's nothing to do
             if not r25_event.reservations:
                 logger.debug("\tevent has no existing reservations and no "
                              "wanted new reservations")
                 continue
 
+            # by default, don't actually make changes
             if not options['update']:
                 continue
 

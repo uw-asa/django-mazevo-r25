@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Booking, Status
 from ems_client.service import Service
 from restclients_core.exceptions import DataFailureException
-from uw_r25.events import get_event_by_alien_id, get_event_by_id
+from uw_r25.events import get_event_by_alien_id
 from uw_r25.models import Event, Reservation, Space
 
 from ems_r25.more_r25 import delete_event, update_event, R25MessageException

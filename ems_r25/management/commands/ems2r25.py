@@ -166,6 +166,11 @@ class Command(BaseCommand):
 
                 logger.debug("\tProcessing EMS Booking %d: '%s'" %
                              (ems_bk_id, ems_booking.event_name))
+                logger.debug("\t\tStatusType: %s, EventType: %s, space_id: %s" %
+                             (dict(Status.STATUS_TYPE_CHOICES)[
+                                 ems_booking.status_type_id],
+                              ems_booking.event_type_description,
+                              space_ids.get(ems_booking.room_id)))
 
                 # profile_name is how we tie EMS Booking to R25 Reservation.
                 # We only use the most basic type of profile, so profile to
@@ -213,8 +218,8 @@ class Command(BaseCommand):
 
             # if this R25 Event is empty, there's nothing to do
             if not r25_event.reservations:
-                logger.debug("\tevent has no existing reservations and no "
-                             "wanted new reservations")
+                logger.debug("\tNo existing R25 reservations and no wanted "
+                             "new R25 reservations")
                 continue
 
             # by default, don't actually make changes

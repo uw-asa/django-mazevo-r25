@@ -26,7 +26,7 @@ setup(
         'Django-SupportTools<3.0 ; python_version < "3.0"',
         'Django-SupportTools ; python_version >= "3.0"',
         'lxml',
-        'UW-EMS-Client>=0.7',
+        'UW-EMS-Client>=0.11',
         'UW-RestClients-GWS<2.0 ; python_version < "3.0"',
         'UW-RestClients-GWS ; python_version >= "3.0"',
         'UW-RestClients-R25',

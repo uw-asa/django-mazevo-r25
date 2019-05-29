@@ -63,12 +63,23 @@ class Command(BaseCommand):
         parser.add_argument(
             '-s',
             '--start',
-            help='Start date',
+            help="Start of date range. Default is today, or yesterday if "
+                 "using --changed.",
         )
         parser.add_argument(
             '-e',
             '--end',
-            help='End date',
+            help="End of date range. Default is START+7 days, or today if "
+                 "using --changed.",
+        )
+
+        parser.add_argument(
+            '-c',
+            '--changed',
+            action='store_true',
+            help="Get Bookings that have changed within date range. Includes "
+                 "Bookings where the Reservation has changed, even if the "
+                 "Booking has not.",
         )
 
         # parser.add_argument(
@@ -93,20 +104,32 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        start_date = options['start'] or datetime.date.today().isoformat()
-        end_date = options['end'] or (
-                datetime.datetime.strptime(start_date, "%Y-%m-%d") +
-                datetime.timedelta(days=7)
-        ).date().isoformat()
+        if options['changed']:
+            start_date = options['start'] or (
+                    datetime.date.today() -
+                    datetime.timedelta(days=1)
+            ).isoformat()
+            end_date = options['end'] or datetime.date.today().isoformat()
+
+        else:
+            start_date = options['start'] or datetime.date.today().isoformat()
+            end_date = options['end'] or (
+                    datetime.datetime.strptime(start_date, "%Y-%m-%d") +
+                    datetime.timedelta(days=7)
+            ).date().isoformat()
 
         _ems = Service()
 
         space_ids = update_get_space_ids(_ems.get_all_rooms())
 
         # Get all bookings in range, regardless of room, status, or event type.
-        # We do this because a now-unwanted bookings might already have been
+        # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
-        bookings = _ems.get_bookings(start_date=start_date, end_date=end_date)
+        bookings = _ems.get_changed_bookings(
+            start_date=start_date, end_date=end_date
+        ) if options['changed'] else _ems.get_bookings(
+            start_date=start_date, end_date=end_date
+        )
 
         ems_reservations = {}
         for booking in bookings:
@@ -171,6 +194,10 @@ class Command(BaseCommand):
                                  ems_booking.status_type_id],
                               ems_booking.event_type_description,
                               space_ids.get(ems_booking.room_id)))
+                logger.debug("\t\tStart: %s, End: %s, Changed: %s" % (
+                    ems_booking.time_booking_start.isoformat(),
+                    ems_booking.time_booking_end.isoformat(),
+                    ems_booking.date_changed.isoformat()))
 
                 # profile_name is how we tie EMS Booking to R25 Reservation.
                 # We only use the most basic type of profile, so profile to

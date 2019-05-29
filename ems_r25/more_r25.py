@@ -286,7 +286,6 @@ def update_event(event):
     update_value(enode, 'parent_id', event.parent_id)
     update_value(enode, 'cabinet_id', event.cabinet_id)
     update_value(enode, 'cabinet_name', event.cabinet_name)
-    # update_value(enode, 'event_type_id', event.event_type_id)
 
     # add or update each reservation/profile
     # only one reservation per profile is supported

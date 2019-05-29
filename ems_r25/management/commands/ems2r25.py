@@ -1,9 +1,9 @@
 import datetime
 import logging
-import re
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
-from ems_client.models import Booking, Status
+from ems_client.models import Status
 from ems_client.service import Service
 from restclients_core.exceptions import DataFailureException
 from uw_r25.events import get_event_by_alien_id
@@ -82,22 +82,26 @@ class Command(BaseCommand):
 
         space_ids = update_get_space_ids(_ems.get_all_rooms())
 
+        status_list = _ems.get_statuses()
+        statuses = {}
+        search_statuses = []
+        for status in status_list:
+            statuses[status.id] = status
+            if status.description not in settings.EMS_R25_IGNORE_STATUSES:
+                search_statuses.append(status.id)
+
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
         bookings = _ems.get_changed_bookings(
-            start_date=start_date, end_date=end_date
+            start_date=start_date, end_date=end_date, statuses=search_statuses
         ) if options['changed'] else _ems.get_bookings(
-            start_date=start_date, end_date=end_date
+            start_date=start_date, end_date=end_date, statuses=search_statuses
         )
 
         ems_reservations = {}
         for booking in bookings:
-            # The vast majority of unwanted bookings are academic import.
-            # Skip them because we don't want to sync them, and there should
-            # never be a case where one was already synced.
-            if booking.event_type_description == 'Class (import)':
-                continue
+            booking.status = statuses[booking.status_id]
 
             if booking.reservation_id not in ems_reservations:
                 # Use data from first booking as reservation data.
@@ -148,11 +152,9 @@ class Command(BaseCommand):
 
                 logger.debug("\tProcessing EMS Booking %d: '%s'" %
                              (ems_bk_id, ems_booking.event_name))
-                logger.debug("\t\tStatusType: %s, EventType: %s, space_id: %s" %
-                             (dict(Status.STATUS_TYPE_CHOICES)[
-                                 ems_booking.status_type_id],
-                              ems_booking.event_type_description,
-                              space_ids.get(ems_booking.room_id)))
+                logger.debug("\t\tStatus: %s, space_id: %s" % (
+                             (ems_booking.status.description,
+                              space_ids.get(ems_booking.room_id))))
                 logger.debug("\t\tStart: %s, End: %s, Changed: %s" % (
                     ems_booking.time_booking_start.isoformat(),
                     ems_booking.time_booking_end.isoformat(),
@@ -176,10 +178,8 @@ class Command(BaseCommand):
                 if (ems_booking.status_type_id ==
                         Status.STATUS_TYPE_BOOKED_SPACE and
                         ems_booking.room_id in space_ids and
-                        ems_booking.event_type_description not in[
-                            'Blackout',
-                            'Class (import)',
-                        ]):
+                        ems_booking.status.description not in
+                        settings.EMS_R25_REMOVE_STATUSES):
 
                     # We want a reservation. Create if necessary.
                     if r25_res is None:

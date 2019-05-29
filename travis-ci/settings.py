@@ -68,7 +68,23 @@ AUTHZ_GROUP_BACKEND = \
     'authz_group.authz_implementation.uw_group_service.UWGroupService'
 
 EMSTOOLS_SCHEDULER_GROUP = 'u_classrm_services_ems_schedulers'
+
+# A saved search, which we automatically maintain
 EMS_R25_SPACE_QUERY = '999'
+
+# Statuses to ignore entirely
+EMS_R25_IGNORE_STATUSES = [
+    'Academic Confirmed',
+]
+
+# Statuses for which R25 Reservations will not be made, or if already existing,
+# will be removed. These are in addition to any status which isn't of the
+# "Booked Space" Status Type.
+EMS_R25_REMOVE_STATUSES = [
+    'Blackout',
+    'Requested',
+    'Tentative',
+]
 
 LOGGING = {
     'version': 1,

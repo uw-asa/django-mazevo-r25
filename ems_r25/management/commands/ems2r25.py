@@ -43,13 +43,6 @@ class Command(BaseCommand):
                  "Booking has not.",
         )
 
-        # parser.add_argument(
-        #     '-c',
-        #     '--claim',
-        #     action='store_true',
-        #     help='Try to claim conflicting R25 Events (requires --update)',
-        # )
-
         parser.add_argument(
             '-d',
             '--delete',
@@ -251,44 +244,9 @@ class Command(BaseCommand):
             except R25MessageException as ex:
                 while ex:
                     if ex.msg_id == 'EV_I_SPACECON':
-                        logger.warning("Conflict: %s" % ex.text)
-                        # if options['claim']:
-                        #     logger.debug(
-                        #         "\t\t\tTrying to claim existing event")
-                        #     match = re.match(
-                        #         r"Space (.+) unavailable due to \[rsrv\] "
-                        #         r"conflict with (.+) \[(?P<event_id>\d+)\]",
-                        #         ex.text)
-                        #     if not match:
-                        #         raise CommandError("Unrecognized conflict "
-                        #                            "message format")
-                        #     event_id = match.group('event_id')
-                        #     ev = get_event_by_id(event_id)
-                        #     matched = False
-                        #     for bkid in ems_bookings:
-                        #         name = ems_bookings[bkid].event_name.lower()
-                        #         if ev.name.lower() == name[:len(ev.name)]:
-                        #             matched = True
-                        #             break
-                        #
-                        #         if (ev.title and ev.title.lower() ==
-                        #                 name[:len(ev.title)]):
-                        #             matched = True
-                        #             break
-                        #
-                        #     if matched:
-                        #         logger.debug(
-                        #             "\t\t\tReleasing our created event")
-                        #         r25_event.alien_uid = None
-                        #         r25_event.reservations = []
-                        #         update_event(r25_event)
-                        #
-                        #         logger.debug(
-                        #             "\t\t\tClaiming the existing event")
-                        #         ev.alien_uid = r25_alien_uid
-                        #         update_event(ev)
-                        # else:
-                        #     raise CommandError("Unresolved conflict")
+                        self.stdout.write(
+                            "Conflict while syncing EMS Reservation %s: %s" %
+                            (ems_reservation.reservation_id, ex.text))
 
                     elif ex.msg_id == 'EV_I_SPACEREQ':
                         raise CommandError("Space not booked: %s" % ex.text)

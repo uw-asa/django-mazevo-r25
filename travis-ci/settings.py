@@ -75,15 +75,18 @@ EMS_R25_SPACE_QUERY = '999'
 # Statuses to ignore entirely
 EMS_R25_IGNORE_STATUSES = [
     'Academic Confirmed',
+    'Academic Conflict',
+    'Academic Crosslist',
 ]
 
 # Statuses for which R25 Reservations will not be made, or if already existing,
-# will be removed. These are in addition to any status which isn't of the
+# will be cancelled. These are in addition to any status which isn't of the
 # "Booked Space" Status Type.
 EMS_R25_REMOVE_STATUSES = [
     'Blackout',
     'Requested',
     'Tentative',
+    'Tentative PCS',
 ]
 
 LOGGING = {

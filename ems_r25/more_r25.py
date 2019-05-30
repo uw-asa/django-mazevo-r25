@@ -353,7 +353,6 @@ def update_event(event):
             # outdated space reservation. delete it
             delete_node(srnode)
 
-
     # Make sure event dates encompass all reservations
     # for res in r25_event.reservations:
     #     res_start_date = res.start_datetime.split('T')[0]

@@ -231,6 +231,15 @@ class Command(BaseCommand):
                              "new R25 reservations")
                 continue
 
+            # if there are no active reservations left, cancel the event
+            has_active_reservations = False
+            for r in r25_event.reservations:
+                if r.state != r.CANCELLED_STATE:
+                    has_active_reservations = True
+                    break
+            if not has_active_reservations:
+                r25_event.state = r25_event.CANCELLED_STATE
+
             # by default, don't actually make changes
             if not options['update']:
                 continue

@@ -186,6 +186,11 @@ class Command(BaseCommand):
                         logger.debug(
                             "\t\tFound R25 reservation/profile %s: '%s'" %
                             (r.reservation_id, r.profile_name))
+                        logger.debug(
+                            "\t\t\tState: %s, Space Reservation: %s" %
+                            (r.state_name(),
+                             r.space_reservation.space_id if
+                             r.space_reservation else ''))
                         r25_res = r
                         break
 

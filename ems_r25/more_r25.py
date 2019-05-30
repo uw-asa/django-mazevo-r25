@@ -238,6 +238,30 @@ def add_node(node, name):
     return element
 
 
+def delete_node(node):
+    """
+    Deletes a node from an R25 etree
+
+    Just marks the node with 'status="del"' and adds 'status="mod"' to all
+    ancestor elements so that R25 recognizes our change.
+
+    :param node: The node to mark deleted
+    :return: The node
+    """
+
+    logger.debug("deleting %s" % node.getroottree().getpath(node))
+
+    node.attrib['status'] = 'del'
+    node = node.getparent()
+
+    # mark ancestors as modified
+    while 'status' in node.attrib and node.attrib['status'] == 'est':
+        node.attrib['status'] = 'mod'
+        node = node.getparent()
+
+    return node
+
+
 def update_event(event):
     """
     Create or update the given event in R25
@@ -313,14 +337,22 @@ def update_event(event):
 
         # add or update space_reservation
         # only one space_reservation per reservation is supported
+        srnode = None
+        try:
+            srnode = rnode.xpath("r25:space_reservation", namespaces=nsmap)[0]
+        except IndexError:
+            pass
+
         if res.space_reservation is not None:
-            try:
-                srnode = rnode.xpath("r25:space_reservation",
-                                     namespaces=nsmap)[0]
-            except IndexError:
+            if srnode is None:
+                # Add space reservation
                 srnode = add_node(rnode, 'space_reservation')
 
             update_value(srnode, 'space_id', res.space_reservation.space_id)
+        elif srnode is not None:
+            # outdated space reservation. delete it
+            delete_node(srnode)
+
 
     # Make sure event dates encompass all reservations
     # for res in r25_event.reservations:

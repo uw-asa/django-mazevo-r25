@@ -1,6 +1,7 @@
 import datetime
 import logging
 
+from dateutil.parser import parse
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
@@ -65,18 +66,24 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options['changed']:
-            start_date = options['start'] or (
-                    datetime.date.today() -
-                    datetime.timedelta(days=1)
-            ).isoformat()
-            end_date = options['end'] or datetime.date.today().isoformat()
+            if options['start']:
+                start_date = parse(options['start']).date()
+            else:
+                start_date = datetime.date.today() - datetime.timedelta(days=1)
+            if options['end']:
+                end_date = parse(options['end']).date()
+            else:
+                end_date = datetime.date.today()
 
         else:
-            start_date = options['start'] or datetime.date.today().isoformat()
-            end_date = options['end'] or (
-                    datetime.datetime.strptime(start_date, "%Y-%m-%d") +
-                    datetime.timedelta(days=7)
-            ).date().isoformat()
+            if options['start']:
+                start_date = parse(options['start']).date()
+            else:
+                start_date = datetime.date.today()
+            if options['end']:
+                end_date = parse(options['end']).date()
+            else:
+                end_date = start_date + datetime.timedelta(days=7)
 
         _ems = Service()
 
@@ -94,13 +101,21 @@ class Command(BaseCommand):
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
         bookings = _ems.get_changed_bookings(
-            start_date=start_date, end_date=end_date, statuses=search_statuses
+            start_date=start_date.isoformat(), end_date=end_date.isoformat(),
+            statuses=search_statuses
         ) if options['changed'] else _ems.get_bookings(
-            start_date=start_date, end_date=end_date, statuses=search_statuses
+            start_date=start_date.isoformat(), end_date=end_date.isoformat(),
+            statuses=search_statuses
         )
 
         ems_reservations = {}
         for booking in bookings:
+            if options['changed']:
+                # Booking hasn't changed, EMS Reservation has...
+                if (booking.date_changed.date() < start_date or
+                        booking.date_changed.date() > end_date):
+                    continue
+
             booking.status = statuses[booking.status_id]
 
             if booking.reservation_id not in ems_reservations:

@@ -1,5 +1,6 @@
 import datetime
 import logging
+import re
 
 from dateutil.parser import parse
 from django.conf import settings
@@ -7,7 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
 from restclients_core.exceptions import DataFailureException
-from uw_r25.events import get_event_by_alien_id
+from uw_r25.events import get_event_by_alien_id, get_event_by_id
 from uw_r25.models import Event, Reservation, Space
 
 from ems_r25.more_r25 import (delete_event, update_event,
@@ -63,7 +64,7 @@ class Command(BaseCommand):
             if options['start']:
                 start_date = parse(options['start']).date()
             else:
-                start_date = datetime.date.today() - datetime.timedelta(days=1)
+                start_date = datetime.date.today()
             if options['end']:
                 end_date = parse(options['end']).date()
             else:
@@ -248,6 +249,12 @@ class Command(BaseCommand):
                         self.stdout.write(
                             "Conflict while syncing EMS Reservation %s: %s" %
                             (ems_reservation.reservation_id, ex.text))
+                        match = re.search(r'\[(?P<event_id>\d+)\]', ex.text)
+                        old_event = get_event_by_id(match.group('event_id'))
+                        self.stdout.write("Existing event: %s" %
+                                          old_event.live_url())
+                        self.stdout.write("Is blocking event: %s" %
+                                          r25_event.live_url())
 
                     elif (ex.msg_id == 'room_id' and
                           ex.entity_name == 'sp_reservations'):

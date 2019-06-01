@@ -5,9 +5,19 @@ from restclients_core.exceptions import DataFailureException
 from uw_r25 import nsmap, get_resource
 from uw_r25.dao import R25_DAO
 from uw_r25.events import events_from_xml
+from uw_r25.models import Event
 
 
 logger = logging.getLogger(__name__)
+
+
+def live_url(self):
+    return (
+        "https://25live.collegenet.com/%s/#details&obj_type=event&obj_id=%s" %
+        (R25_DAO().get_service_setting('INSTANCE'), self.event_id))
+
+
+Event.live_url = live_url
 
 
 class R25ErrorException(Exception):

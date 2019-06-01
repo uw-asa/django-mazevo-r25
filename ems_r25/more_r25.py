@@ -36,6 +36,14 @@ class R25ErrorException(Exception):
        </r25:error_details>
     </r25:results>
     """
+    def __init__(self, msg_id, msg, object_id):
+        self.msg_id = msg_id
+        self.msg = msg
+        self.object_id = object_id
+
+    def __str__(self):
+        return ("Error %s with %s: %s" %
+                (self.msg_id, self.object_id, self.msg))
 
 
 class R25MessageException(Exception):
@@ -118,7 +126,7 @@ def put_resource(url, body):
     }
 
     response = R25_DAO().putURL(url, headers, body)
-    if response.status not in (200, 201):
+    if response.status not in (200, 201, 403):
         raise DataFailureException(url, response.status, response.data)
 
     tree = etree.fromstring(response.data.strip())
@@ -127,6 +135,14 @@ def put_resource(url, body):
     xhtml = tree.xpath("//xhtml:html", namespaces=nsmap)
     if len(xhtml):
         raise DataFailureException(url, 500, response.data)
+
+    enodes = tree.xpath("r25:error", namespaces=nsmap)
+    if len(enodes):
+        raise R25ErrorException(
+            enodes[0].xpath("r25:msg_id", namespaces=nsmap)[0].text,
+            enodes[0].xpath("r25:msg", namespaces=nsmap)[0].text,
+            enodes[0].xpath("r25:id", namespaces=nsmap)[0].text,
+        )
 
     mnodes = tree.xpath("r25:messages", namespaces=nsmap)
     if len(mnodes):

@@ -10,7 +10,8 @@ from restclients_core.exceptions import DataFailureException
 from uw_r25.events import get_event_by_alien_id
 from uw_r25.models import Event, Reservation, Space
 
-from ems_r25.more_r25 import delete_event, update_event, R25MessageException
+from ems_r25.more_r25 import (delete_event, update_event,
+                              R25MessageException, R25ErrorException)
 from ems_r25.utils import update_get_space_ids
 
 
@@ -248,6 +249,13 @@ class Command(BaseCommand):
                             "Conflict while syncing EMS Reservation %s: %s" %
                             (ems_reservation.reservation_id, ex.text))
 
+                    elif (ex.msg_id == 'room_id' and
+                          ex.entity_name == 'sp_reservations'):
+                        self.stdout.write(
+                            "Error while syncing EMS Reservation %s to R25 "
+                            "Event %s: %s" % (ems_reservation.reservation_id,
+                                              r25_event.event_id, ex.text))
+
                     elif ex.msg_id == 'EV_I_SPACEREQ':
                         raise CommandError("Space not booked: %s" % ex.text)
 
@@ -255,3 +263,6 @@ class Command(BaseCommand):
                         raise CommandError(ex)
 
                     ex = ex.next_msg
+
+            except R25ErrorException as ex:
+                raise CommandError(ex)

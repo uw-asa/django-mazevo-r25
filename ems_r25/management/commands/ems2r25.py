@@ -8,6 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
 from restclients_core.exceptions import DataFailureException
+from urllib3.exceptions import HTTPError
 from uw_r25.events import get_event_by_alien_id, get_event_by_id
 from uw_r25.models import Event, Reservation, Space
 
@@ -256,20 +257,23 @@ class Command(BaseCommand):
                         self.stdout.write("Is blocking event: %s" %
                                           r25_event.live_url())
 
-                    elif (ex.msg_id == 'room_id' and
-                          ex.entity_name == 'sp_reservations'):
-                        self.stdout.write(
-                            "Error while syncing EMS Reservation %s to R25 "
-                            "Event %s: %s" % (ems_reservation.reservation_id,
-                                              r25_event.event_id, ex.text))
-
-                    elif ex.msg_id == 'EV_I_SPACEREQ':
-                        raise CommandError("Space not booked: %s" % ex.text)
-
                     else:
-                        raise CommandError(ex)
+                        self.stdout.write(
+                            "R25 message while syncing EMS Reservation %s to "
+                            "R25 Event %s: %s" % (
+                                ems_reservation.reservation_id,
+                                r25_event.event_id, ex))
 
                     ex = ex.next_msg
 
             except R25ErrorException as ex:
-                raise CommandError(ex)
+                self.stdout.write(
+                    "R25 error while syncing EMS Reservation %s to R25 Event "
+                    " %s: %s" % (ems_reservation.reservation_id,
+                                 r25_event.event_id, ex))
+
+            except HTTPError as ex:
+                self.stdout.write(
+                    "HTTP error while syncing EMS Reservation %s to R25 Event "
+                    " %s: %s" % (ems_reservation.reservation_id,
+                                 r25_event.event_id, ex))

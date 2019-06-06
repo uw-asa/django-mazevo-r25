@@ -83,7 +83,10 @@ class Command(BaseCommand):
 
         _ems = Service()
 
-        space_ids = update_get_space_ids(_ems.get_all_rooms())
+        try:
+            space_ids = update_get_space_ids(_ems.get_all_rooms())
+        except R25ErrorException as ex:
+            raise CommandError("Unable to update space search: %s" % ex)
 
         status_list = _ems.get_statuses()
         statuses = {}

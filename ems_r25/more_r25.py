@@ -46,14 +46,19 @@ class R25ErrorException(Exception):
        </r25:error_details>
     </r25:results>
     """
-    def __init__(self, msg_id, msg, object_id):
-        self.msg_id = msg_id
-        self.msg = msg
-        self.object_id = object_id
+    def __init__(self, **kwargs):
+        self.msg_id = kwargs.get('msg_id')
+        self.msg = kwargs.get('msg')
+        self.object_id = kwargs.get('id')
+        self.proc_error = kwargs.get('proc_error')
 
     def __str__(self):
-        return ("Error %s with %s: %s" %
-                (self.msg_id, self.object_id, self.msg))
+        return ("Error %s%s: %s%s" % (
+            self.msg_id,
+            " with %s" % self.object_id if self.object_id else '',
+            self.msg,
+            ", %s" % self.proc_error if self.proc_error else '',
+        ))
 
 
 class R25MessageException(Exception):
@@ -115,6 +120,15 @@ def post_resource(url):
     return tree
 
 
+def node_as_dict(node):
+    mydict = {}
+    for element in node:
+        name = etree.QName(element).localname
+        mydict[name] = element.text
+
+    return mydict
+
+
 def put_resource(url, body):
     """
     Issue a PUT request to R25
@@ -136,7 +150,7 @@ def put_resource(url, body):
     }
 
     response = R25_DAO().putURL(url, headers, body)
-    if response.status not in (200, 201, 403):
+    if response.status not in (200, 201, 400, 403):
         raise DataFailureException(url, response.status, response.data)
 
     tree = etree.fromstring(response.data.strip())
@@ -148,11 +162,8 @@ def put_resource(url, body):
 
     enodes = tree.xpath("r25:error", namespaces=nsmap)
     if len(enodes):
-        raise R25ErrorException(
-            enodes[0].xpath("r25:msg_id", namespaces=nsmap)[0].text,
-            enodes[0].xpath("r25:msg", namespaces=nsmap)[0].text,
-            enodes[0].xpath("r25:id", namespaces=nsmap)[0].text,
-        )
+        err = node_as_dict(enodes[0])
+        raise R25ErrorException(**err)
 
     mnodes = tree.xpath("r25:messages", namespaces=nsmap)
     if len(mnodes):

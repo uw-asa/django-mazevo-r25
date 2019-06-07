@@ -125,7 +125,7 @@ class Command(BaseCommand):
 
         for ems_res_id in ems_reservations:
             ems_reservation = ems_reservations[ems_res_id]
-            logger.debug("Processing EMS Reservation %d" % ems_res_id)
+            logger.info("Processing EMS Reservation %d" % ems_res_id)
 
             # alien_uid is how we tie EMS Reservation to R25 Event.
             r25_alien_uid = "AT_EMS_RSRV_%s" % ems_res_id
@@ -247,18 +247,18 @@ class Command(BaseCommand):
             except R25MessageException as ex:
                 while ex:
                     if ex.msg_id == 'EV_I_SPACECON':
-                        self.stdout.write(
+                        logger.warning(
                             "Conflict while syncing EMS Reservation %s: %s" %
                             (ems_reservation.reservation_id, ex.text))
                         match = re.search(r'\[(?P<event_id>\d+)\]', ex.text)
                         old_event = get_event_by_id(match.group('event_id'))
-                        self.stdout.write("Existing event: %s" %
-                                          old_event.live_url())
-                        self.stdout.write("Is blocking event: %s" %
-                                          r25_event.live_url())
+                        logger.warning(
+                            "Existing event: %s" % old_event.live_url())
+                        logger.warning(
+                            "Is blocking event: %s" % r25_event.live_url())
 
                     else:
-                        self.stdout.write(
+                        logger.warning(
                             "R25 message while syncing EMS Reservation %s to "
                             "R25 Event %s: %s" % (
                                 ems_reservation.reservation_id,
@@ -267,13 +267,13 @@ class Command(BaseCommand):
                     ex = ex.next_msg
 
             except R25ErrorException as ex:
-                self.stdout.write(
+                logger.warning(
                     "R25 error while syncing EMS Reservation %s to R25 Event "
                     " %s: %s" % (ems_reservation.reservation_id,
                                  r25_event.event_id, ex))
 
             except HTTPError as ex:
-                self.stdout.write(
+                logger.warning(
                     "HTTP error while syncing EMS Reservation %s to R25 Event "
                     " %s: %s" % (ems_reservation.reservation_id,
                                  r25_event.event_id, ex))

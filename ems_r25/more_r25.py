@@ -92,6 +92,10 @@ class R25MessageException(Exception):
                  ' [more...]' if self.next_msg else ''))
 
 
+class TooManyRequestsException(Exception):
+    pass
+
+
 def post_resource(url):
     """
     Issue a POST request to R25
@@ -107,6 +111,8 @@ def post_resource(url):
         url = "/r25ws/servlet/wrd/run/%s" % url
 
     response = R25_DAO().postURL(url, {"Accept": "text/xml"})
+    if response.status == 429:
+        raise TooManyRequestsException(url)
     if response.status != 201:
         raise DataFailureException(url, response.status, response.data)
 

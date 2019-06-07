@@ -13,7 +13,9 @@ from uw_r25.events import get_event_by_alien_id, get_event_by_id
 from uw_r25.models import Event, Reservation, Space
 
 from ems_r25.more_r25 import (delete_event, update_event,
-                              R25MessageException, R25ErrorException)
+                              R25MessageException, R25ErrorException,
+                              TooManyRequestsException
+                              )
 from ems_r25.utils import update_get_space_ids
 
 
@@ -142,6 +144,11 @@ class Command(BaseCommand):
             except DataFailureException:
                 # No R25 event matching this EMS event
                 pass
+            except HTTPError as ex:
+                # Server timeout, etc
+                self.stdout.write("HTTP Error retrieving R25 Event, skipping "
+                                  "Reservation %s: %s" % (ems_res_id, ex))
+                continue
 
             if options['delete']:
                 if r25_event:
@@ -280,3 +287,9 @@ class Command(BaseCommand):
                     "HTTP error while syncing EMS Reservation %s to R25 Event "
                     " %s: %s" % (ems_reservation.reservation_id,
                                  r25_event.event_id, ex))
+
+            except TooManyRequestsException:
+                self.stdout.write(
+                    "Too Many Requests while syncing EMS Reservation %s to R25 "
+                    "Event %s" % (ems_reservation.reservation_id,
+                                      r25_event.event_id))

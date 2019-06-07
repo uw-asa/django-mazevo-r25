@@ -292,6 +292,6 @@ class Command(BaseCommand):
 
             except TooManyRequestsException:
                 self.stdout.write(
-                    "Too Many Requests while syncing EMS Reservation %s to R25 "
-                    "Event %s" % (ems_reservation.reservation_id,
+                    "Too Many Requests while syncing EMS Reservation %s to "
+                    "R25 Event %s" % (ems_reservation.reservation_id,
                                       r25_event.event_id))

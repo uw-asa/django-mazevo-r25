@@ -312,11 +312,13 @@ def update_event(event):
 
         # initialize some things that aren't kept in the uw_r25 model
         update_value(enode, 'node_type', 'E')
-        update_value(enode, 'event_type_id', '433')  # UWS Event
+        update_value(enode, 'event_type_id',
+                     R25_DAO().get_service_setting('EVENTTYPE'))
 
         onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
-        update_value(onode, 'organization_id', '4211')
-        # update_value(onode, 'primary', 'T')
+        update_value(onode, 'organization_id',
+                     R25_DAO().get_service_setting('ORGANIZATION'))
+        update_value(onode, 'primary', 'T')
 
         # delete the blank profile
         pnode = enode.xpath("r25:profile", namespaces=nsmap)[0]

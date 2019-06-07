@@ -78,7 +78,9 @@ class Command(BaseCommand):
                 start_date = parse(options['start']).date()
             else:
                 start_date = datetime.date.today()
-            if options['end']:
+            if options['end'] == 'max':
+                end_date = datetime.date.max
+            elif options['end']:
                 end_date = parse(options['end']).date()
             else:
                 end_date = start_date + datetime.timedelta(days=7)

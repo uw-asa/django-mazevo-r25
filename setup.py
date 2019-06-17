@@ -21,7 +21,6 @@ setup(
     packages=[PACKAGE],
     include_package_data=True,
     install_requires=[
-        'AuthZ-Group',
         'Django>=1.11.19,<2.0',
         'Django-SupportTools<3.0 ; python_version < "3.0"',
         'Django-SupportTools ; python_version >= "3.0"',

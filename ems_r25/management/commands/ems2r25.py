@@ -55,6 +55,12 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
+            '-r',
+            '--reservation',
+            help="Sync this specific EMS Reservation",
+        )
+
+        parser.add_argument(
             '-d',
             '--delete',
             action='store_true',
@@ -111,6 +117,12 @@ class Command(BaseCommand):
         # Created in R25, and we need to cancel it there.
         if options['booking']:
             bookings = [_ems.get_booking(options['booking'])]
+        elif options['reservation']:
+            bookings = _ems.get_bookings2(
+                reservation_id=options['reservation'],
+                start_date=start_date.isoformat(),
+                end_date=end_date.isoformat(),
+            )
         elif options['changed']:
             bookings = _ems.get_changed_bookings(
                 start_date=start_date.isoformat(),

@@ -263,11 +263,12 @@ class Command(BaseCommand):
                             "Conflict while syncing EMS Reservation %s: %s" %
                             (ems_reservation.reservation_id, ex.text))
                         match = re.search(r'\[(?P<event_id>\d+)\]', ex.text)
-                        old_event = get_event_by_id(match.group('event_id'))
-                        logger.warning(
-                            "Existing event: %s" % old_event.live_url())
-                        logger.warning(
-                            "Is blocking event: %s" % r25_event.live_url())
+                        if match:
+                            old_event = get_event_by_id(match.group('event_id'))
+                            logger.warning(
+                                "Existing event: %s" % old_event.live_url())
+                            logger.warning(
+                                "Is blocking event: %s" % r25_event.live_url())
 
                     else:
                         logger.warning(

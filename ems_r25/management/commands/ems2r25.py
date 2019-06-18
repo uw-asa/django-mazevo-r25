@@ -49,6 +49,12 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
+            '-b',
+            '--booking',
+            help="Sync this specific EMS Booking",
+        )
+
+        parser.add_argument(
             '-d',
             '--delete',
             action='store_true',
@@ -103,16 +109,25 @@ class Command(BaseCommand):
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
-        bookings = _ems.get_changed_bookings(
-            start_date=start_date.isoformat(), end_date=end_date.isoformat(),
-            statuses=search_statuses
-        ) if options['changed'] else _ems.get_bookings(
-            start_date=start_date.isoformat(), end_date=end_date.isoformat(),
-            statuses=search_statuses
-        )
+        if options['booking']:
+            bookings = [_ems.get_booking(options['booking'])]
+        elif options['changed']:
+            bookings = _ems.get_changed_bookings(
+                start_date=start_date.isoformat(),
+                end_date=end_date.isoformat(),
+                statuses=search_statuses)
+        else:
+            bookings = _ems.get_bookings(
+                start_date=start_date.isoformat(),
+                end_date=end_date.isoformat(),
+                statuses=search_statuses)
 
         ems_reservations = {}
         for booking in bookings:
+            if booking.date_changed is None:
+                # get_booking doesn't return date_changed...
+                booking.date_changed = datetime.date.min
+
             if options['changed']:
                 # Booking hasn't changed, EMS Reservation has...
                 if (booking.date_changed.date() < start_date or

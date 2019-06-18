@@ -13,7 +13,6 @@ before_script:
   - cp travis-ci/manage.py manage.py
 script:
   - pycodestyle ems_r25/
-  - jshint ems_r25/static/ems_r25/js/ --verbose
   - python -m compileall ems_r25/
   - coverage run --source=ems_r25 manage.py test ems_r25
 after_script:

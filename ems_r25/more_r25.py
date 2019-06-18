@@ -240,7 +240,9 @@ def update_value(node, name, value):
         element = etree.SubElement(node, "{%s}%s" % (nsmap['r25'], name),
                                    nsmap=nsmap)
 
-    if (not value and not element.text) or element.text == value:
+    if ((not value and not element.text) or
+            element.text == value or
+            (element.text and (element.text.lower() == value.lower()))):
         # no change
         return element
 

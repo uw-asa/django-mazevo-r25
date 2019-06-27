@@ -52,6 +52,12 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
+            '-r',
+            '--reservation',
+            help="Sync this specific EMS Reservation",
+        )
+
+        parser.add_argument(
             '-d',
             '--delete',
             action='store_true',
@@ -108,6 +114,12 @@ class Command(BaseCommand):
         # Created in R25, and we need to cancel it there.
         if options['booking']:
             bookings = [_ems.get_booking(options['booking'])]
+        elif options['reservation']:
+            bookings = _ems.get_bookings2(
+                reservation_id=options['reservation'],
+                start_date=start_date.isoformat(),
+                end_date=end_date.isoformat(),
+            )
         elif options['changed']:
             bookings = _ems.get_changed_bookings(
                 start_date=start_date.isoformat(),
@@ -119,6 +131,7 @@ class Command(BaseCommand):
                 end_date=end_date.isoformat(),
                 statuses=search_statuses)
 
+        ems_reservations = {}
         for booking in bookings:
             if booking.date_changed is None:
                 # get_booking doesn't return date_changed...
@@ -131,6 +144,15 @@ class Command(BaseCommand):
                     continue
 
             booking.status = statuses[booking.status_id]
+
+            if booking.reservation_id not in ems_reservations:
+                # Use data from first booking as reservation data.
+                # FIXME: we need a way to grab actual EMS Reservation data
+                # FIXME: instead of just Bookings
+                ems_reservations[booking.reservation_id] = booking
+                ems_reservations[booking.reservation_id].bookings = {}
+            ems_reservations[
+                booking.reservation_id].bookings[booking.id] = booking
 
             logger.debug("Processing EMS Booking %d: '%s'" %
                          (booking.id, booking.event_name))

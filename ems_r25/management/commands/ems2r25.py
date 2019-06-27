@@ -43,9 +43,7 @@ class Command(BaseCommand):
             '-c',
             '--changed',
             action='store_true',
-            help="Get Bookings that have changed within date range. Includes "
-                 "Bookings where the Reservation has changed, even if the "
-                 "Booking has not.",
+            help="Get Bookings that have changed within date range.",
         )
 
         parser.add_argument(

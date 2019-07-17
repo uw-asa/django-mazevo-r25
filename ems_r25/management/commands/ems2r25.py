@@ -73,6 +73,16 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        verbosity = int(options['verbosity'])
+        if verbosity == 0:
+            logger.setLevel(logging.ERROR)
+        elif verbosity == 1:  # default
+            logger.setLevel(logging.WARNING)
+        elif verbosity > 1:
+            logger.setLevel(logging.INFO)
+        if verbosity > 2:
+            logger.setLevel(logging.DEBUG)
+
         if options['changed']:
             if options['start']:
                 start_date = parse(options['start']).date()

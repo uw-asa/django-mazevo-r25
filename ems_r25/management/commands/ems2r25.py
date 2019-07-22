@@ -19,7 +19,7 @@ from ems_r25.more_r25 import (delete_event, update_event,
 from ems_r25.utils import update_get_space_ids
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('ems_r25')
 
 
 class Command(BaseCommand):
@@ -78,9 +78,9 @@ class Command(BaseCommand):
             logger.setLevel(logging.ERROR)
         elif verbosity == 1:  # default
             logger.setLevel(logging.WARNING)
-        elif verbosity > 1:
+        elif verbosity == 2:
             logger.setLevel(logging.INFO)
-        if verbosity > 2:
+        elif verbosity == 3:
             logger.setLevel(logging.DEBUG)
 
         if options['changed']:

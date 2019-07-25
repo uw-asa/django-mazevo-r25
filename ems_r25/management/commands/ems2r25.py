@@ -18,7 +18,7 @@ from ems_r25.more_r25 import (delete_event, update_event,
 from ems_r25.utils import update_get_space_ids
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('ems_r25')
 
 
 class Command(BaseCommand):
@@ -72,6 +72,16 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        verbosity = int(options['verbosity'])
+        if verbosity == 0:
+            logger.setLevel(logging.ERROR)
+        elif verbosity == 1:  # default
+            logger.setLevel(logging.WARNING)
+        elif verbosity == 2:
+            logger.setLevel(logging.INFO)
+        elif verbosity == 3:
+            logger.setLevel(logging.DEBUG)
+
         if options['changed']:
             if options['start']:
                 start_date = parse(options['start']).date()

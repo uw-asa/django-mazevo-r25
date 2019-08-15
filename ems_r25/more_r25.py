@@ -391,15 +391,20 @@ def update_event(event):
         except IndexError:
             pass
 
+        if srnode is not None:
+            if (res.space_reservation is None or
+                    srnode.xpath("r25:space_id", namespaces=nsmap)[0].text !=
+                    res.space_reservation.space_id):
+                # outdated space reservation. delete it
+                delete_node(srnode)
+                srnode = None
+
         if res.space_reservation is not None:
             if srnode is None:
                 # Add space reservation
                 srnode = add_node(rnode, 'space_reservation')
 
             update_value(srnode, 'space_id', res.space_reservation.space_id)
-        elif srnode is not None:
-            # outdated space reservation. delete it
-            delete_node(srnode)
 
     # Make sure event dates encompass all reservations
     # for res in r25_event.reservations:

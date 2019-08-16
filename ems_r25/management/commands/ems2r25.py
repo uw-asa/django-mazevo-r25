@@ -1,6 +1,7 @@
 import datetime
 import logging
 import re
+import unicodedata
 
 from dateutil.parser import parse
 from django.conf import settings
@@ -227,9 +228,13 @@ class Command(BaseCommand):
 
             r25_event.name = "%d_%s" % (
                 booking.id,
-                booking.event_name[:30].strip().upper(),
+                unicodedata.normalize(
+                    'NFKD', booking.event_name).encode(
+                    'ascii', 'ignore')[:30].strip().upper(),
             )
-            r25_event.title = booking.event_name.strip()
+            r25_event.title = unicodedata.normalize(
+                'NFKD', booking.event_name).encode(
+                'ascii', 'ignore').strip()
             r25_event.state = r25_event.CONFIRMED_STATE
 
             r25_res = r25_event.reservations[0]

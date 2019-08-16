@@ -226,15 +226,14 @@ class Command(BaseCommand):
                 r25_res.space_reservation = None
                 r25_event.reservations.append(r25_res)
 
+            event_name = booking.event_name
+            if isinstance(event_name, unicode):
+                event_name = unicodedata.normalize(
+                    'NFKD', event_name).encode('ascii', 'ignore')
+
             r25_event.name = "%d_%s" % (
-                booking.id,
-                unicodedata.normalize(
-                    'NFKD', booking.event_name).encode(
-                    'ascii', 'ignore')[:30].strip().upper(),
-            )
-            r25_event.title = unicodedata.normalize(
-                'NFKD', booking.event_name).encode(
-                'ascii', 'ignore').strip()
+                booking.id, event_name[:30].strip().upper())
+            r25_event.title = event_name.strip()
             r25_event.state = r25_event.CONFIRMED_STATE
 
             r25_res = r25_event.reservations[0]

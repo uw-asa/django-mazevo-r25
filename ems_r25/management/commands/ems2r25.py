@@ -180,7 +180,20 @@ class Command(BaseCommand):
                 events = get_events(starts_with="%d_" % booking.id,
                                     scope='extended',
                                     include='reservations')
-                r25_event = events[0]
+
+                if len(events) > 1:
+                    logger.warning("\tFound multiple R25 events")
+                    for event in events:
+                        if event.reservations[0].space_reservation is None:
+                            logger.warning("\tFound R25 event with no space "
+                                           "reservation %s: %s" %
+                                           (event.event_id, event.name))
+                            if options['update']:
+                                logger.debug("\tDeleting!")
+                                delete_event(event.event_id)
+                        else:
+                            r25_event = event
+
                 logger.debug("\tFound R25 event %s: '%s'" %
                              (r25_event.event_id, r25_event.name))
 

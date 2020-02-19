@@ -181,6 +181,8 @@ class Command(BaseCommand):
                                     scope='extended',
                                     include='reservations')
 
+                r25_event = events[0]
+
                 if len(events) > 1:
                     logger.warning("\tFound multiple R25 events")
                     for event in events:

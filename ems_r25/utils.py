@@ -46,15 +46,15 @@ def update_get_space_ids(ems_rooms):
 
     # replace with new search step
     step = etree.Element("{%s}step" % nsmap['r25'],
-                                attrib={'status': 'new'})
+                         attrib={'status': 'new'})
     node = etree.Element("{%s}step_number" % nsmap['r25'])
     node.text = '1'
     step.append(node)
     node = etree.Element("{%s}step_type_id" % nsmap['r25'])
-    node.text = '407' # Spaces
+    node.text = '407'   # Spaces
     step.append(node)
     node = etree.Element("{%s}qualifier" % nsmap['r25'])
-    node.text = '1' # Include Any
+    node.text = '1'     # Include Any
     step.append(node)
     snode.append(step)
 

@@ -30,40 +30,48 @@ def update_get_space_ids(ems_rooms):
     snode = r25_query_tree.xpath("r25:search", namespaces=nsmap)[0]
     snode.attrib['status'] = 'mod'
 
-    snode = snode.xpath("r25:step", namespaces=nsmap)[0]
-    snode.attrib['status'] = 'mod'
+    step = snode.xpath("r25:step", namespaces=nsmap)[0]
+    step.attrib['status'] = 'del'
 
     query_modified = False
 
     found_space_ids = []
-    step_param_nbr = -1
-    for pnode in snode.xpath("r25:step_param", namespaces=nsmap):
+    for pnode in step.xpath("r25:step_param", namespaces=nsmap):
         space_id = pnode.xpath("r25:space_id", namespaces=nsmap)[0].text
-        temp = int(pnode.xpath("r25:step_param_nbr", namespaces=nsmap)[0].text)
-
         found_space_ids.append(space_id)
-
-        if temp > step_param_nbr:
-            step_param_nbr = temp
+        pnode.attrib['status'] = 'del'
 
         if space_id not in space_ids.values():
-            pnode.attrib['status'] = 'del'
             query_modified = True
 
+    # replace with new search step
+    step = etree.Element("{%s}step" % nsmap['r25'],
+                                attrib={'status': 'new'})
+    node = etree.Element("{%s}step_number" % nsmap['r25'])
+    node.text = '1'
+    step.append(node)
+    node = etree.Element("{%s}step_type_id" % nsmap['r25'])
+    node.text = '407' # Spaces
+    step.append(node)
+    node = etree.Element("{%s}qualifier" % nsmap['r25'])
+    node.text = '1' # Include Any
+    step.append(node)
+    snode.append(step)
+
+    step_param_nbr = 0
     for space_id in space_ids.values():
-        if space_id in found_space_ids:
-            continue
         step_param_nbr += 1
-        param = etree.Element("{%s}step_param" % nsmap['r25'],
-                              attrib={'status': 'new'})
+        param = etree.Element("{%s}step_param" % nsmap['r25'])
         node = etree.Element("{%s}step_param_nbr" % nsmap['r25'])
         node.text = str(step_param_nbr)
         param.append(node)
         node = etree.Element("{%s}space_id" % nsmap['r25'])
         node.text = space_id
         param.append(node)
-        snode.append(param)
-        query_modified = True
+        step.append(param)
+
+        if space_id not in found_space_ids:
+            query_modified = True
 
     if query_modified:
         put_resource(query_url, etree.tostring(r25_query_tree))

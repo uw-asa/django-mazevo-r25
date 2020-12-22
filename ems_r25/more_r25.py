@@ -419,7 +419,7 @@ def update_event(event):
         logger.debug("Event unchanged")
         return event
 
-    url = "event.xml?event_id=%s&legacy=T" % event.event_id
+    url = "event.xml?event_id=%s&return_doc=T" % event.event_id
 
     return events_from_xml(put_resource(url, etree.tostring(event_tree)))[0]
 

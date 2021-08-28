@@ -2,6 +2,7 @@ import datetime
 import logging
 import re
 import six
+import sys
 import unicodedata
 
 from dateutil.parser import parse
@@ -20,11 +21,35 @@ from ems_r25.more_r25 import (delete_event, update_event,
 from ems_r25.utils import update_get_space_ids
 
 
-logger = logging.getLogger('ems_r25')
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
     help = 'adds or updates R25 events with events from EMS'
+
+    def set_logger(self, verbosity):
+        """
+        Set logger level based on verbosity option
+        """
+        handler = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+
+        if verbosity == 0:
+            self.logger.setLevel(logging.WARN)
+        elif verbosity == 1:  # default
+            self.logger.setLevel(logging.INFO)
+        elif verbosity > 1:
+            self.logger.setLevel(logging.DEBUG)
+
+        # verbosity 3: also enable all logging statements that reach the root
+        # logger
+        if verbosity > 2:
+            logging.getLogger().setLevel(logging.DEBUG)
+
+    def __init__(self, logger=None):
+        self.logger = logger or logging.getLogger(__name__)
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -74,15 +99,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        verbosity = int(options['verbosity'])
-        if verbosity == 0:
-            logger.setLevel(logging.ERROR)
-        elif verbosity == 1:  # default
-            logger.setLevel(logging.WARNING)
-        elif verbosity == 2:
-            logger.setLevel(logging.INFO)
-        elif verbosity == 3:
-            logger.setLevel(logging.DEBUG)
+        self.set_logger(options.get('verbosity'))
 
         if options['changed']:
             if options['start']:

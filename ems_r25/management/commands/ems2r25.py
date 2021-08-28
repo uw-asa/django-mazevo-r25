@@ -122,6 +122,7 @@ class Command(BaseCommand):
                 end_date = parse(options['end']).date()
             else:
                 end_date = start_date + datetime.timedelta(days=7)
+        logger.info("Considering bookings from %s to %s" % (start_date, end_date))
 
         _ems = Service()
 
@@ -129,6 +130,7 @@ class Command(BaseCommand):
             space_ids = update_get_space_ids(_ems.get_all_rooms())
         except R25ErrorException as ex:
             raise CommandError("Unable to update space search: %s" % ex)
+        logger.info("Found %d R25 spaces linked to EMS rooms" % len(space_ids))
 
         status_list = _ems.get_statuses()
         statuses = {}
@@ -137,28 +139,36 @@ class Command(BaseCommand):
             statuses[status.id] = status
             if status.description not in settings.EMS_R25_IGNORE_STATUSES:
                 search_statuses.append(status.id)
+        logger.info(
+            "Considering statuses %s" % ', '.join(
+                statuses[status].description for status in search_statuses))
 
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
         if options['booking']:
+            logger.info("Looking for single booking %d" % options['booking'])
             bookings = [_ems.get_booking(options['booking'])]
         elif options['reservation']:
+            logger.info("Looking for reservation %d" % options['reservation'])
             bookings = _ems.get_bookings2(
                 reservation_id=options['reservation'],
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
             )
         elif options['changed']:
+            logger.info("Looking for changed bookings")
             bookings = _ems.get_changed_bookings(
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
                 statuses=search_statuses)
         else:
+            logger.info("Looking for all bookings")
             bookings = _ems.get_bookings(
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
                 statuses=search_statuses)
+        logger.info("Found %d bookings" % len(bookings))
 
         ems_reservations = {}
         for booking in bookings:
@@ -219,6 +229,7 @@ class Command(BaseCommand):
 
             except IndexError:
                 # No R25 event matching this EMS Booking
+                logger.debug("\tNo R25 event found")
                 pass
             except HTTPError as ex:
                 # Server timeout, etc
@@ -249,9 +260,11 @@ class Command(BaseCommand):
             if r25_event is None:
                 # Do we even want in r25?
                 if not wanted_booking:
+                    logger.debug("\t\tGood")
                     continue
 
                 # Need to create r25 event
+                logger.debug("\t\tWill create")
                 r25_event = Event()
                 r25_event.reservations = []
 
@@ -285,6 +298,7 @@ class Command(BaseCommand):
 
             else:
                 # Cancel this unwanted r25 event
+                logger.debug("\t\tSetting event state to cancelled")
                 r25_event.state = r25_event.CANCELLED_STATE
                 # r25_res.state = r25_res.CANCELLED_STATE
                 # r25_res.space_reservation = None

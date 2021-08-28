@@ -1,6 +1,7 @@
 import datetime
 import logging
 import re
+import six
 import unicodedata
 
 from dateutil.parser import parse
@@ -242,7 +243,7 @@ class Command(BaseCommand):
                 r25_event.reservations.append(r25_res)
 
             event_name = booking.event_name
-            if isinstance(event_name, unicode):
+            if isinstance(event_name, six.text_type):
                 event_name = unicodedata.normalize(
                     'NFKD', event_name).encode('ascii', 'ignore')
 

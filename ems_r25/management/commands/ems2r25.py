@@ -14,10 +14,13 @@ from urllib3.exceptions import HTTPError
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
-from ems_r25.more_r25 import (delete_event, update_event,
-                              R25MessageException, R25ErrorException,
-                              TooManyRequestsException
-                              )
+from ems_r25.more_r25 import (
+    delete_event,
+    update_event,
+    R25MessageException,
+    R25ErrorException,
+    TooManyRequestsException,
+)
 from ems_r25.utils import update_get_space_ids
 
 
@@ -25,14 +28,14 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'adds or updates R25 events with events from EMS'
+    help = "adds or updates R25 events with events from EMS"
 
     def set_logger(self, verbosity):
         """
         Set logger level based on verbosity option
         """
         handler = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter('%(message)s')
+        formatter = logging.Formatter("%(message)s")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
@@ -53,76 +56,78 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '-s',
-            '--start',
+            "-s",
+            "--start",
             help="Start of date range. Default is today, or yesterday if "
-                 "using --changed.",
+            "using --changed.",
         )
         parser.add_argument(
-            '-e',
-            '--end',
+            "-e",
+            "--end",
             help="End of date range. Default is START+7 days, or today if "
-                 "using --changed.",
+            "using --changed.",
         )
 
         parser.add_argument(
-            '-c',
-            '--changed',
-            action='store_true',
+            "-c",
+            "--changed",
+            action="store_true",
             help="Get Bookings that have changed within date range.",
         )
 
         parser.add_argument(
-            '-b',
-            '--booking',
+            "-b",
+            "--booking",
             help="Sync this specific EMS Booking",
         )
 
         parser.add_argument(
-            '-r',
-            '--reservation',
+            "-r",
+            "--reservation",
             help="Sync this specific EMS Reservation",
         )
 
         parser.add_argument(
-            '-d',
-            '--delete',
-            action='store_true',
-            help='Delete matched R25 Events',
+            "-d",
+            "--delete",
+            action="store_true",
+            help="Delete matched R25 Events",
         )
 
         parser.add_argument(
-            '-u',
-            '--update',
-            action='store_true',
-            help='Update R25 Events',
+            "-u",
+            "--update",
+            action="store_true",
+            help="Update R25 Events",
         )
 
     def handle(self, *args, **options):
-        self.set_logger(options.get('verbosity'))
+        self.set_logger(options.get("verbosity"))
 
-        if options['changed']:
-            if options['start']:
-                start_date = parse(options['start']).date()
+        if options["changed"]:
+            if options["start"]:
+                start_date = parse(options["start"]).date()
             else:
                 start_date = datetime.date.today()
-            if options['end']:
-                end_date = parse(options['end']).date()
+            if options["end"]:
+                end_date = parse(options["end"]).date()
             else:
                 end_date = datetime.date.today()
 
         else:
-            if options['start']:
-                start_date = parse(options['start']).date()
+            if options["start"]:
+                start_date = parse(options["start"]).date()
             else:
                 start_date = datetime.date.today()
-            if options['end'] == 'max':
+            if options["end"] == "max":
                 end_date = datetime.date.max
-            elif options['end']:
-                end_date = parse(options['end']).date()
+            elif options["end"]:
+                end_date = parse(options["end"]).date()
             else:
                 end_date = start_date + datetime.timedelta(days=7)
-        logger.info("Considering bookings from %s to %s" % (start_date, end_date))
+        logger.info(
+            "Considering bookings from %s to %s" % (start_date, end_date)
+        )
 
         _ems = Service()
 
@@ -140,34 +145,39 @@ class Command(BaseCommand):
             if status.description not in settings.EMS_R25_IGNORE_STATUSES:
                 search_statuses.append(status.id)
         logger.info(
-            "Considering statuses %s" % ', '.join(
-                statuses[status].description for status in search_statuses))
+            "Considering statuses %s"
+            % ", ".join(
+                statuses[status].description for status in search_statuses
+            )
+        )
 
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
-        if options['booking']:
-            logger.info("Looking for single booking %d" % options['booking'])
-            bookings = [_ems.get_booking(options['booking'])]
-        elif options['reservation']:
-            logger.info("Looking for reservation %d" % options['reservation'])
+        if options["booking"]:
+            logger.info("Looking for single booking %d" % options["booking"])
+            bookings = [_ems.get_booking(options["booking"])]
+        elif options["reservation"]:
+            logger.info("Looking for reservation %d" % options["reservation"])
             bookings = _ems.get_bookings2(
-                reservation_id=options['reservation'],
+                reservation_id=options["reservation"],
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
             )
-        elif options['changed']:
+        elif options["changed"]:
             logger.info("Looking for changed bookings")
             bookings = _ems.get_changed_bookings(
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
-                statuses=search_statuses)
+                statuses=search_statuses,
+            )
         else:
             logger.info("Looking for all bookings")
             bookings = _ems.get_bookings(
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
-                statuses=search_statuses)
+                statuses=search_statuses,
+            )
         logger.info("Found %d bookings" % len(bookings))
 
         ems_reservations = {}
@@ -176,10 +186,12 @@ class Command(BaseCommand):
                 # get_booking doesn't return date_changed...
                 booking.date_changed = datetime.date.min
 
-            if options['changed']:
+            if options["changed"]:
                 # Booking hasn't changed, EMS Reservation has...
-                if (booking.date_changed.date() < start_date or
-                        booking.date_changed.date() > end_date):
+                if (
+                    booking.date_changed.date() < start_date
+                    or booking.date_changed.date() > end_date
+                ):
                     continue
 
             booking.status = statuses[booking.status_id]
@@ -190,24 +202,39 @@ class Command(BaseCommand):
                 # FIXME: instead of just Bookings
                 ems_reservations[booking.reservation_id] = booking
                 ems_reservations[booking.reservation_id].bookings = {}
-            ems_reservations[
-                booking.reservation_id].bookings[booking.id] = booking
+            ems_reservations[booking.reservation_id].bookings[
+                booking.id
+            ] = booking
 
-            logger.debug("Processing EMS Booking %d: '%s'" %
-                         (booking.id, booking.event_name))
-            logger.debug("\tStatus: %s, space_id: %s" % (
-                         (booking.status.description,
-                          space_ids.get(booking.room_id))))
-            logger.debug("\tStart: %s, End: %s, Changed: %s" % (
-                booking.time_booking_start.isoformat(),
-                booking.time_booking_end.isoformat(),
-                booking.date_changed.isoformat()))
+            logger.debug(
+                "Processing EMS Booking %d: '%s'"
+                % (booking.id, booking.event_name)
+            )
+            logger.debug(
+                "\tStatus: %s, space_id: %s"
+                % (
+                    (
+                        booking.status.description,
+                        space_ids.get(booking.room_id),
+                    )
+                )
+            )
+            logger.debug(
+                "\tStart: %s, End: %s, Changed: %s"
+                % (
+                    booking.time_booking_start.isoformat(),
+                    booking.time_booking_end.isoformat(),
+                    booking.date_changed.isoformat(),
+                )
+            )
 
             r25_event = None
             try:
-                events = get_events(starts_with="%d_" % booking.id,
-                                    scope='extended',
-                                    include='reservations')
+                events = get_events(
+                    starts_with="%d_" % booking.id,
+                    scope="extended",
+                    include="reservations",
+                )
 
                 r25_event = events[0]
 
@@ -215,17 +242,21 @@ class Command(BaseCommand):
                     logger.warning("\tFound multiple R25 events")
                     for event in events:
                         if event.reservations[0].space_reservation is None:
-                            logger.warning("\tFound R25 event with no space "
-                                           "reservation %s: %s" %
-                                           (event.event_id, event.name))
-                            if options['update']:
+                            logger.warning(
+                                "\tFound R25 event with no space "
+                                "reservation %s: %s"
+                                % (event.event_id, event.name)
+                            )
+                            if options["update"]:
                                 logger.debug("\tDeleting!")
                                 delete_event(event.event_id)
                         else:
                             r25_event = event
 
-                logger.debug("\tFound R25 event %s: '%s'" %
-                             (r25_event.event_id, r25_event.name))
+                logger.debug(
+                    "\tFound R25 event %s: '%s'"
+                    % (r25_event.event_id, r25_event.name)
+                )
 
             except IndexError:
                 # No R25 event matching this EMS Booking
@@ -233,11 +264,13 @@ class Command(BaseCommand):
                 pass
             except HTTPError as ex:
                 # Server timeout, etc
-                self.stdout.write("HTTP Error retrieving R25 Event, skipping "
-                                  "Booking %s: %s" % (booking.id, ex))
+                self.stdout.write(
+                    "HTTP Error retrieving R25 Event, skipping "
+                    "Booking %s: %s" % (booking.id, ex)
+                )
                 continue
 
-            if options['delete']:
+            if options["delete"]:
                 if r25_event:
                     logger.debug("\tDeleting!")
                     delete_event(r25_event.event_id)
@@ -250,11 +283,13 @@ class Command(BaseCommand):
                 wanted_booking = False
             elif booking.room_id not in space_ids:
                 wanted_booking = False
-            elif (booking.status.description in
-                    settings.EMS_R25_REMOVE_STATUSES):
+            elif (
+                booking.status.description in settings.EMS_R25_REMOVE_STATUSES
+            ):
                 wanted_booking = False
-            elif (booking.status.description in
-                    settings.EMS_R25_IGNORE_STATUSES):
+            elif (
+                booking.status.description in settings.EMS_R25_IGNORE_STATUSES
+            ):
                 wanted_booking = False
 
             if r25_event is None:
@@ -274,27 +309,27 @@ class Command(BaseCommand):
 
             event_name = booking.event_name
             if isinstance(event_name, six.text_type):
-                event_name = unicodedata.normalize(
-                    'NFKD', event_name).encode('ascii', 'ignore')
+                event_name = unicodedata.normalize("NFKD", event_name).encode(
+                    "ascii", "ignore"
+                )
 
             r25_event.name = "%d_%s" % (
-                booking.id, event_name[:30].strip().upper())
+                booking.id,
+                event_name[:30].strip().upper(),
+            )
             r25_event.title = event_name.strip()
             r25_event.state = r25_event.CONFIRMED_STATE
 
             r25_res = r25_event.reservations[0]
 
             if wanted_booking:
-                r25_res.start_datetime = \
-                    booking.time_booking_start.isoformat()
-                r25_res.end_datetime = \
-                    booking.time_booking_end.isoformat()
+                r25_res.start_datetime = booking.time_booking_start.isoformat()
+                r25_res.end_datetime = booking.time_booking_end.isoformat()
                 r25_res.state = r25_res.STANDARD_STATE
                 if r25_res.space_reservation is None:
                     r25_res.space_reservation = Space()
 
-                r25_res.space_reservation.space_id = space_ids[
-                    booking.room_id]
+                r25_res.space_reservation.space_id = space_ids[booking.room_id]
 
             else:
                 # Cancel this unwanted r25 event
@@ -304,7 +339,7 @@ class Command(BaseCommand):
                 # r25_res.space_reservation = None
 
             # by default, don't actually make changes
-            if not options['update']:
+            if not options["update"]:
                 continue
 
             try:
@@ -313,42 +348,46 @@ class Command(BaseCommand):
 
             except R25MessageException as ex:
                 while ex:
-                    if ex.msg_id == 'EV_I_SPACECON':
+                    if ex.msg_id == "EV_I_SPACECON":
                         logger.warning(
-                            "Conflict while syncing EMS Booking %s: %s" %
-                            (booking.id, ex.text))
-                        match = re.search(r'\[(?P<event_id>\d+)\]', ex.text)
+                            "Conflict while syncing EMS Booking %s: %s"
+                            % (booking.id, ex.text)
+                        )
+                        match = re.search(r"\[(?P<event_id>\d+)\]", ex.text)
                         if match:
                             old_event = get_event_by_id(
-                                match.group('event_id'))
+                                match.group("event_id")
+                            )
                             logger.warning(
-                                "Existing event: %s" % old_event.live_url())
+                                "Existing event: %s" % old_event.live_url()
+                            )
                             logger.warning(
-                                "Is blocking event: %s" % r25_event.live_url())
+                                "Is blocking event: %s" % r25_event.live_url()
+                            )
 
                     else:
                         logger.warning(
                             "R25 message while syncing EMS Booking %s to "
-                            "R25 Event %s: %s" % (
-                                booking.id,
-                                r25_event.event_id, ex))
+                            "R25 Event %s: %s"
+                            % (booking.id, r25_event.event_id, ex)
+                        )
 
                     ex = ex.next_msg
 
             except R25ErrorException as ex:
                 logger.warning(
                     "R25 error while syncing EMS Booking %s to R25 Event "
-                    " %s: %s" % (booking.id,
-                                 r25_event.event_id, ex))
+                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                )
 
             except HTTPError as ex:
                 logger.warning(
                     "HTTP error while syncing EMS Booking %s to R25 Event "
-                    " %s: %s" % (booking.id,
-                                 r25_event.event_id, ex))
+                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                )
 
             except TooManyRequestsException:
                 self.stdout.write(
                     "Too Many Requests while syncing EMS Booking %s to "
-                    "R25 Event %s" % (booking.id,
-                                      r25_event.event_id))
+                    "R25 Event %s" % (booking.id, r25_event.event_id)
+                )

@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
-from urllib3.exceptions import HTTPError
+from urllib3.exceptions import HTTPError, MaxRetryError
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
@@ -109,7 +109,7 @@ class Command(BaseCommand):
 
         try:
             space_ids = update_get_space_ids(_ems.get_all_rooms())
-        except R25ErrorException as ex:
+        except (R25ErrorException, MaxRetryError) as ex:
             raise CommandError("Unable to update space search: %s" % ex)
 
         status_list = _ems.get_statuses()

@@ -8,7 +8,8 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
-from urllib3.exceptions import HTTPError, MaxRetryError
+from lxml.etree import XMLSyntaxError
+from urllib3.exceptions import HTTPError
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
@@ -107,10 +108,7 @@ class Command(BaseCommand):
 
         _ems = Service()
 
-        try:
-            space_ids = update_get_space_ids(_ems.get_all_rooms())
-        except (R25ErrorException, MaxRetryError) as ex:
-            raise CommandError("Unable to update space search: %s" % ex)
+        space_ids = update_get_space_ids(_ems.get_all_rooms())
 
         status_list = _ems.get_statuses()
         statuses = {}
@@ -205,6 +203,11 @@ class Command(BaseCommand):
             except HTTPError as ex:
                 # Server timeout, etc
                 self.stdout.write("HTTP Error retrieving R25 Event, skipping "
+                                  "Booking %s: %s" % (booking.id, ex))
+                continue
+            except XMLSyntaxError as ex:
+                # Bad response from R25 server - usually means outage
+                self.stdout.write("XML Error retrieving R25 Event, skipping "
                                   "Booking %s: %s" % (booking.id, ex))
                 continue
 

@@ -1,6 +1,7 @@
 import datetime
 import logging
 import re
+import requests
 import unicodedata
 
 from dateutil.parser import parse
@@ -9,7 +10,7 @@ from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
 from lxml.etree import XMLSyntaxError
-from urllib3.exceptions import HTTPError
+from urllib3.exceptions import HTTPError, InsecureRequestWarning
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
@@ -108,6 +109,8 @@ class Command(BaseCommand):
 
         _ems = Service()
 
+        if settings.DEBUG:
+            requests.urllib3.disable_warnings(InsecureRequestWarning)
         space_ids = update_get_space_ids(_ems.get_all_rooms())
 
         status_list = _ems.get_statuses()

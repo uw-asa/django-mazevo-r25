@@ -345,6 +345,7 @@ class Command(BaseCommand):
             try:
                 logger.debug("\tUpdating event")
                 updated = update_event(r25_event)
+                logger.debug("\t\tUpdated event %s" % updated.event_id)
 
             except R25MessageException as ex:
                 while ex:

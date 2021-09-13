@@ -2,9 +2,11 @@ import logging
 
 from django.conf import settings
 from lxml import etree
+from lxml.etree import XMLSyntaxError
+from urllib3.exceptions import MaxRetryError
 from uw_r25 import nsmap, get_resource
 
-from .more_r25 import put_resource
+from .more_r25 import put_resource, R25ErrorException
 
 
 logger = logging.getLogger(__name__)
@@ -25,7 +27,12 @@ def update_get_space_ids(ems_rooms):
     # while we're here, update the R25 saved search that we'll use
     query_url = "space_search.xml?query_id=%s" % settings.EMS_R25_SPACE_QUERY
 
-    r25_query_tree = get_resource(query_url)
+    try:
+        r25_query_tree = get_resource(query_url)
+    except (R25ErrorException, MaxRetryError, XMLSyntaxError) as ex:
+        logger.warning("R25 error while retrieving space search: %s" % ex)
+
+        return space_ids
 
     snode = r25_query_tree.xpath("r25:search", namespaces=nsmap)[0]
     snode.attrib["status"] = "mod"

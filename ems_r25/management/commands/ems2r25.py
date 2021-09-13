@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
+from lxml.etree import XMLSyntaxError
 from urllib3.exceptions import HTTPError
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
@@ -268,6 +269,11 @@ class Command(BaseCommand):
                     "HTTP Error retrieving R25 Event, skipping "
                     "Booking %s: %s" % (booking.id, ex)
                 )
+                continue
+            except XMLSyntaxError as ex:
+                # Bad response from R25 server - usually means outage
+                self.stdout.write("XML Error retrieving R25 Event, skipping "
+                                  "Booking %s: %s" % (booking.id, ex))
                 continue
 
             if options["delete"]:

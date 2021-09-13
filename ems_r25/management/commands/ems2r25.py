@@ -1,6 +1,7 @@
 import datetime
 import logging
 import re
+import requests
 import six
 import sys
 import unicodedata
@@ -11,7 +12,7 @@ from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
 from lxml.etree import XMLSyntaxError
-from urllib3.exceptions import HTTPError
+from urllib3.exceptions import HTTPError, InsecureRequestWarning
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
@@ -132,10 +133,9 @@ class Command(BaseCommand):
 
         _ems = Service()
 
-        try:
-            space_ids = update_get_space_ids(_ems.get_all_rooms())
-        except R25ErrorException as ex:
-            raise CommandError("Unable to update space search: %s" % ex)
+        if settings.DEBUG:
+            requests.urllib3.disable_warnings(InsecureRequestWarning)
+        space_ids = update_get_space_ids(_ems.get_all_rooms())
         logger.info("Found %d R25 spaces linked to EMS rooms" % len(space_ids))
 
         status_list = _ems.get_statuses()

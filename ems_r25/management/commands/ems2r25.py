@@ -156,10 +156,10 @@ class Command(BaseCommand):
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
         if options["booking"]:
-            logger.info("Looking for single booking %d" % options["booking"])
+            logger.info("Looking for single booking %s" % options["booking"])
             bookings = [_ems.get_booking(options["booking"])]
         elif options["reservation"]:
-            logger.info("Looking for reservation %d" % options["reservation"])
+            logger.info("Looking for reservation %s" % options["reservation"])
             bookings = _ems.get_bookings2(
                 reservation_id=options["reservation"],
                 start_date=start_date.isoformat(),

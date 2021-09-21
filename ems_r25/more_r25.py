@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def live_url(self):
     return (
-        "https://25live.collegenet.com/%s/#details&obj_type=event&obj_id=%s"
+        "https://25live.collegenet.com/pro/%s#/home/event/%s/details"
         % (R25_DAO().get_service_setting("INSTANCE"), self.event_id)
     )
 

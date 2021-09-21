@@ -404,6 +404,10 @@ def update_event(event):
 
         update_value(rnode, "reservation_start_dt", res.start_datetime)
         update_value(rnode, "reservation_end_dt", res.end_datetime)
+        update_value(rnode, "event_start_dt", res.start_datetime)
+        update_value(rnode, "event_end_dt", res.end_datetime)
+        update_value(rnode, "pre_event_start_dt", res.start_datetime)
+        update_value(rnode, "post_event_end_dt", res.end_datetime)
         update_value(rnode, "reservation_state", res.state)
 
         # add or update space_reservation

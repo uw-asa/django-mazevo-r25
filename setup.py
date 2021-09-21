@@ -37,7 +37,7 @@ setup(
     license="Apache License, Version 2.0",
     description="Django app generate R25 events from EMS",
     long_description=README,
-    url="https://github.com/uw-it-cte/django-ems-r25",
+    url="https://github.com/uw-asa/django-ems-r25",
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Django",

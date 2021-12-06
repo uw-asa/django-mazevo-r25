@@ -341,7 +341,7 @@ class Command(BaseCommand):
                 # Cancel this unwanted r25 event
                 logger.debug("\t\tSetting event state to cancelled")
                 r25_event.state = r25_event.CANCELLED_STATE
-                # r25_res.state = r25_res.CANCELLED_STATE
+                r25_res.state = r25_res.CANCELLED_STATE
                 # r25_res.space_reservation = None
 
             # by default, don't actually make changes

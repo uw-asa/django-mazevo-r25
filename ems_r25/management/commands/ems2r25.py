@@ -319,6 +319,7 @@ class Command(BaseCommand):
                 event_name = unicodedata.normalize("NFKD", event_name).encode(
                     "ascii", "ignore"
                 )
+                event_name = six.ensure_text(event_name)
 
             r25_event.name = "%d_%s" % (
                 booking.id,

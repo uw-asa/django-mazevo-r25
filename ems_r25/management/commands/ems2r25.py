@@ -53,7 +53,8 @@ class Command(BaseCommand):
         if verbosity > 2:
             logging.getLogger().setLevel(logging.DEBUG)
 
-    def __init__(self, logger=None):
+    def __init__(self, logger=None, *args, **kwargs):
+        super(Command, self).__init__(*args, **kwargs)
         self.logger = logger or logging.getLogger(__name__)
 
     def add_arguments(self, parser):

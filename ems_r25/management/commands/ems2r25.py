@@ -183,7 +183,9 @@ class Command(BaseCommand):
         logger.info("Found %d bookings" % len(bookings))
 
         ems_reservations = {}
+        current_num = 0
         for booking in bookings:
+            current_num += 1
             if booking.date_changed is None:
                 # get_booking doesn't return date_changed...
                 booking.date_changed = datetime.date.min
@@ -209,8 +211,8 @@ class Command(BaseCommand):
             ] = booking
 
             logger.debug(
-                "Processing EMS Booking %d: '%s'"
-                % (booking.id, booking.event_name)
+                "Processing EMS Booking %d/%d %d: '%s'"
+                % (current_num, len(bookings), booking.id, booking.event_name)
             )
             logger.debug(
                 "\tStatus: %s, space_id: %s"

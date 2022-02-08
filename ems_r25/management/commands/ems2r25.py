@@ -8,6 +8,7 @@ import unicodedata
 
 from dateutil.parser import parse
 from django.conf import settings
+from django.core.mail import send_mail
 from django.core.management.base import BaseCommand, CommandError
 from ems_client.models import Status
 from ems_client.service import Service
@@ -105,6 +106,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        messages = []
+
         self.set_logger(options.get("verbosity"))
 
         if options["changed"]:
@@ -158,7 +161,10 @@ class Command(BaseCommand):
         # Created in R25, and we need to cancel it there.
         if options["booking"]:
             logger.info("Looking for single booking %s" % options["booking"])
-            bookings = [_ems.get_booking(options["booking"])]
+            try:
+                bookings = [_ems.get_booking(options["booking"])]
+            except IndexError:
+                bookings = []
         elif options["reservation"]:
             logger.info("Looking for reservation %s" % options["reservation"])
             bookings = _ems.get_bookings2(
@@ -244,9 +250,15 @@ class Command(BaseCommand):
 
                 if len(events) > 1:
                     logger.warning("\tFound multiple R25 events")
+                    messages.append("\tFound multiple R25 events")
                     for event in events:
                         if event.reservations[0].space_reservation is None:
                             logger.warning(
+                                "\tFound R25 event with no space "
+                                "reservation %s: %s"
+                                % (event.event_id, event.name)
+                            )
+                            messages.append(
                                 "\tFound R25 event with no space "
                                 "reservation %s: %s"
                                 % (event.event_id, event.name)
@@ -272,10 +284,16 @@ class Command(BaseCommand):
                     "HTTP Error retrieving R25 Event, skipping "
                     "Booking %s: %s" % (booking.id, ex)
                 )
+                messages.append(
+                    "HTTP Error retrieving R25 Event, skipping "
+                    "Booking %s: %s" % (booking.id, ex)
+                )
                 continue
             except XMLSyntaxError as ex:
                 # Bad response from R25 server - usually means outage
                 self.stdout.write("XML Error retrieving R25 Event, skipping "
+                                  "Booking %s: %s" % (booking.id, ex))
+                messages.append("XML Error retrieving R25 Event, skipping "
                                   "Booking %s: %s" % (booking.id, ex))
                 continue
 
@@ -364,6 +382,10 @@ class Command(BaseCommand):
                             "Conflict while syncing EMS Booking %s: %s"
                             % (booking.id, ex.text)
                         )
+                        messages.append(
+                            "Conflict while syncing EMS Booking %s: %s"
+                            % (booking.id, ex.text)
+                        )
                         match = re.search(r"\[(?P<event_id>\d+)\]", ex.text)
                         if match:
                             old_event = get_event_by_id(
@@ -372,12 +394,23 @@ class Command(BaseCommand):
                             logger.warning(
                                 "Existing event: %s" % old_event.live_url()
                             )
+                            messages.append(
+                                "Existing event: %s" % old_event.live_url()
+                            )
                             logger.warning(
+                                "Is blocking event: %s" % r25_event.live_url()
+                            )
+                            messages.append(
                                 "Is blocking event: %s" % r25_event.live_url()
                             )
 
                     else:
                         logger.warning(
+                            "R25 message while syncing EMS Booking %s to "
+                            "R25 Event %s: %s"
+                            % (booking.id, r25_event.event_id, ex)
+                        )
+                        messages.append(
                             "R25 message while syncing EMS Booking %s to "
                             "R25 Event %s: %s"
                             % (booking.id, r25_event.event_id, ex)
@@ -390,9 +423,17 @@ class Command(BaseCommand):
                     "R25 error while syncing EMS Booking %s to R25 Event "
                     " %s: %s" % (booking.id, r25_event.event_id, ex)
                 )
+                messages.append(
+                    "R25 error while syncing EMS Booking %s to R25 Event "
+                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                )
 
             except HTTPError as ex:
                 logger.warning(
+                    "HTTP error while syncing EMS Booking %s to R25 Event "
+                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                )
+                messages.append(
                     "HTTP error while syncing EMS Booking %s to R25 Event "
                     " %s: %s" % (booking.id, r25_event.event_id, ex)
                 )
@@ -402,3 +443,19 @@ class Command(BaseCommand):
                     "Too Many Requests while syncing EMS Booking %s to "
                     "R25 Event %s" % (booking.id, r25_event.event_id)
                 )
+                messages.append(
+                    "Too Many Requests while syncing EMS Booking %s to "
+                    "R25 Event %s" % (booking.id, r25_event.event_id)
+                )
+
+        # send email
+        if len(messages) > 0:
+            send_mail(
+                'EMS2R25 report',
+                '\n'.join(messages),
+                settings.EMS2R25_EMAIL_HOST_USER,
+                settings.EMS2R25_EMAIL_RECIPIENTS,
+                fail_silently=False,
+                auth_user=settings.EMS2R25_EMAIL_HOST_USER,
+                auth_password=settings.EMS2R25_EMAIL_HOST_PASSWORD,
+            )

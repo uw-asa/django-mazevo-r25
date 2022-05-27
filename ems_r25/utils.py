@@ -80,6 +80,9 @@ def update_get_space_ids(ems_rooms):
             query_modified = True
 
     if query_modified:
-        put_resource(query_url, etree.tostring(r25_query_tree))
+        try:
+            put_resource(query_url, etree.tostring(r25_query_tree))
+        except (R25ErrorException, MaxRetryError, XMLSyntaxError) as ex:
+            logger.warning("R25 error while updating space search: %s" % ex)
 
     return space_ids

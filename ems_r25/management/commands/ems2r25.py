@@ -347,6 +347,9 @@ class Command(BaseCommand):
             )
             r25_event.title = event_name.strip()
             r25_event.state = r25_event.CONFIRMED_STATE
+            r25_event.event_type_id = settings.EMS_R25_EVENTTYPE_MAP.get(
+                booking.status.description, settings.EMS_R25_EVENTTYPE_DEFAULT
+            )
 
             r25_res = r25_event.reservations[0]
 

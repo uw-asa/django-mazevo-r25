@@ -350,9 +350,6 @@ def update_event(event):
 
         # initialize some things that aren't kept in the uw_r25 model
         update_value(enode, "node_type", "E")
-        update_value(
-            enode, "event_type_id", R25_DAO().get_service_setting("EVENTTYPE")
-        )
 
         onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
         update_value(
@@ -377,6 +374,7 @@ def update_event(event):
     update_value(enode, "start_date", event.start_date)
     update_value(enode, "end_date", event.end_date)
     update_value(enode, "state", event.state)
+    update_value(enode, "event_type_id", event.event_type_id)
     update_value(enode, "parent_id", event.parent_id)
     update_value(enode, "cabinet_id", event.cabinet_id)
     update_value(enode, "cabinet_name", event.cabinet_name)

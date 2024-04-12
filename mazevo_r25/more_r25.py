@@ -331,7 +331,7 @@ def update_event(event):
 
     Only the features supported by uw_r25 are supported here.
     Some unsupported fields are initialized with hard-coded values suitable for
-    events from ASA's EMS.
+    events from ASA's Mazevo instance.
 
     :param event: a uw_r25.models.event
     :return: the new or updated event from R25, as a uw_r25.models.event

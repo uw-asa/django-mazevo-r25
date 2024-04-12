@@ -1,2 +1,2 @@
-include ems_r25/VERSION
-recursive-include ems_r25 *
+include mazevo_r25/VERSION
+recursive-include mazevo_r25 *

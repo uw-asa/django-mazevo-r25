@@ -10,28 +10,28 @@ from dateutil.parser import parse
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand, CommandError
-from ems_client.models import Status
-from ems_client.service import Service
+from mazevo_client.models import Status
+from mazevo_client.service import Service
 from lxml.etree import XMLSyntaxError
 from urllib3.exceptions import HTTPError, InsecureRequestWarning
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
-from ems_r25.more_r25 import (
+from mazevo_r25.more_r25 import (
     delete_event,
     update_event,
     R25MessageException,
     R25ErrorException,
     TooManyRequestsException,
 )
-from ems_r25.utils import update_get_space_ids
+from mazevo_r25.utils import update_get_space_ids
 
 
 logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "adds or updates R25 events with events from EMS"
+    help = "adds or updates R25 events with events from Mazevo"
 
     def set_logger(self, verbosity):
         """
@@ -82,13 +82,13 @@ class Command(BaseCommand):
         parser.add_argument(
             "-b",
             "--booking",
-            help="Sync this specific EMS Booking",
+            help="Sync this specific Mazevo Booking",
         )
 
         parser.add_argument(
             "-r",
             "--reservation",
-            help="Sync this specific EMS Reservation",
+            help="Sync this specific Mazevo Reservation",
         )
 
         parser.add_argument(
@@ -135,19 +135,19 @@ class Command(BaseCommand):
             "Considering bookings from %s to %s" % (start_date, end_date)
         )
 
-        _ems = Service()
+        _mazevo = Service()
 
         if settings.DEBUG:
             requests.urllib3.disable_warnings(InsecureRequestWarning)
-        space_ids = update_get_space_ids(_ems.get_all_rooms())
-        logger.info("Found %d R25 spaces linked to EMS rooms" % len(space_ids))
+        space_ids = update_get_space_ids(_mazevo.get_all_rooms())
+        logger.info("Found %d R25 spaces linked to Mazevo rooms" % len(space_ids))
 
-        status_list = _ems.get_statuses()
+        status_list = _mazevo.get_statuses()
         statuses = {}
         search_statuses = []
         for status in status_list:
             statuses[status.id] = status
-            if status.description not in settings.EMS_R25_IGNORE_STATUSES:
+            if status.description not in settings.MAZEVO_R25_IGNORE_STATUSES:
                 search_statuses.append(status.id)
         logger.info(
             "Considering statuses %s"
@@ -162,33 +162,33 @@ class Command(BaseCommand):
         if options["booking"]:
             logger.info("Looking for single booking %s" % options["booking"])
             try:
-                bookings = [_ems.get_booking(options["booking"])]
+                bookings = [_mazevo.get_booking(options["booking"])]
             except IndexError:
                 bookings = []
         elif options["reservation"]:
             logger.info("Looking for reservation %s" % options["reservation"])
-            bookings = _ems.get_bookings2(
+            bookings = _mazevo.get_bookings2(
                 reservation_id=options["reservation"],
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
             )
         elif options["changed"]:
             logger.info("Looking for changed bookings")
-            bookings = _ems.get_changed_bookings(
+            bookings = _mazevo.get_changed_bookings(
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
                 statuses=search_statuses,
             )
         else:
             logger.info("Looking for all bookings")
-            bookings = _ems.get_bookings(
+            bookings = _mazevo.get_bookings(
                 start_date=start_date.isoformat(),
                 end_date=end_date.isoformat(),
                 statuses=search_statuses,
             )
         logger.info("Found %d bookings" % len(bookings))
 
-        ems_reservations = {}
+        mazevo_reservations = {}
         current_num = 0
         for booking in bookings:
             current_num += 1
@@ -197,7 +197,7 @@ class Command(BaseCommand):
                 booking.date_changed = datetime.date.min
 
             if options["changed"]:
-                # Booking hasn't changed, EMS Reservation has...
+                # Booking hasn't changed, Mazevo Reservation has...
                 if (
                     booking.date_changed.date() < start_date
                     or booking.date_changed.date() > end_date
@@ -206,18 +206,18 @@ class Command(BaseCommand):
 
             booking.status = statuses[booking.status_id]
 
-            if booking.reservation_id not in ems_reservations:
+            if booking.reservation_id not in mazevo_reservations:
                 # Use data from first booking as reservation data.
-                # FIXME: we need a way to grab actual EMS Reservation data
+                # FIXME: we need a way to grab actual Mazevo Reservation data
                 # FIXME: instead of just Bookings
-                ems_reservations[booking.reservation_id] = booking
-                ems_reservations[booking.reservation_id].bookings = {}
-            ems_reservations[booking.reservation_id].bookings[
+                mazevo_reservations[booking.reservation_id] = booking
+                mazevo_reservations[booking.reservation_id].bookings = {}
+            mazevo_reservations[booking.reservation_id].bookings[
                 booking.id
             ] = booking
 
             logger.debug(
-                "Processing EMS Booking %d/%d %d: '%s'"
+                "Processing Mazevo Booking %d/%d %d: '%s'"
                 % (current_num, len(bookings), booking.id, booking.event_name)
             )
             logger.debug(
@@ -275,7 +275,7 @@ class Command(BaseCommand):
                 )
 
             except IndexError:
-                # No R25 event matching this EMS Booking
+                # No R25 event matching this Mazevo Booking
                 logger.debug("\tNo R25 event found")
                 pass
             except HTTPError as ex:
@@ -311,11 +311,11 @@ class Command(BaseCommand):
             elif booking.room_id not in space_ids:
                 wanted_booking = False
             elif (
-                booking.status.description in settings.EMS_R25_REMOVE_STATUSES
+                booking.status.description in settings.MAZEVO_R25_REMOVE_STATUSES
             ):
                 wanted_booking = False
             elif (
-                booking.status.description in settings.EMS_R25_IGNORE_STATUSES
+                booking.status.description in settings.MAZEVO_R25_IGNORE_STATUSES
             ):
                 wanted_booking = False
 
@@ -347,8 +347,8 @@ class Command(BaseCommand):
             )
             r25_event.title = event_name.strip()
             r25_event.state = r25_event.CONFIRMED_STATE
-            r25_event.event_type_id = settings.EMS_R25_EVENTTYPE_MAP.get(
-                booking.status.description, settings.EMS_R25_EVENTTYPE_DEFAULT
+            r25_event.event_type_id = settings.MAZEVO_R25_EVENTTYPE_MAP.get(
+                booking.status.description, settings.MAZEVO_R25_EVENTTYPE_DEFAULT
             )
 
             r25_res = r25_event.reservations[0]
@@ -382,11 +382,11 @@ class Command(BaseCommand):
                 while ex:
                     if ex.msg_id == "EV_I_SPACECON":
                         logger.warning(
-                            "Conflict while syncing EMS Booking %s: %s"
+                            "Conflict while syncing Mazevo Booking %s: %s"
                             % (booking.id, ex.text)
                         )
                         messages.append(
-                            "Conflict while syncing EMS Booking %s: %s"
+                            "Conflict while syncing Mazevo Booking %s: %s"
                             % (booking.id, ex.text)
                         )
                         match = re.search(r"\[(?P<event_id>\d+)\]", ex.text)
@@ -409,12 +409,12 @@ class Command(BaseCommand):
 
                     else:
                         logger.warning(
-                            "R25 message while syncing EMS Booking %s to "
+                            "R25 message while syncing Mazevo Booking %s to "
                             "R25 Event %s: %s"
                             % (booking.id, r25_event.event_id, ex)
                         )
                         messages.append(
-                            "R25 message while syncing EMS Booking %s to "
+                            "R25 message while syncing Mazevo Booking %s to "
                             "R25 Event %s: %s"
                             % (booking.id, r25_event.event_id, ex)
                         )
@@ -423,42 +423,42 @@ class Command(BaseCommand):
 
             except R25ErrorException as ex:
                 logger.warning(
-                    "R25 error while syncing EMS Booking %s to R25 Event "
+                    "R25 error while syncing Mazevo Booking %s to R25 Event "
                     " %s: %s" % (booking.id, r25_event.event_id, ex)
                 )
                 messages.append(
-                    "R25 error while syncing EMS Booking %s to R25 Event "
+                    "R25 error while syncing Mazevo Booking %s to R25 Event "
                     " %s: %s" % (booking.id, r25_event.event_id, ex)
                 )
 
             except HTTPError as ex:
                 logger.warning(
-                    "HTTP error while syncing EMS Booking %s to R25 Event "
+                    "HTTP error while syncing Mazevo Booking %s to R25 Event "
                     " %s: %s" % (booking.id, r25_event.event_id, ex)
                 )
                 messages.append(
-                    "HTTP error while syncing EMS Booking %s to R25 Event "
+                    "HTTP error while syncing Mazevo Booking %s to R25 Event "
                     " %s: %s" % (booking.id, r25_event.event_id, ex)
                 )
 
             except TooManyRequestsException:
                 self.stdout.write(
-                    "Too Many Requests while syncing EMS Booking %s to "
+                    "Too Many Requests while syncing Mazevo Booking %s to "
                     "R25 Event %s" % (booking.id, r25_event.event_id)
                 )
                 messages.append(
-                    "Too Many Requests while syncing EMS Booking %s to "
+                    "Too Many Requests while syncing Mazevo Booking %s to "
                     "R25 Event %s" % (booking.id, r25_event.event_id)
                 )
 
         # send email
         if len(messages) > 0:
             send_mail(
-                'EMS2R25 report',
+                'Mazevo2R25 report',
                 '\n'.join(messages),
-                settings.EMS2R25_EMAIL_HOST_USER,
-                settings.EMS2R25_EMAIL_RECIPIENTS,
+                settings.MAZEVO2R25_EMAIL_HOST_USER,
+                settings.MAZEVO2R25_EMAIL_RECIPIENTS,
                 fail_silently=False,
-                auth_user=settings.EMS2R25_EMAIL_HOST_USER,
-                auth_password=settings.EMS2R25_EMAIL_HOST_PASSWORD,
+                auth_user=settings.MAZEVO2R25_EMAIL_HOST_USER,
+                auth_password=settings.MAZEVO2R25_EMAIL_HOST_PASSWORD,
             )

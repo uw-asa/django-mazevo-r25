@@ -10,7 +10,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'ems_r25',
+    'mazevo_r25',
 ]
 
 MIDDLEWARE = [
@@ -64,13 +64,13 @@ STATIC_URL = '/static/'
 AUTHZ_GROUP_BACKEND = \
     'authz_group.authz_implementation.uw_group_service.UWGroupService'
 
-EMSTOOLS_SCHEDULER_GROUP = 'u_classrm_services_ems_schedulers'
+EVENT_SCHEDULER_GROUP = 'uw_asa_it_events_schedulers'
 
 # A saved search, which we automatically maintain
-EMS_R25_SPACE_QUERY = '999'
+MAZEVO_R25_SPACE_QUERY = '999'
 
 # Statuses to ignore entirely
-EMS_R25_IGNORE_STATUSES = [
+MAZEVO_R25_IGNORE_STATUSES = [
     'Academic Confirmed',
     'Academic Conflict',
     'Academic Crosslist',
@@ -79,7 +79,7 @@ EMS_R25_IGNORE_STATUSES = [
 # Statuses for which R25 Reservations will not be made, or if already existing,
 # will be cancelled. These are in addition to any status which isn't of the
 # "Booked Space" Status Type.
-EMS_R25_REMOVE_STATUSES = [
+MAZEVO_R25_REMOVE_STATUSES = [
     'Blackout',
     'Requested',
     'Tentative',
@@ -95,7 +95,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'ems_r25': {
+        'mazevo_r25': {
             'handlers': ['console'],
             'level': 'DEBUG',
         },

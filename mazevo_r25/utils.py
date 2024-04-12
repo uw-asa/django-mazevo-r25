@@ -12,20 +12,20 @@ from .more_r25 import put_resource, R25ErrorException
 logger = logging.getLogger(__name__)
 
 
-def update_get_space_ids(ems_rooms):
+def update_get_space_ids(mazevo_rooms):
     """
-    Get R25 space_ids for EMS Rooms.
+    Get R25 space_ids for Mazevo Rooms.
 
-    :param ems_rooms: A collection of ems_client.models.Room
+    :param mazevo_rooms: A collection of mazevo_client.models.Room
     :return: A dictionary of Room.id: space_id
     """
     space_ids = {}
-    for room in ems_rooms:
+    for room in mazevo_rooms:
         if room.active and room.external_reference is not None:
             space_ids[room.id] = room.external_reference
 
     # while we're here, update the R25 saved search that we'll use
-    query_url = "space_search.xml?query_id=%s" % settings.EMS_R25_SPACE_QUERY
+    query_url = "space_search.xml?query_id=%s" % settings.MAZEVO_R25_SPACE_QUERY
 
     try:
         r25_query_tree = get_resource(query_url)

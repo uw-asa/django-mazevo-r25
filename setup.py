@@ -3,7 +3,7 @@
 import os
 from setuptools import setup
 
-PACKAGE = "ems_r25"
+PACKAGE = "mazevo_r25"
 
 README = open(os.path.join(os.path.dirname(__file__), "README.md")).read()
 
@@ -16,7 +16,7 @@ VERSION = VERSION.replace("\n", "")
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name="Django-EMS-R25",
+    name="Django-Mazevo-R25",
     version=VERSION,
     packages=[PACKAGE],
     include_package_data=True,
@@ -26,7 +26,7 @@ setup(
         'Django-SupportTools ; python_version >= "3.0"',
         "lxml",
         "python-dateutil",
-        "UW-EMS-Client>=0.12",
+        "UW-RestClients-Mazevo",
         'UW-RestClients-GWS<2.0 ; python_version < "3.0"',
         'UW-RestClients-GWS ; python_version >= "3.0"',
         "UW-RestClients-R25",
@@ -35,9 +35,9 @@ setup(
         "pycodestyle",
     ],
     license="Apache License, Version 2.0",
-    description="Django app generate R25 events from EMS",
+    description="Django app to generate R25 events from Mazevo",
     long_description=README,
-    url="https://github.com/uw-asa/django-ems-r25",
+    url="https://github.com/uw-asa/django-mazevo-r25",
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Django",

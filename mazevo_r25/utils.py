@@ -16,7 +16,7 @@ def update_get_space_ids(mazevo_rooms):
     """
     Get R25 space_ids for Mazevo Rooms.
 
-    :param mazevo_rooms: A collection of mazevo_client.models.Room
+    :param mazevo_rooms: A collection of uw_mazevo.models.Room
     :return: A dictionary of Room.id: space_id
     """
     space_ids = {}

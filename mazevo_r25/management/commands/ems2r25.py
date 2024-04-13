@@ -10,8 +10,9 @@ from dateutil.parser import parse
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand, CommandError
-from mazevo_client.models import Status
-from mazevo_client.service import Service
+from uw_mazevo.models import Status
+from uw_mazevo.public_configuration import PublicConfiguration
+from uw_mazevo.public_event import PublicEvent
 from lxml.etree import XMLSyntaxError
 from urllib3.exceptions import HTTPError, InsecureRequestWarning
 from uw_r25.events import get_event_by_id, get_events
@@ -75,8 +76,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "-c",
             "--changed",
-            action="store_true",
-            help="Get Bookings that have changed within date range.",
+            help="Get Bookings that have changed since date.",
         )
 
         parser.add_argument(
@@ -111,6 +111,7 @@ class Command(BaseCommand):
         self.set_logger(options.get("verbosity"))
 
         if options["changed"]:
+            changed_date = parse(options["start"]).date()
             if options["start"]:
                 start_date = parse(options["start"]).date()
             else:
@@ -134,15 +135,15 @@ class Command(BaseCommand):
         logger.info(
             "Considering bookings from %s to %s" % (start_date, end_date)
         )
-
-        _mazevo = Service()
+        if options["changed"]:
+            logger.info("  and changed since %s" % (changed_date))
 
         if settings.DEBUG:
             requests.urllib3.disable_warnings(InsecureRequestWarning)
-        space_ids = update_get_space_ids(_mazevo.get_all_rooms())
+        space_ids = update_get_space_ids(PublicConfiguration().get_rooms())
         logger.info("Found %d R25 spaces linked to Mazevo rooms" % len(space_ids))
 
-        status_list = _mazevo.get_statuses()
+        status_list = PublicConfiguration().get_statuses()
         statuses = {}
         search_statuses = []
         for status in status_list:
@@ -159,32 +160,33 @@ class Command(BaseCommand):
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
-        if options["booking"]:
-            logger.info("Looking for single booking %s" % options["booking"])
-            try:
-                bookings = [_mazevo.get_booking(options["booking"])]
-            except IndexError:
-                bookings = []
-        elif options["reservation"]:
-            logger.info("Looking for reservation %s" % options["reservation"])
-            bookings = _mazevo.get_bookings2(
-                reservation_id=options["reservation"],
-                start_date=start_date.isoformat(),
-                end_date=end_date.isoformat(),
-            )
-        elif options["changed"]:
+        # if options["booking"]:
+        #     logger.info("Looking for single booking %s" % options["booking"])
+        #     try:
+        #         bookings = [get_booking(options["booking"])]
+        #     except IndexError:
+        #         bookings = []
+        # elif options["reservation"]:
+        #     logger.info("Looking for reservation %s" % options["reservation"])
+        #     bookings = get_bookings2(
+        #         reservation_id=options["reservation"],
+        #         start_date=start_date.isoformat(),
+        #         end_date=end_date.isoformat(),
+        #     )
+        if options["changed"]:
             logger.info("Looking for changed bookings")
-            bookings = _mazevo.get_changed_bookings(
-                start_date=start_date.isoformat(),
-                end_date=end_date.isoformat(),
-                statuses=search_statuses,
+            bookings = PublicEvent.get_events(
+                start=start_date.isoformat(),
+                end=end_date.isoformat(),
+                statusIds=search_statuses,
+                minDateChanged=changed_date.isoformat(),
             )
         else:
             logger.info("Looking for all bookings")
-            bookings = _mazevo.get_bookings(
-                start_date=start_date.isoformat(),
-                end_date=end_date.isoformat(),
-                statuses=search_statuses,
+            bookings = PublicEvent().get_events(
+                start=start_date.isoformat(),
+                end=end_date.isoformat(),
+                statusIds=search_statuses,
             )
         logger.info("Found %d bookings" % len(bookings))
 

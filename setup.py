@@ -26,6 +26,7 @@ setup(
         'Django-SupportTools ; python_version >= "3.0"',
         "lxml",
         "python-dateutil",
+        "requests",
         "UW-RestClients-Mazevo",
         'UW-RestClients-GWS<2.0 ; python_version < "3.0"',
         'UW-RestClients-GWS ; python_version >= "3.0"',

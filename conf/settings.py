@@ -76,15 +76,24 @@ MAZEVO_R25_IGNORE_STATUSES = [
     'Academic Crosslist',
 ]
 
-# Statuses for which R25 Reservations will not be made, or if already existing,
-# will be cancelled. These are in addition to any status which isn't of the
-# "Booked Space" Status Type.
+# Statuses for which R25 Reservations will not be made, or if already
+# existing, will be cancelled. These are in addition to any status
+# which doesn't "Block Space".
 MAZEVO_R25_REMOVE_STATUSES = [
     'Blackout',
     'Requested',
     'Tentative',
     'Tentative PCS',
 ]
+
+# Map Mazevo Booking Status to R25 Event Type
+MAZEVO_R25_EVENTTYPE_DEFAULT = '433'           # UWS Event
+MAZEVO_R25_EVENTTYPE_MAP = {
+    'Academic Final Exam': '475',           # UWS ES_Final
+    'CAAMS Booking': '467',                 # UWS CAAMS
+    'Blackout': '416',                      # Repair/Maintenance
+    'Event Finalized (DAX Bypass)': '416',  # Repair/Maintenance
+}
 
 LOGGING = {
     'version': 1,

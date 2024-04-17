@@ -87,8 +87,8 @@ class Command(BaseCommand):
 
         parser.add_argument(
             "-r",
-            "--reservation",
-            help="Sync this specific Mazevo Reservation",
+            "--event",
+            help="Sync this specific Mazevo Event",
         )
 
         parser.add_argument(
@@ -166,10 +166,10 @@ class Command(BaseCommand):
         #         bookings = [get_booking(options["booking"])]
         #     except IndexError:
         #         bookings = []
-        # elif options["reservation"]:
-        #     logger.info("Looking for reservation %s" % options["reservation"])
+        # elif options["event"]:
+        #     logger.info("Looking for event %s" % options["event"])
         #     bookings = get_bookings2(
-        #         reservation_id=options["reservation"],
+        #         event_number=options["event"],
         #         start_date=start_date.isoformat(),
         #         end_date=end_date.isoformat(),
         #     )
@@ -190,7 +190,7 @@ class Command(BaseCommand):
             )
         logger.info("Found %d bookings" % len(bookings))
 
-        mazevo_reservations = {}
+        mazevo_events = {}
         current_num = 0
         for booking in bookings:
             current_num += 1
@@ -199,7 +199,7 @@ class Command(BaseCommand):
                 booking.date_changed = datetime.date.min
 
             if options["changed"]:
-                # Booking hasn't changed, Mazevo Reservation has...
+                # Booking hasn't changed, Mazevo Event has...
                 if (
                     booking.date_changed.date() < start_date
                     or booking.date_changed.date() > end_date
@@ -208,13 +208,13 @@ class Command(BaseCommand):
 
             booking.status = statuses[booking.status_id]
 
-            if booking.reservation_id not in mazevo_reservations:
-                # Use data from first booking as reservation data.
-                # FIXME: we need a way to grab actual Mazevo Reservation data
+            if booking.event_number not in mazevo_events:
+                # Use data from first booking as event data.
+                # FIXME: we need a way to grab actual Mazevo Event data
                 # FIXME: instead of just Bookings
-                mazevo_reservations[booking.reservation_id] = booking
-                mazevo_reservations[booking.reservation_id].bookings = {}
-            mazevo_reservations[booking.reservation_id].bookings[
+                mazevo_events[booking.event_number] = booking
+                mazevo_events[booking.event_number].bookings = {}
+            mazevo_events[booking.event_number].bookings[
                 booking.id
             ] = booking
 
@@ -227,15 +227,15 @@ class Command(BaseCommand):
                 % (
                     (
                         booking.status.description,
-                        space_ids.get(booking.room_id),
+                        space_ids.get(booking.room_id).space_id,
                     )
                 )
             )
             logger.debug(
                 "\tStart: %s, End: %s, Changed: %s"
                 % (
-                    booking.time_booking_start.isoformat(),
-                    booking.time_booking_end.isoformat(),
+                    booking.date_time_start.isoformat(),
+                    booking.date_time_end.isoformat(),
                     booking.date_changed.isoformat(),
                 )
             )
@@ -308,7 +308,7 @@ class Command(BaseCommand):
                 continue
 
             wanted_booking = True
-            if booking.status_type_id != Status.STATUS_TYPE_BOOKED_SPACE:
+            if booking.status.status_type != Status.STATUS_TYPE_BLOCKS_SPACE:
                 wanted_booking = False
             elif booking.room_id not in space_ids:
                 wanted_booking = False
@@ -356,13 +356,13 @@ class Command(BaseCommand):
             r25_res = r25_event.reservations[0]
 
             if wanted_booking:
-                r25_res.start_datetime = booking.time_booking_start.isoformat()
-                r25_res.end_datetime = booking.time_booking_end.isoformat()
+                r25_res.start_datetime = booking.date_time_start.isoformat()
+                r25_res.end_datetime = booking.date_time_end.isoformat()
                 r25_res.state = r25_res.STANDARD_STATE
                 if r25_res.space_reservation is None:
                     r25_res.space_reservation = Space()
 
-                r25_res.space_reservation.space_id = space_ids[booking.room_id]
+                r25_res.space_reservation.space_id = space_ids.get(booking.room_id).space_id
 
             else:
                 # Cancel this unwanted r25 event

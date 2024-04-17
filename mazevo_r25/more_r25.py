@@ -1,11 +1,13 @@
 import logging
 from lxml import etree
+from urllib.parse import quote
 
 from restclients_core.exceptions import DataFailureException
 from uw_r25 import nsmap, get_resource
 from uw_r25.dao import R25_DAO
 from uw_r25.events import events_from_xml
 from uw_r25.models import Event
+from uw_r25.spaces import spaces_from_xml
 
 
 logger = logging.getLogger(__name__)
@@ -164,7 +166,7 @@ def put_resource(url, body):
     }
 
     response = R25_DAO().putURL(url, headers, body)
-    if response.status not in (200, 201, 400, 403):
+    if response.status not in (200, 201, 400, 403, 425):
         raise DataFailureException(url, response.status, response.data)
 
     tree = etree.fromstring(response.data.strip())
@@ -431,7 +433,7 @@ def update_event(event):
                 # Add space reservation
                 srnode = add_node(rnode, "space_reservation")
 
-            update_value(srnode, "space_id", res.space_reservation.space_id)
+            update_value(srnode, "space_id", str(res.space_reservation.space_id))
 
     # Make sure event dates encompass all reservations
     # for res in r25_event.reservations:
@@ -464,3 +466,13 @@ def delete_event(event_id):
     result = delete_resource(url)
 
     return result
+
+def get_space_by_short_name(short_name):
+    """
+    Get a single space with the given short name
+
+    Can't just use get_spaces because the argument won't be quoted properly
+    """
+    url = "spaces.xml"
+    url += "?short_name={}".format(quote(short_name))
+    return spaces_from_xml(get_resource(url))[0]

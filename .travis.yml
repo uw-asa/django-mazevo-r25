@@ -10,7 +10,7 @@ before_script:
   - pip install coverage
   - pip install coveralls
   - npm install -g jshint
-  - cp travis-ci/manage.py manage.py
+  - cp conf/manage.py manage.py
 script:
   - pycodestyle mazevo_r25/
   - python -m compileall mazevo_r25/

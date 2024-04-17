@@ -7,7 +7,7 @@ PACKAGE = "mazevo_r25"
 
 README = open(os.path.join(os.path.dirname(__file__), "README.md")).read()
 
-# The VERSION file is created by travis-ci, based on the tag name
+# The VERSION file is created during build, based on the tag name
 version_path = os.path.join(PACKAGE, "VERSION")
 VERSION = open(os.path.join(os.path.dirname(__file__), version_path)).read()
 VERSION = VERSION.replace("\n", "")

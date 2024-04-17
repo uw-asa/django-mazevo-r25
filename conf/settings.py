@@ -6,6 +6,7 @@ SECRET_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 DEBUG = True
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -18,12 +19,15 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.PersistentRemoteUserMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.RemoteUserBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+ROOT_URLCONF = 'conf.urls'
 
 DATABASES = {
     'default': {

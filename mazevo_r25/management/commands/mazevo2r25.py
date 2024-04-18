@@ -14,7 +14,8 @@ from uw_mazevo.models import Status
 from uw_mazevo.public_configuration import PublicConfiguration
 from uw_mazevo.public_event import PublicEvent
 from lxml.etree import XMLSyntaxError
-from urllib3.exceptions import HTTPError, InsecureRequestWarning
+from restclients_core.exceptions import DataFailureException
+from urllib3.exceptions import InsecureRequestWarning
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
@@ -280,14 +281,14 @@ class Command(BaseCommand):
                 # No R25 event matching this Mazevo Booking
                 logger.debug("\tNo R25 event found")
                 pass
-            except HTTPError as ex:
+            except DataFailureException as ex:
                 # Server timeout, etc
                 self.stdout.write(
-                    "HTTP Error retrieving R25 Event, skipping "
+                    "Error retrieving R25 Event, skipping "
                     "Booking %s: %s" % (booking.id, ex)
                 )
                 messages.append(
-                    "HTTP Error retrieving R25 Event, skipping "
+                    "Error retrieving R25 Event, skipping "
                     "Booking %s: %s" % (booking.id, ex)
                 )
                 continue
@@ -433,7 +434,7 @@ class Command(BaseCommand):
                     " %s: %s" % (booking.id, r25_event.event_id, ex)
                 )
 
-            except HTTPError as ex:
+            except DataFailureException as ex:
                 logger.warning(
                     "HTTP error while syncing Mazevo Booking %s to R25 Event "
                     " %s: %s" % (booking.id, r25_event.event_id, ex)

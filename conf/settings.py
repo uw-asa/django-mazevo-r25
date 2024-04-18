@@ -66,9 +66,6 @@ AUTHZ_GROUP_BACKEND = \
 
 EVENT_SCHEDULER_GROUP = 'uw_asa_it_events_schedulers'
 
-# A saved search, which we automatically maintain
-MAZEVO_R25_SPACE_QUERY = '999'
-
 # Statuses to ignore entirely
 MAZEVO_R25_IGNORE_STATUSES = [
     'Academic Confirmed',

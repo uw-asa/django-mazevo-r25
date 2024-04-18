@@ -375,15 +375,23 @@ class Command(BaseCommand):
                         )
                         match = re.search(r"\[(?P<event_id>\d+)\]", ex.text)
                         if match:
-                            old_event = get_event_by_id(
-                                match.group("event_id")
-                            )
-                            logger.warning(
-                                "Existing event: %s" % old_event.live_url()
-                            )
-                            messages.append(
-                                "Existing event: %s" % old_event.live_url()
-                            )
+                            try:
+                                old_event = get_event_by_id(
+                                    match.group("event_id")
+                                )
+                                logger.warning(
+                                    "Existing event: %s" % old_event.live_url()
+                                )
+                                messages.append(
+                                    "Existing event: %s" % old_event.live_url()
+                                )
+                            except:
+                                logger.warning(
+                                    "Unknown event "
+                                )
+                                messages.append(
+                                    "Unknown event "
+                                )
                             logger.warning(
                                 "Is blocking event: %s" % r25_event.live_url()
                             )

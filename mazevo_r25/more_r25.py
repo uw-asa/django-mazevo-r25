@@ -1,3 +1,4 @@
+import json
 import logging
 from lxml import etree
 from urllib.parse import quote
@@ -55,13 +56,15 @@ class R25ErrorException(Exception):
         self.msg = kwargs.get("msg")
         self.object_id = kwargs.get("id")
         self.proc_error = kwargs.get("proc_error")
+        self.details = kwargs.get("details")
 
     def __str__(self):
-        return "Error %s%s: %s%s" % (
+        return "Error %s%s: %s%s%s" % (
             self.msg_id,
             " with %s" % self.object_id if self.object_id else "",
             self.msg,
             ", %s" % self.proc_error if self.proc_error else "",
+            " %s" % json.dumps(self.details) if self.details else "",
         )
 
 
@@ -179,6 +182,13 @@ def put_resource(url, body):
     enodes = tree.xpath("r25:error", namespaces=nsmap)
     if len(enodes):
         err = node_as_dict(enodes[0])
+        details = tree.xpath("r25:error_details/r25:error_detail", namespaces=nsmap)
+        if len(details):
+            err['details'] = []
+        for node in details:
+            detail = dict(node.attrib)
+            detail['description'] = node.text
+            err['details'].append(detail)
         raise R25ErrorException(**err)
 
     mnodes = tree.xpath("r25:messages", namespaces=nsmap)

@@ -1,7 +1,7 @@
 import json
 import logging
 from lxml import etree
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 
 from restclients_core.exceptions import DataFailureException
 from uw_r25 import nsmap, get_resource
@@ -486,3 +486,24 @@ def get_space_by_short_name(short_name):
     url = "spaces.xml"
     url += "?short_name={}".format(quote(short_name))
     return spaces_from_xml(get_resource(url))[0]
+
+def get_space_list(**kwargs):
+    """
+    Get the list of space ids and names
+    """
+    url = "spaces.xml"
+    kwargs['scope'] = 'list'
+    url += "?{}".format(urlencode(kwargs))
+    return list_items_from_xml(get_resource(url))
+
+def list_items_from_xml(tree):
+    items = []
+    for node in tree.xpath("//r25:item", namespaces=nsmap):
+        item = list_item_from_xml(node)
+        items.append(item)
+    return items
+
+def list_item_from_xml(tree):
+    id = tree.xpath("r25:id", namespaces=nsmap)[0].text
+    name = tree.xpath("r25:name", namespaces=nsmap)[0].text
+    return (id, name)

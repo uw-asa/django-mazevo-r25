@@ -432,7 +432,7 @@ def update_event(event):
             if (
                 res.space_reservation is None
                 or srnode.xpath("r25:space_id", namespaces=nsmap)[0].text
-                != res.space_reservation.space_id
+                != str(res.space_reservation.space_id)
             ):
                 # outdated space reservation. delete it
                 delete_node(srnode)

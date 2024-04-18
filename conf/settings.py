@@ -92,6 +92,10 @@ MAZEVO_R25_EVENTTYPE_MAP = {
     'Event Finalized (DAX Bypass)': '416',  # Repair/Maintenance
 }
 
+MAZEVO_R25_EMAIL_HOST_USER = ''
+MAZEVO_R25_EMAIL_HOST_PASSWORD = ''
+MAZEVO_R25_EMAIL_RECIPIENTS = ''
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

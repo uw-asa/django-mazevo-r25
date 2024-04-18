@@ -459,9 +459,9 @@ class Command(BaseCommand):
             send_mail(
                 'Mazevo2R25 report',
                 '\n'.join(messages),
-                settings.MAZEVO2R25_EMAIL_HOST_USER,
-                settings.MAZEVO2R25_EMAIL_RECIPIENTS,
+                settings.MAZEVO_R25_EMAIL_HOST_USER,
+                settings.MAZEVO_R25_EMAIL_RECIPIENTS,
                 fail_silently=False,
-                auth_user=settings.MAZEVO2R25_EMAIL_HOST_USER,
-                auth_password=settings.MAZEVO2R25_EMAIL_HOST_PASSWORD,
+                auth_user=settings.MAZEVO_R25_EMAIL_HOST_USER,
+                auth_password=settings.MAZEVO_R25_EMAIL_HOST_PASSWORD,
             )

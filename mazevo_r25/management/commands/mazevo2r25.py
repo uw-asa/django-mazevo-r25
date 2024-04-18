@@ -64,20 +64,20 @@ class Command(BaseCommand):
         parser.add_argument(
             "-s",
             "--start",
-            help="Start of date range. Default is today, or yesterday if "
-            "using --changed.",
+            help="Start of date range. Default is today.",
         )
         parser.add_argument(
             "-e",
             "--end",
-            help="End of date range. Default is START+7 days, or today if "
-            "using --changed.",
+            help="End of date range. Default is START+7 days.",
         )
 
         parser.add_argument(
             "-c",
             "--changed",
-            help="Get Bookings that have changed since date.",
+            nargs='?', const="today",
+            help="Get Bookings that have changed since date."
+            " Default is today if no argument given.",
         )
 
         parser.add_argument(
@@ -111,33 +111,25 @@ class Command(BaseCommand):
 
         self.set_logger(options.get("verbosity"))
 
-        if options["changed"]:
-            changed_date = parse(options["start"]).date()
-            if options["start"]:
-                start_date = parse(options["start"]).date()
-            else:
-                start_date = datetime.date.today()
-            if options["end"]:
-                end_date = parse(options["end"]).date()
-            else:
-                end_date = datetime.date.today()
-
+        if options["start"]:
+            start_date = parse(options["start"]).date()
         else:
-            if options["start"]:
-                start_date = parse(options["start"]).date()
-            else:
-                start_date = datetime.date.today()
-            if options["end"] == "max":
-                end_date = datetime.date.max
-            elif options["end"]:
-                end_date = parse(options["end"]).date()
-            else:
-                end_date = start_date + datetime.timedelta(days=7)
+            start_date = datetime.date.today()
+        if options["end"] == "max":
+            end_date = datetime.date.max
+        elif options["end"]:
+            end_date = parse(options["end"]).date()
+        else:
+            end_date = start_date + datetime.timedelta(days=7)
         logger.info(
             "Considering bookings from %s to %s" % (start_date, end_date)
         )
         if options["changed"]:
-            logger.info("  and changed since %s" % (changed_date))
+            if options["changed"] == "today":
+                changed_date = datetime.date.today()
+            else:
+                changed_date = parse(options["changed"]).date()
+            logger.info("\tand changed since %s" % (changed_date))
 
         if settings.DEBUG:
             requests.urllib3.disable_warnings(InsecureRequestWarning)
@@ -176,7 +168,7 @@ class Command(BaseCommand):
         #     )
         if options["changed"]:
             logger.info("Looking for changed bookings")
-            bookings = PublicEvent.get_events(
+            bookings = PublicEvent().get_events(
                 start=start_date.isoformat(),
                 end=end_date.isoformat(),
                 statusIds=search_statuses,
@@ -195,17 +187,6 @@ class Command(BaseCommand):
         current_num = 0
         for booking in bookings:
             current_num += 1
-            if booking.date_changed is None:
-                # get_booking doesn't return date_changed...
-                booking.date_changed = datetime.date.min
-
-            if options["changed"]:
-                # Booking hasn't changed, Mazevo Event has...
-                if (
-                    booking.date_changed.date() < start_date
-                    or booking.date_changed.date() > end_date
-                ):
-                    continue
 
             booking.status = statuses[booking.status_id]
 

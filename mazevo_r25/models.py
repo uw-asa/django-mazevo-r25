@@ -27,5 +27,5 @@ class MazevoRoomSpace(models.Model):
     def space_name(self):
         try:
             return space_names[self.space_id]
-        except:
+        except Exception:
             return "Invalid"

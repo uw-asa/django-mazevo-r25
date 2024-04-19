@@ -376,7 +376,7 @@ class Command(BaseCommand):
                                 messages.append(
                                     "Existing event: %s" % old_event.live_url()
                                 )
-                            except:
+                            except Exception:
                                 logger.warning("Unknown event ")
                                 messages.append("Unknown event ")
                             logger.warning(

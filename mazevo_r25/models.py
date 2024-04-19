@@ -1,5 +1,5 @@
 from django.db import models
-from uw_mazevo.public_configuration import PublicConfiguration
+from uw_mazevo.api import PublicConfiguration
 
 from .more_r25 import get_space_list
 

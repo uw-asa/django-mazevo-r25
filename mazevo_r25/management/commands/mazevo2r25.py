@@ -14,8 +14,7 @@ from lxml.etree import XMLSyntaxError
 from restclients_core.exceptions import DataFailureException
 from urllib3.exceptions import InsecureRequestWarning
 from uw_mazevo.models import Status
-from uw_mazevo.public_configuration import PublicConfiguration
-from uw_mazevo.public_event import PublicEvent
+from uw_mazevo.api import PublicConfiguration, PublicEvent
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 

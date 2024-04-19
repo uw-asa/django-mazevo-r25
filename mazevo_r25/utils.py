@@ -17,7 +17,7 @@ def update_get_space_ids(mazevo_rooms):
     for room in mazevo_rooms:
         room_space, _ = MazevoRoomSpace.objects.get_or_create(room_id=room.id)
         if room_space.space_id is None:
-            if room.description.startswith('_'):
+            if room.description.startswith("_"):
                 logger.info("Skipping room {}".format(room.description))
                 room_space.save()
                 continue
@@ -27,5 +27,5 @@ def update_get_space_ids(mazevo_rooms):
                 room_space.save()
             except:
                 logger.warning("No R25 space found for {}".format(room.description))
-            
+
     return MazevoRoomSpace.objects.in_bulk()

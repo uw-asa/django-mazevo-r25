@@ -15,9 +15,9 @@ logger = logging.getLogger(__name__)
 
 
 def live_url(self):
-    return (
-        "https://25live.collegenet.com/pro/%s#!/home/event/%s/details"
-        % (R25_DAO().get_service_setting("INSTANCE"), self.event_id)
+    return "https://25live.collegenet.com/pro/%s#!/home/event/%s/details" % (
+        R25_DAO().get_service_setting("INSTANCE"),
+        self.event_id,
     )
 
 
@@ -85,9 +85,7 @@ class R25MessageException(Exception):
     </r25:messages>
     """
 
-    def __init__(
-        self, num, msg_id, text, entity_name, object_id, next_msg=None
-    ):
+    def __init__(self, num, msg_id, text, entity_name, object_id, next_msg=None):
         self.num = num
         self.msg_id = msg_id
         self.text = text
@@ -184,11 +182,11 @@ def put_resource(url, body):
         err = node_as_dict(enodes[0])
         details = tree.xpath("r25:error_details/r25:error_detail", namespaces=nsmap)
         if len(details):
-            err['details'] = []
+            err["details"] = []
         for node in details:
             detail = dict(node.attrib)
-            detail['description'] = node.text
-            err['details'].append(detail)
+            detail["description"] = node.text
+            err["details"].append(detail)
         raise R25ErrorException(**err)
 
     mnodes = tree.xpath("r25:messages", namespaces=nsmap)
@@ -258,9 +256,7 @@ def update_value(node, name, value):
         element = node.xpath("r25:%s" % name, namespaces=nsmap)[0]
     except IndexError:
         # create the element
-        element = etree.SubElement(
-            node, "{%s}%s" % (nsmap["r25"], name), nsmap=nsmap
-        )
+        element = etree.SubElement(node, "{%s}%s" % (nsmap["r25"], name), nsmap=nsmap)
 
     if (
         (not value and not element.text)
@@ -429,11 +425,9 @@ def update_event(event):
             pass
 
         if srnode is not None:
-            if (
-                res.space_reservation is None
-                or srnode.xpath("r25:space_id", namespaces=nsmap)[0].text
-                != str(res.space_reservation.space_id)
-            ):
+            if res.space_reservation is None or srnode.xpath(
+                "r25:space_id", namespaces=nsmap
+            )[0].text != str(res.space_reservation.space_id):
                 # outdated space reservation. delete it
                 delete_node(srnode)
                 srnode = None
@@ -477,6 +471,7 @@ def delete_event(event_id):
 
     return result
 
+
 def get_space_by_short_name(short_name):
     """
     Get a single space with the given short name
@@ -487,14 +482,16 @@ def get_space_by_short_name(short_name):
     url += "?short_name={}".format(quote(short_name))
     return spaces_from_xml(get_resource(url))[0]
 
+
 def get_space_list(**kwargs):
     """
     Get the list of space ids and names
     """
     url = "spaces.xml"
-    kwargs['scope'] = 'list'
+    kwargs["scope"] = "list"
     url += "?{}".format(urlencode(kwargs))
     return list_items_from_xml(get_resource(url))
+
 
 def list_items_from_xml(tree):
     items = []
@@ -502,6 +499,7 @@ def list_items_from_xml(tree):
         item = list_item_from_xml(node)
         items.append(item)
     return items
+
 
 def list_item_from_xml(tree):
     id = int(tree.xpath("r25:id", namespaces=nsmap)[0].text)

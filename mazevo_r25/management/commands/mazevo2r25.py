@@ -74,7 +74,8 @@ class Command(BaseCommand):
         parser.add_argument(
             "-c",
             "--changed",
-            nargs='?', const="today",
+            nargs="?",
+            const="today",
             help="Get Bookings that have changed since date."
             " Default is today if no argument given.",
         )
@@ -120,9 +121,7 @@ class Command(BaseCommand):
             end_date = parse(options["end"]).date()
         else:
             end_date = start_date + datetime.timedelta(days=7)
-        logger.info(
-            "Considering bookings from %s to %s" % (start_date, end_date)
-        )
+        logger.info("Considering bookings from %s to %s" % (start_date, end_date))
         if options["changed"]:
             if options["changed"] == "today":
                 changed_date = datetime.date.today()
@@ -144,9 +143,7 @@ class Command(BaseCommand):
                 search_statuses.append(status.id)
         logger.info(
             "Considering statuses %s"
-            % ", ".join(
-                statuses[status].description for status in search_statuses
-            )
+            % ", ".join(statuses[status].description for status in search_statuses)
         )
 
         # Get all bookings in range, regardless of room, status, or event type.
@@ -195,9 +192,7 @@ class Command(BaseCommand):
                 # FIXME: instead of just Bookings
                 mazevo_events[booking.event_number] = booking
                 mazevo_events[booking.event_number].bookings = {}
-            mazevo_events[booking.event_number].bookings[
-                booking.id
-            ] = booking
+            mazevo_events[booking.event_number].bookings[booking.id] = booking
 
             logger.debug(
                 "Processing Mazevo Booking %d/%d %d: '%s'"
@@ -238,13 +233,11 @@ class Command(BaseCommand):
                         if event.reservations[0].space_reservation is None:
                             logger.warning(
                                 "\tFound R25 event with no space "
-                                "reservation %s: %s"
-                                % (event.event_id, event.name)
+                                "reservation %s: %s" % (event.event_id, event.name)
                             )
                             messages.append(
                                 "\tFound R25 event with no space "
-                                "reservation %s: %s"
-                                % (event.event_id, event.name)
+                                "reservation %s: %s" % (event.event_id, event.name)
                             )
                             if options["update"]:
                                 logger.debug("\tDeleting!")
@@ -253,8 +246,7 @@ class Command(BaseCommand):
                             r25_event = event
 
                 logger.debug(
-                    "\tFound R25 event %s: '%s'"
-                    % (r25_event.event_id, r25_event.name)
+                    "\tFound R25 event %s: '%s'" % (r25_event.event_id, r25_event.name)
                 )
 
             except IndexError:
@@ -274,10 +266,14 @@ class Command(BaseCommand):
                 continue
             except XMLSyntaxError as ex:
                 # Bad response from R25 server - usually means outage
-                self.stdout.write("XML Error retrieving R25 Event, skipping "
-                                  "Booking %s: %s" % (booking.id, ex))
-                messages.append("XML Error retrieving R25 Event, skipping "
-                                  "Booking %s: %s" % (booking.id, ex))
+                self.stdout.write(
+                    "XML Error retrieving R25 Event, skipping "
+                    "Booking %s: %s" % (booking.id, ex)
+                )
+                messages.append(
+                    "XML Error retrieving R25 Event, skipping "
+                    "Booking %s: %s" % (booking.id, ex)
+                )
                 continue
 
             if options["delete"]:
@@ -293,13 +289,9 @@ class Command(BaseCommand):
                 wanted_booking = False
             elif booking.room_id not in space_ids:
                 wanted_booking = False
-            elif (
-                booking.status.description in settings.MAZEVO_R25_REMOVE_STATUSES
-            ):
+            elif booking.status.description in settings.MAZEVO_R25_REMOVE_STATUSES:
                 wanted_booking = False
-            elif (
-                booking.status.description in settings.MAZEVO_R25_IGNORE_STATUSES
-            ):
+            elif booking.status.description in settings.MAZEVO_R25_IGNORE_STATUSES:
                 wanted_booking = False
 
             if r25_event is None:
@@ -343,7 +335,9 @@ class Command(BaseCommand):
                 if r25_res.space_reservation is None:
                     r25_res.space_reservation = Space()
 
-                r25_res.space_reservation.space_id = space_ids.get(booking.room_id).space_id
+                r25_res.space_reservation.space_id = space_ids.get(
+                    booking.room_id
+                ).space_id
 
             else:
                 # Cancel this unwanted r25 event
@@ -375,9 +369,7 @@ class Command(BaseCommand):
                         match = re.search(r"\[(?P<event_id>\d+)\]", ex.text)
                         if match:
                             try:
-                                old_event = get_event_by_id(
-                                    match.group("event_id")
-                                )
+                                old_event = get_event_by_id(match.group("event_id"))
                                 logger.warning(
                                     "Existing event: %s" % old_event.live_url()
                                 )
@@ -385,12 +377,8 @@ class Command(BaseCommand):
                                     "Existing event: %s" % old_event.live_url()
                                 )
                             except:
-                                logger.warning(
-                                    "Unknown event "
-                                )
-                                messages.append(
-                                    "Unknown event "
-                                )
+                                logger.warning("Unknown event ")
+                                messages.append("Unknown event ")
                             logger.warning(
                                 "Is blocking event: %s" % r25_event.live_url()
                             )
@@ -401,13 +389,11 @@ class Command(BaseCommand):
                     else:
                         logger.warning(
                             "R25 message while syncing Mazevo Booking %s to "
-                            "R25 Event %s: %s"
-                            % (booking.id, r25_event.event_id, ex)
+                            "R25 Event %s: %s" % (booking.id, r25_event.event_id, ex)
                         )
                         messages.append(
                             "R25 message while syncing Mazevo Booking %s to "
-                            "R25 Event %s: %s"
-                            % (booking.id, r25_event.event_id, ex)
+                            "R25 Event %s: %s" % (booking.id, r25_event.event_id, ex)
                         )
 
                     ex = ex.next_msg
@@ -445,8 +431,8 @@ class Command(BaseCommand):
         # send email
         if len(messages) > 0:
             send_mail(
-                'Mazevo2R25 report',
-                '\n'.join(messages),
+                "Mazevo2R25 report",
+                "\n".join(messages),
                 settings.MAZEVO_R25_EMAIL_HOST_USER,
                 settings.MAZEVO_R25_EMAIL_RECIPIENTS,
                 fail_silently=False,

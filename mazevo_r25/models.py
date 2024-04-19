@@ -9,10 +9,12 @@ for room in PublicConfiguration().get_rooms():
 
 space_names = dict(get_space_list())
 
+
 class MazevoRoomSpace(models.Model):
     """
     Assigns R25 spaces to Mazevo rooms
     """
+
     room_id = models.PositiveIntegerField(primary_key=True)
     space_id = models.PositiveIntegerField(unique=True, null=True, default=None)
     date_changed = models.DateTimeField(auto_now=True)
@@ -26,4 +28,4 @@ class MazevoRoomSpace(models.Model):
         try:
             return space_names[self.space_id]
         except:
-            return 'Invalid'
+            return "Invalid"

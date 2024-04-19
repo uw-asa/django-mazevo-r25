@@ -9,7 +9,7 @@ import unicodedata
 from dateutil.parser import parse
 from django.conf import settings
 from django.core.mail import send_mail
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from lxml.etree import XMLSyntaxError
 from restclients_core.exceptions import DataFailureException
 from urllib3.exceptions import InsecureRequestWarning

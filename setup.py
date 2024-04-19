@@ -27,7 +27,7 @@ setup(
         "lxml",
         "python-dateutil",
         "requests",
-        "UW-RestClients-Mazevo",
+        "UW-RestClients-Mazevo @ git+https://github.com/uw-asa/uw-restclients-mazevo.git",
         'UW-RestClients-GWS<2.0 ; python_version < "3.0"',
         'UW-RestClients-GWS ; python_version >= "3.0"',
         "UW-RestClients-R25",

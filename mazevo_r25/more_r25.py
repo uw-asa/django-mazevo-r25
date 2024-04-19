@@ -504,6 +504,6 @@ def list_items_from_xml(tree):
     return items
 
 def list_item_from_xml(tree):
-    id = tree.xpath("r25:id", namespaces=nsmap)[0].text
+    id = int(tree.xpath("r25:id", namespaces=nsmap)[0].text)
     name = tree.xpath("r25:name", namespaces=nsmap)[0].text
     return (id, name)

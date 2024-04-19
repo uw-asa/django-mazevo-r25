@@ -1,8 +1,4 @@
 import logging
-from urllib.parse import quote
-
-from uw_r25 import get_resource
-from uw_r25.spaces import spaces_from_xml
 
 from .models import MazevoRoomSpace
 from .more_r25 import get_space_by_short_name

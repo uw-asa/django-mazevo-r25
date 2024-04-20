@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<r25:list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:xl="http://www.w3.org/1999/xlink"
+          xmlns:r25="http://www.collegenet.com/r25"
+          engine="accl">
+   <r25:item>
+      <r25:id>1000</r25:id>
+      <r25:name>ACC 120</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>1001</r25:id>
+      <r25:name>GLC 100A</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>1002</r25:id>
+      <r25:name>JHN 303</r25:name>
+   </r25:item>
+</r25:list>

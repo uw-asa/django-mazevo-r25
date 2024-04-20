@@ -2,6 +2,7 @@ name: Django CI
 
 env:
   APP_NAME: mazevo_r25
+  COVERAGE_PYTHON_VERSION: 3.9
 
 on:
   push:
@@ -45,3 +46,8 @@ jobs:
       run: |
         python -m compileall ${APP_NAME}/
         python -Wd -m coverage run --source=${APP_NAME}/ manage.py test ${APP_NAME}
+    - name: Python Coverage Comment
+      if: matrix.python-version == env.COVERAGE_PYTHON_VERSION
+      uses: py-cov-action/python-coverage-comment-action@v3.23
+      with:
+        GITHUB_TOKEN: ${{ github.token }}

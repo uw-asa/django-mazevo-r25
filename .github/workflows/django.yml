@@ -1,5 +1,8 @@
 name: Django CI
 
+env:
+  APP_NAME: mazevo_r25
+
 on:
   push:
     branches: [ "main" ]
@@ -40,4 +43,5 @@ jobs:
         flake8 . --count --statistics
     - name: Run Tests
       run: |
-        python manage.py test
+        python -m compileall ${APP_NAME}/
+        python -Wd -m coverage run --source=${APP_NAME}/ manage.py test ${APP_NAME}

@@ -21,6 +21,7 @@ setup(
     packages=[PACKAGE],
     include_package_data=True,
     install_requires=[
+        "Dickens",
         "Django>=1.11.19,<3.2",
         'Django-SupportTools<3.0 ; python_version < "3.0"',
         'Django-SupportTools ; python_version >= "3.0"',

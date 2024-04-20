@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from .models import MazevoRoomSpace, room_names, space_names
+from .models import MazevoRoomSpace
 
 
 class MazevoRoomSpaceForm(forms.ModelForm):
@@ -10,9 +10,9 @@ class MazevoRoomSpaceForm(forms.ModelForm):
 
         room_id_widget = forms.Select()
         room_id_widget.choices = []
-        for room in room_names:
+        for room in MazevoRoomSpace.room_names:
             room_id_widget.choices.append(
-                (room, "{} ({})".format(room, room_names[room]))
+                (room, "{} ({})".format(room, MazevoRoomSpace.room_names[room]))
             )
 
         self.fields["room_id"].label = "Mazevo Room"
@@ -21,9 +21,9 @@ class MazevoRoomSpaceForm(forms.ModelForm):
 
         space_id_widget = forms.Select()
         space_id_widget.choices = [(None, "Not Defined")]
-        for space in space_names:
+        for space in MazevoRoomSpace.space_names:
             space_id_widget.choices.append(
-                (space, "{} ({})".format(space, space_names[space]))
+                (space, "{} ({})".format(space, MazevoRoomSpace.space_names[space]))
             )
 
         self.fields["space_id"].label = "R25 Space"

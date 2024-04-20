@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<r25:spaces xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:xl="http://www.w3.org/1999/xlink"
+            xmlns:r25="http://www.collegenet.com/r25"
+            pubdate="2024-04-20T00:25:17-07:00"
+            engine="accl">
+   <r25:space crc="0000002D" status="est" xl:href="space.xml?space_id=1001">
+      <r25:space_id>1001</r25:space_id>
+      <r25:space_name>GLD 100A</r25:space_name>
+      <r25:formal_name>Gould Hall</r25:formal_name>
+   </r25:space>
+</r25:spaces>

@@ -184,6 +184,7 @@ class Command(BaseCommand):
             current_num += 1
 
             booking.status = statuses[booking.status_id]
+            booking.space_id = space_ids.get(booking.room_id).space_id
 
             if booking.event_number not in mazevo_events:
                 # Use data from first booking as event data.
@@ -198,12 +199,8 @@ class Command(BaseCommand):
                 % (current_num, len(bookings), booking.id, booking.event_name)
             )
             logger.debug(
-                "\tStatus: %s, space_id: %s"
-                % (
-                    (
-                        booking.status.description,
-                        space_ids.get(booking.room_id).space_id,
-                    )
+                "\tStatus: {}, space_id: {}".format(
+                    booking.status.description, booking.space_id
                 )
             )
             logger.debug(
@@ -286,7 +283,16 @@ class Command(BaseCommand):
             wanted_booking = True
             if booking.status.status_type != Status.STATUS_TYPE_BLOCKS_SPACE:
                 wanted_booking = False
-            elif booking.room_id not in space_ids:
+            elif booking.space_id is None:
+                if not booking.room_description.startswith("_"):
+                    logger.warning(
+                        "No R25 space for Mazevo Booking %s: %s"
+                        % (booking.id, booking.room_description)
+                    )
+                    messages.append(
+                        "No R25 space for Mazevo Booking %s: %s"
+                        % (booking.id, booking.room_description)
+                    )
                 wanted_booking = False
             elif booking.status.description in settings.MAZEVO_R25_REMOVE_STATUSES:
                 wanted_booking = False
@@ -334,9 +340,7 @@ class Command(BaseCommand):
                 if r25_res.space_reservation is None:
                     r25_res.space_reservation = Space()
 
-                r25_res.space_reservation.space_id = space_ids.get(
-                    booking.room_id
-                ).space_id
+                r25_res.space_reservation.space_id = booking.space_id
 
             else:
                 # Cancel this unwanted r25 event

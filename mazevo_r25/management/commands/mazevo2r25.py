@@ -132,7 +132,6 @@ class Command(BaseCommand):
         if settings.DEBUG:
             requests.urllib3.disable_warnings(InsecureRequestWarning)
         space_ids = update_get_space_ids(PublicConfiguration().get_rooms())
-        logger.info("Found %d R25 spaces linked to Mazevo rooms" % len(space_ids))
 
         status_list = PublicConfiguration().get_statuses()
         statuses = {}

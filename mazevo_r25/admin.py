@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from .models import MazevoRoomSpace
+from .models import MazevoRoomSpace, MazevoStatusMap
 
 
 class MazevoRoomSpaceForm(forms.ModelForm):
@@ -36,3 +36,10 @@ class MazevoRoomSpaceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MazevoRoomSpace, MazevoRoomSpaceAdmin)
+
+
+class MazevoStatusMapAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(MazevoStatusMap, MazevoStatusMapAdmin)

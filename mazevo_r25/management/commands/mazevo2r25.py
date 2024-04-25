@@ -284,7 +284,7 @@ class Command(BaseCommand):
             if booking.status.status_type != Status.STATUS_TYPE_BLOCKS_SPACE:
                 wanted_booking = False
             elif booking.space_id is None:
-                if not booking.room_description.startswith("_"):
+                if not booking.room_description.startswith("__"):
                     logger.warning(
                         "No R25 space for Mazevo Booking %s: %s"
                         % (booking.id, booking.room_description)

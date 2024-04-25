@@ -2,7 +2,7 @@ from descriptors import cachedclassproperty
 from django.db import models
 from uw_mazevo.api import PublicConfiguration
 
-from .more_r25 import get_space_list
+from .more_r25 import get_event_type_list, get_space_list
 
 
 class MazevoRoomSpace(models.Model):
@@ -33,5 +33,46 @@ class MazevoRoomSpace(models.Model):
     def space_name(self):
         try:
             return self.space_names[self.space_id]
+        except Exception:
+            return "Invalid"
+
+
+class MazevoStatusMap(models.Model):
+    """
+    Maps Mazevo status to action and R25 event type
+    """
+
+    @cachedclassproperty
+    def status_names(cls):
+        status_names = {}
+        for status in PublicConfiguration().get_statuses():
+            status_names[status.id] = status.description
+        return status_names
+
+    @cachedclassproperty
+    def event_type_names(cls):
+        return dict(get_event_type_list())
+
+    ACTION_IGNORE = "ignore"
+    ACTION_REMOVE = "remove"
+    ACTION_ADD = "add"
+    ACTION_CHOICES = (
+        (ACTION_IGNORE, "Neither add nor remove from R25"),
+        (ACTION_REMOVE, "Remove if present in R25"),
+        (ACTION_ADD, "Add if not present in R25"),
+    )
+
+    status_id = models.PositiveIntegerField(primary_key=True)
+    action = models.SlugField(choices=ACTION_CHOICES, null=True)
+    event_type_id = models.PositiveIntegerField(null=True)
+
+    @property
+    def status_name(self):
+        return self.status_names[self.status_id]
+
+    @property
+    def event_type_name(self):
+        try:
+            return self.event_type_names[self.event_type_id]
         except Exception:
             return "Invalid"

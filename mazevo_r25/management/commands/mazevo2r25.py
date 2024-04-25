@@ -330,6 +330,8 @@ class Command(BaseCommand):
             r25_event.event_type_id = settings.MAZEVO_R25_EVENTTYPE_MAP.get(
                 booking.status.description, settings.MAZEVO_R25_EVENTTYPE_DEFAULT
             )
+            r25_event.node_type = "E"
+            r25_event.organization_id = settings.MAZEVO_R25_ORGANIZATION
 
             r25_res = r25_event.reservations[0]
 

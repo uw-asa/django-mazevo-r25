@@ -69,6 +69,8 @@ AUTHZ_GROUP_BACKEND = "authz_group.authz_implementation.uw_group_service.UWGroup
 
 EVENT_SCHEDULER_GROUP = "uw_asa_it_events_schedulers"
 
+MAZEVO_R25_ORGANIZATION = ""
+
 # Statuses to ignore entirely
 MAZEVO_R25_IGNORE_STATUSES = [
     "Academic Confirmed",

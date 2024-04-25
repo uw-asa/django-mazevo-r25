@@ -356,17 +356,6 @@ def update_event(event):
         event.event_id = enode.xpath("r25:event_id", namespaces=nsmap)[0].text
         logger.debug("created new event %s" % event.event_id)
 
-        # initialize some things that aren't kept in the uw_r25 model
-        update_value(enode, "node_type", "E")
-
-        onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
-        update_value(
-            onode,
-            "organization_id",
-            R25_DAO().get_service_setting("ORGANIZATION"),
-        )
-        update_value(onode, "primary", "T")
-
         # delete the blank profile
         pnode = enode.xpath("r25:profile", namespaces=nsmap)[0]
         enode.remove(pnode)
@@ -386,6 +375,15 @@ def update_event(event):
     update_value(enode, "parent_id", event.parent_id)
     update_value(enode, "cabinet_id", event.cabinet_id)
     update_value(enode, "cabinet_name", event.cabinet_name)
+    update_value(enode, "node_type", event.node_type)
+
+    onode = enode.xpath("r25:organization", namespaces=nsmap)[0]
+    update_value(
+        onode,
+        "organization_id",
+        event.organization_id,
+    )
+    update_value(onode, "primary", "T")
 
     # add or update each reservation/profile
     # only one reservation per profile is supported
@@ -481,6 +479,17 @@ def get_space_by_short_name(short_name):
     url = "spaces.xml"
     url += "?short_name={}".format(quote(short_name))
     return spaces_from_xml(get_resource(url))[0]
+
+
+def get_event_type_list(**kwargs):
+    """
+    Get the list of event type ids and names
+    Note that you need to pass all_types="T" if you want all node types
+    """
+    url = "evtype.xml"
+    kwargs["scope"] = "list"
+    url += "?{}".format(urlencode(kwargs))
+    return list_items_from_xml(get_resource(url))
 
 
 def get_space_list(**kwargs):

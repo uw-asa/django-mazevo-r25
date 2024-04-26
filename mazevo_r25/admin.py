@@ -38,14 +38,46 @@ class MazevoRoomSpaceAdmin(admin.ModelAdmin):
 admin.site.register(MazevoRoomSpace, MazevoRoomSpaceAdmin)
 
 
+class MazevoStatusMapForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MazevoStatusMapForm, self).__init__(*args, **kwargs)
+
+        status_id_widget = forms.Select()
+        status_id_widget.choices = []
+        for status in MazevoStatusMap.status_names:
+            status_id_widget.choices.append(
+                (status, "{} ({})".format(status, MazevoStatusMap.status_names[status]))
+            )
+
+        self.fields["status_id"].label = "Mazevo Status"
+        self.fields["status_id"].widget = status_id_widget
+        self.fields["status_id"].disabled = True
+
+        event_type_id_widget = forms.Select()
+        event_type_id_widget.choices = [(0, "Not Defined")]
+        for event_type in MazevoStatusMap.event_type_names:
+            event_type_id_widget.choices.append(
+                (
+                    event_type,
+                    "{} ({})".format(
+                        event_type, MazevoStatusMap.event_type_names[event_type]
+                    ),
+                )
+            )
+
+        self.fields["event_type_id"].label = "R25 Event Type"
+        self.fields["event_type_id"].widget = event_type_id_widget
+
+
 class MazevoStatusMapAdmin(admin.ModelAdmin):
     list_display = (
         "status_id",
-        "action",
         "event_type_id",
         "status_name",
+        "action",
         "event_type_name",
     )
+    form = MazevoStatusMapForm
 
 
 admin.site.register(MazevoStatusMap, MazevoStatusMapAdmin)

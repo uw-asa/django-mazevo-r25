@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<r25:list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:xl="http://www.w3.org/1999/xlink"
+          xmlns:r25="http://www.collegenet.com/r25"
+          engine="accl">
+   <r25:item>
+      <r25:id>-1</r25:id>
+      <r25:name>(Unspecified)</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>48</r25:id>
+      <r25:name>Branch/Quarter Cabinet</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>49</r25:id>
+      <r25:name>Events Cabinet</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>50</r25:id>
+      <r25:name>Curriculum Folder</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>51</r25:id>
+      <r25:name>Section (OLD)</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>52</r25:id>
+      <r25:name>Campus Folder</r25:name>
+   </r25:item>
+   <r25:item>
+      <r25:id>69</r25:id>
+      <r25:name>College Folder</r25:name>
+   </r25:item>
+</r25:list>

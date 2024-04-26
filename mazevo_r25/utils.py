@@ -1,6 +1,9 @@
 import logging
 
-from .models import MazevoRoomSpace
+from django.conf import settings
+from uw_mazevo.models import Status
+
+from .models import MazevoRoomSpace, MazevoStatusMap
 from .more_r25 import get_space_by_short_name
 
 
@@ -29,3 +32,21 @@ def update_get_space_ids(mazevo_rooms):
                 logger.warning("No R25 space found for {}".format(room.description))
 
     return MazevoRoomSpace.objects.in_bulk()
+
+
+def update_get_status_map(mazevo_statuses):
+    """
+    Get the updated map of Mazevo statuses to actions and event types.
+    """
+    for status in mazevo_statuses:
+        statusmap, _ = MazevoStatusMap.objects.get_or_create(status_id=status.id)
+        if statusmap.action is None:
+            if status.status_type == Status.STATUS_TYPE_BLOCKS_SPACE:
+                statusmap.action = MazevoStatusMap.ACTION_ADD
+            else:
+                statusmap.action = MazevoStatusMap.ACTION_REMOVE
+        if statusmap.event_type_id is None:
+            statusmap.event_type_id = settings.MAZEVO_R25_EVENTTYPE_DEFAULT
+        statusmap.save()
+
+    return MazevoStatusMap.objects.in_bulk()

@@ -13,11 +13,11 @@ from django.core.management.base import BaseCommand
 from lxml.etree import XMLSyntaxError
 from restclients_core.exceptions import DataFailureException
 from urllib3.exceptions import InsecureRequestWarning
-from uw_mazevo.models import Status
 from uw_mazevo.api import PublicConfiguration, PublicEvent
 from uw_r25.events import get_event_by_id, get_events
 from uw_r25.models import Event, Reservation, Space
 
+from mazevo_r25.models import MazevoStatusMap
 from mazevo_r25.more_r25 import (
     delete_event,
     update_event,
@@ -25,7 +25,7 @@ from mazevo_r25.more_r25 import (
     R25ErrorException,
     TooManyRequestsException,
 )
-from mazevo_r25.utils import update_get_space_ids
+from mazevo_r25.utils import update_get_space_ids, update_get_status_map
 
 
 logger = logging.getLogger(__name__)
@@ -138,8 +138,11 @@ class Command(BaseCommand):
         search_statuses = []
         for status in status_list:
             statuses[status.id] = status
-            if status.description not in settings.MAZEVO_R25_IGNORE_STATUSES:
-                search_statuses.append(status.id)
+
+        status_map = update_get_status_map(status_list)
+        for id in status_map:
+            if status_map[id].action != MazevoStatusMap.ACTION_IGNORE:
+                search_statuses.append(id)
         logger.info(
             "Considering statuses %s"
             % ", ".join(statuses[status].description for status in search_statuses)
@@ -184,6 +187,7 @@ class Command(BaseCommand):
             current_num += 1
 
             booking.status = statuses[booking.status_id]
+            booking.mapped_status = status_map[booking.status_id]
             booking.space_id = space_ids.get(booking.room_id).space_id
 
             if booking.event_number not in mazevo_events:
@@ -281,7 +285,9 @@ class Command(BaseCommand):
                 continue
 
             wanted_booking = True
-            if booking.status.status_type != Status.STATUS_TYPE_BLOCKS_SPACE:
+            if booking.mapped_status.action == MazevoStatusMap.ACTION_REMOVE:
+                wanted_booking = False
+            elif booking.mapped_status.action == MazevoStatusMap.ACTION_IGNORE:
                 wanted_booking = False
             elif booking.space_id is None:
                 if not booking.room_description.startswith("__"):
@@ -293,10 +299,6 @@ class Command(BaseCommand):
                         "No R25 space for Mazevo Booking %s: %s"
                         % (booking.id, booking.room_description)
                     )
-                wanted_booking = False
-            elif booking.status.description in settings.MAZEVO_R25_REMOVE_STATUSES:
-                wanted_booking = False
-            elif booking.status.description in settings.MAZEVO_R25_IGNORE_STATUSES:
                 wanted_booking = False
 
             if r25_event is None:
@@ -327,9 +329,7 @@ class Command(BaseCommand):
             )
             r25_event.title = event_name.strip()
             r25_event.state = r25_event.CONFIRMED_STATE
-            r25_event.event_type_id = settings.MAZEVO_R25_EVENTTYPE_MAP.get(
-                booking.status.description, settings.MAZEVO_R25_EVENTTYPE_DEFAULT
-            )
+            r25_event.event_type_id = booking.mapped_status.event_type_id
             r25_event.node_type = "E"
             r25_event.organization_id = settings.MAZEVO_R25_ORGANIZATION
 

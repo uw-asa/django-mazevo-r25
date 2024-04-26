@@ -1,6 +1,10 @@
 from django.test import TestCase
 
-from mazevo_r25.more_r25 import get_event_type_list, get_space_by_short_name, get_space_list
+from mazevo_r25.more_r25 import (
+    get_event_type_list,
+    get_space_by_short_name,
+    get_space_list,
+)
 
 
 class TestMoreR25(TestCase):

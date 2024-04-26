@@ -39,7 +39,13 @@ admin.site.register(MazevoRoomSpace, MazevoRoomSpaceAdmin)
 
 
 class MazevoStatusMapAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        "status_id",
+        "action",
+        "event_type_id",
+        "status_name",
+        "event_type_name",
+    )
 
 
 admin.site.register(MazevoStatusMap, MazevoStatusMapAdmin)

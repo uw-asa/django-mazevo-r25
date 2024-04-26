@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for mazevo_r25/more_r25.py: 23%</title>
+    <title>Coverage for mazevo_r25/more_r25.py: 25%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="coverage_html.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>mazevo_r25/more_r25.py</b>:
-            <span class="pc_cov">23%</span>
+            <span class="pc_cov">25%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -55,8 +55,8 @@
         </aside>
         <h2>
             <span class="text">218 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">50<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">168<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">54<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">164<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="d_7187562f0c717692_test_more_r25_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-04-26 00:57 +0000
+            created at 2024-04-26 01:12 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -568,10 +568,10 @@
     <p class="pln"><span class="n"><a id="t486" href="#t486">486</a></span><span class="t"><span class="str">    Get the list of event type ids and names</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t487" href="#t487">487</a></span><span class="t"><span class="str">    Note that you need to pass all_types="T" if you want all node types</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t488" href="#t488">488</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t489" href="#t489">489</a></span><span class="t">    <span class="nam">url</span> <span class="op">=</span> <span class="str">"evtype.xml"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t490" href="#t490">490</a></span><span class="t">    <span class="nam">kwargs</span><span class="op">[</span><span class="str">"scope"</span><span class="op">]</span> <span class="op">=</span> <span class="str">"list"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t491" href="#t491">491</a></span><span class="t">    <span class="nam">url</span> <span class="op">+=</span> <span class="str">"?{}"</span><span class="op">.</span><span class="nam">format</span><span class="op">(</span><span class="nam">urlencode</span><span class="op">(</span><span class="nam">kwargs</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t492" href="#t492">492</a></span><span class="t">    <span class="key">return</span> <span class="nam">list_items_from_xml</span><span class="op">(</span><span class="nam">get_resource</span><span class="op">(</span><span class="nam">url</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t489" href="#t489">489</a></span><span class="t">    <span class="nam">url</span> <span class="op">=</span> <span class="str">"evtype.xml"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t490" href="#t490">490</a></span><span class="t">    <span class="nam">kwargs</span><span class="op">[</span><span class="str">"scope"</span><span class="op">]</span> <span class="op">=</span> <span class="str">"list"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t491" href="#t491">491</a></span><span class="t">    <span class="nam">url</span> <span class="op">+=</span> <span class="str">"?{}"</span><span class="op">.</span><span class="nam">format</span><span class="op">(</span><span class="nam">urlencode</span><span class="op">(</span><span class="nam">kwargs</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t492" href="#t492">492</a></span><span class="t">    <span class="key">return</span> <span class="nam">list_items_from_xml</span><span class="op">(</span><span class="nam">get_resource</span><span class="op">(</span><span class="nam">url</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t493" href="#t493">493</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t494" href="#t494">494</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t495" href="#t495">495</a></span><span class="t"><span class="key">def</span> <span class="nam">get_space_list</span><span class="op">(</span><span class="op">**</span><span class="nam">kwargs</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -605,7 +605,7 @@
             <a id="nextFileLink" class="nav" href="d_7187562f0c717692_test_more_r25_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-04-26 00:57 +0000
+            created at 2024-04-26 01:12 +0000
         </p>
     </div>
 </footer>

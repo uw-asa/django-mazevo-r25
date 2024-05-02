@@ -1,9 +1,11 @@
 from django.test import TestCase
+from uw_r25.models import Event
 
 from mazevo_r25.more_r25 import (
     get_event_type_list,
     get_space_by_short_name,
     get_space_list,
+    update_event,
 )
 
 
@@ -28,3 +30,11 @@ class TestMoreR25(TestCase):
 
         types = get_event_type_list(all_types="T")
         self.assertEqual(len(types), 7, "event type count")
+
+    def test_update_event(self):
+        event = Event()
+        event.reservations = []
+        event.event_type_id = 433
+        event.node_type = "E"
+        event.organization_id = 4211
+        update_event(event)

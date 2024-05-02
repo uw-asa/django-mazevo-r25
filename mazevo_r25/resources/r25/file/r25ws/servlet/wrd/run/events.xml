@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<r25:events xmlns:xl="http://www.w3.org/1999/xlink"
+            xmlns:r25="http://www.collegenet.com/r25"
+            pubdate="2024-05-02T14:46:43-07:00"
+            engine="accl">
+   <r25:event xl:href="event.xml?event_id=110000"
+              id="BxJDMTI1Mjk="
+              status="new">
+      <r25:event_id>110000</r25:event_id>
+      <r25:event_name>EVENT_110000</r25:event_name>
+      <r25:alien_uid/>
+      <r25:event_priority/>
+      <r25:event_title/>
+      <r25:favorite/>
+      <r25:node_type/>
+      <r25:node_type_name/>
+      <r25:start_date/>
+      <r25:end_date/>
+      <r25:event_type_id/>
+      <r25:event_type_name/>
+      <r25:state>1</r25:state>
+      <r25:state_name>Tentative</r25:state_name>
+      <r25:version_number>0</r25:version_number>
+      <r25:event_locator>2024-DVFAXV</r25:event_locator>
+      <r25:parent_id/>
+      <r25:parent_name/>
+      <r25:cabinet_id/>
+      <r25:cabinet_name/>
+      <r25:registration_url/>
+      <r25:last_mod_user/>
+      <r25:last_mod_dt/>
+      <r25:creation_dt/>
+      <r25:organization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" status="new">
+         <r25:organization_id/>
+         <r25:organization_name/>
+         <r25:organization_title/>
+         <r25:primary/>
+         <r25:organization_inherited/>
+      </r25:organization>
+      <r25:profile id="ByJDMTc0NjkHEkMxOTQ1NA==" status="new">
+         <r25:profile_id xl:href="ev_profile.xml?profile_id=15841972">15841972</r25:profile_id>
+         <r25:profile_name/>
+         <r25:profile_code/>
+         <r25:profile_description/>
+         <r25:prof_use>1</r25:prof_use>
+         <r25:prof_use_name/>
+         <r25:expected_count/>
+         <r25:registered_count/>
+         <r25:rec_type_id/>
+         <r25:rec_type_name/>
+         <r25:pre_event/>
+         <r25:post_event/>
+         <r25:profile_comments/>
+         <r25:init_start_dt>2024-05-02T14:00:00-07:00</r25:init_start_dt>
+         <r25:init_end_dt>2024-05-02T14:59:00-07:00</r25:init_end_dt>
+         <r25:setup_profile status="new">
+            <r25:setup_profile_id/>
+            <r25:setup_tm/>
+         </r25:setup_profile>
+         <r25:takedown_profile status="new">
+            <r25:takedown_profile_id/>
+            <r25:tdown_tm/>
+         </r25:takedown_profile>
+         <r25:ad_hoc_datelist status="new">
+            <r25:ad_hoc_start_dt/>
+         </r25:ad_hoc_datelist>
+         <r25:binding_reservation status="new">
+            <r25:primary_reservation/>
+            <r25:bound_name/>
+            <r25:bound_event_id/>
+            <r25:bound_reservation_id/>
+         </r25:binding_reservation>
+         <r25:reservation status="new">
+            <r25:reservation_id/>
+            <r25:reservation_state/>
+            <r25:reservation_start_dt/>
+            <r25:reservation_end_dt/>
+            <r25:event_start_dt/>
+            <r25:event_end_dt/>
+            <r25:pre_event_dt/>
+            <r25:post_event_dt/>
+            <r25:rsrv_comment_id/>
+            <r25:rsrv_comments/>
+            <r25:attendee_count/>
+            <r25:space_reservation status="new">
+               <r25:space_id/>
+               <r25:space>
+                  <r25:space_name/>
+                  <r25:formal_name/>
+                  <r25:max_capacity/>
+                  <r25:partition_name/>
+               </r25:space>
+               <r25:layout_id/>
+               <r25:layout_name/>
+               <r25:share/>
+               <r25:attendance/>
+               <r25:space_instructions/>
+               <r25:rating/>
+            </r25:space_reservation>
+            <r25:resource_reservation status="new">
+               <r25:resource_id/>
+               <r25:resource>
+                  <r25:resource_name/>
+               </r25:resource>
+               <r25:quantity/>
+               <r25:resource_instructions/>
+            </r25:resource_reservation>
+         </r25:reservation>
+      </r25:profile>
+      <r25:event_text status="new">
+         <r25:text_type_id>4</r25:text_type_id>
+         <r25:text_type_name>HTML</r25:text_type_name>
+         <r25:text/>
+      </r25:event_text>
+      <r25:event_text status="new">
+         <r25:text_type_id>7</r25:text_type_id>
+         <r25:text_type_name>Invoice</r25:text_type_name>
+         <r25:text/>
+      </r25:event_text>
+      <r25:event_text status="new">
+         <r25:text_type_id>8</r25:text_type_id>
+         <r25:text_type_name>Event Draft Info</r25:text_type_name>
+         <r25:text/>
+      </r25:event_text>
+      <r25:event_text status="new">
+         <r25:text_type_id>9</r25:text_type_id>
+         <r25:text_type_name>Location/Resource Request Info</r25:text_type_name>
+         <r25:text/>
+      </r25:event_text>
+      <r25:category status="new">
+         <r25:category_id/>
+         <r25:category_name/>
+         <r25:category_defn_state/>
+      </r25:category>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-90">
+         <r25:attribute_id>-90</r25:attribute_id>
+         <r25:attribute_name>OutlookCalendarId</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=97">
+         <r25:attribute_id>97</r25:attribute_id>
+         <r25:attribute_name>Preferred Email (if other than UW NetID)</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=96">
+         <r25:attribute_id>96</r25:attribute_id>
+         <r25:attribute_name>Will non-UW/Cascadia people be attending</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=94">
+         <r25:attribute_id>94</r25:attribute_id>
+         <r25:attribute_name>Will you need a media technician to supp</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=95">
+         <r25:attribute_id>95</r25:attribute_id>
+         <r25:attribute_name>Does this event need to be video recorde</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=92">
+         <r25:attribute_id>92</r25:attribute_id>
+         <r25:attribute_name>Do you need furniture setup? (T)</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=93">
+         <r25:attribute_id>93</r25:attribute_id>
+         <r25:attribute_name>Who is your intended audience? (T)</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=89">
+         <r25:attribute_id>89</r25:attribute_id>
+         <r25:attribute_name>Are you Departmental Course Coordinator?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=37">
+         <r25:attribute_id>37</r25:attribute_id>
+         <r25:attribute_name>Are you serving alcohol at this event?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=38">
+         <r25:attribute_id>38</r25:attribute_id>
+         <r25:attribute_name>Are you serving food/drinks at this even</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=98">
+         <r25:attribute_id>98</r25:attribute_id>
+         <r25:attribute_name>What is the name of the caterer/food pro</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=99">
+         <r25:attribute_id>99</r25:attribute_id>
+         <r25:attribute_name>Are you planning to self-clean after you</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=82">
+         <r25:attribute_id>82</r25:attribute_id>
+         <r25:attribute_name>Are you the instructor?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=42">
+         <r25:attribute_id>42</r25:attribute_id>
+         <r25:attribute_name>Are all attendees from this campus?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=91">
+         <r25:attribute_id>91</r25:attribute_id>
+         <r25:attribute_name>Subject to Open Public Meetings Act?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=85">
+         <r25:attribute_id>85</r25:attribute_id>
+         <r25:attribute_name>Billing Address</r25:attribute_name>
+         <r25:attribute_type>X</r25:attribute_type>
+         <r25:attribute_type_name>Long Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=46">
+         <r25:attribute_id>46</r25:attribute_id>
+         <r25:attribute_name>Budget Number</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=86">
+         <r25:attribute_id>86</r25:attribute_id>
+         <r25:attribute_name>Budget Option Code (if applicable)</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=87">
+         <r25:attribute_id>87</r25:attribute_id>
+         <r25:attribute_name>Budget Project Code (if applicable)</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=88">
+         <r25:attribute_id>88</r25:attribute_id>
+         <r25:attribute_name>Budget Task Code (if applicable)</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=83">
+         <r25:attribute_id>83</r25:attribute_id>
+         <r25:attribute_name>Course Number &amp; Section</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=68">
+         <r25:attribute_id>68</r25:attribute_id>
+         <r25:attribute_name>Day-of-Event Contact Name</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=69">
+         <r25:attribute_id>69</r25:attribute_id>
+         <r25:attribute_name>Day-of-Event Email Address</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=71">
+         <r25:attribute_id>71</r25:attribute_id>
+         <r25:attribute_name>Day-of-Event Phone Number</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-21">
+         <r25:attribute_id>-21</r25:attribute_id>
+         <r25:attribute_name>Detail Image</r25:attribute_name>
+         <r25:attribute_type>R</r25:attribute_type>
+         <r25:attribute_type_name>File Reference</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=65">
+         <r25:attribute_id>65</r25:attribute_id>
+         <r25:attribute_name>Do you need furniture/equipment setup?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=19">
+         <r25:attribute_id>19</r25:attribute_id>
+         <r25:attribute_name>Entrance Fee $</r25:attribute_name>
+         <r25:attribute_type>F</r25:attribute_type>
+         <r25:attribute_type_name>Float</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-20">
+         <r25:attribute_id>-20</r25:attribute_id>
+         <r25:attribute_name>Event Image</r25:attribute_name>
+         <r25:attribute_type>R</r25:attribute_type>
+         <r25:attribute_type_name>File Reference</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=40">
+         <r25:attribute_id>40</r25:attribute_id>
+         <r25:attribute_name>Full meal?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=39">
+         <r25:attribute_id>39</r25:attribute_id>
+         <r25:attribute_name>Light refreshments?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=72">
+         <r25:attribute_id>72</r25:attribute_id>
+         <r25:attribute_name>Name of Organization Requesting Space</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-73">
+         <r25:attribute_id>-73</r25:attribute_id>
+         <r25:attribute_name>Priority Override</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=80">
+         <r25:attribute_id>80</r25:attribute_id>
+         <r25:attribute_name>Registered Student Organization Name</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=20">
+         <r25:attribute_id>20</r25:attribute_id>
+         <r25:attribute_name>Registration Fee $</r25:attribute_name>
+         <r25:attribute_type>F</r25:attribute_type>
+         <r25:attribute_type_name>Float</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-71">
+         <r25:attribute_id>-71</r25:attribute_id>
+         <r25:attribute_name>SIS Bound Reservation Missing</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=90">
+         <r25:attribute_id>90</r25:attribute_id>
+         <r25:attribute_name>SLN (Schedule Line Number) </r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-1">
+         <r25:attribute_id>-1</r25:attribute_id>
+         <r25:attribute_name>Web Site</r25:attribute_name>
+         <r25:attribute_type>R</r25:attribute_type>
+         <r25:attribute_type_name>File Reference</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=44">
+         <r25:attribute_id>44</r25:attribute_id>
+         <r25:attribute_name>Will involve commercial activities?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=45">
+         <r25:attribute_id>45</r25:attribute_id>
+         <r25:attribute_name>Will involve political activities?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=67">
+         <r25:attribute_id>67</r25:attribute_id>
+         <r25:attribute_name>Will need additional equipment?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=41">
+         <r25:attribute_id>41</r25:attribute_id>
+         <r25:attribute_name>Will non-UW people be in attendance?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=66">
+         <r25:attribute_id>66</r25:attribute_id>
+         <r25:attribute_name>Will you be using the installed A/V?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=43">
+         <r25:attribute_id>43</r25:attribute_id>
+         <r25:attribute_name>Will you charge a fee or fundraise?</r25:attribute_name>
+         <r25:attribute_type>B</r25:attribute_type>
+         <r25:attribute_type_name>Boolean</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=73">
+         <r25:attribute_id>73</r25:attribute_id>
+         <r25:attribute_name>Your Name (Staff Member)</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-61">
+         <r25:attribute_id>-61</r25:attribute_id>
+         <r25:attribute_name>SIS Institution Code</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:custom_attribute status="new" xl:href="evatrb.xml?attribute_id=-65">
+         <r25:attribute_id>-65</r25:attribute_id>
+         <r25:attribute_name>SIS College/School/Group Code</r25:attribute_name>
+         <r25:attribute_type>S</r25:attribute_type>
+         <r25:attribute_type_name>Text</r25:attribute_type_name>
+         <r25:attribute_value/>
+         <r25:attribute_defn_state/>
+      </r25:custom_attribute>
+      <r25:role status="new">
+         <r25:role_id/>
+         <r25:role_name/>
+         <r25:contact status="new">
+            <r25:contact_id/>
+            <r25:contact_name/>
+            <r25:formatted_address/>
+            <r25:phone/>
+            <r25:fax/>
+            <r25:email/>
+         </r25:contact>
+      </r25:role>
+   </r25:event>
+</r25:events>

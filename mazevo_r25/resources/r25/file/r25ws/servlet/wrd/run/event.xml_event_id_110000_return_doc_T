@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<r25:events xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:xl="http://www.w3.org/1999/xlink"
+            xmlns:r25="http://www.collegenet.com/r25"
+            pubdate="2024-05-02T15:16:17-07:00"
+            engine="accl">
+   <r25:event xl:href="event.xml?event_id=110000"
+              id="BxJDMTI1Mjk="
+              crc="00000021"
+              status="est">
+      <r25:event_id>110000</r25:event_id>
+      <r25:event_name>34_THE NORTHWEST LINGUISTICS CONF</r25:event_name>
+      <r25:alien_uid/>
+      <r25:event_priority>0</r25:event_priority>
+      <r25:event_title>The Northwest Linguistics Conference</r25:event_title>
+      <r25:favorite>F</r25:favorite>
+      <r25:node_type>E</r25:node_type>
+      <r25:node_type_name>event</r25:node_type_name>
+      <r25:start_date>2024-05-04</r25:start_date>
+      <r25:end_date>2024-05-04</r25:end_date>
+      <r25:event_type_id>433</r25:event_type_id>
+      <r25:event_type_name>UWS Event</r25:event_type_name>
+      <r25:state>2</r25:state>
+      <r25:state_name>Confirmed</r25:state_name>
+      <r25:version_number>0</r25:version_number>
+      <r25:event_locator>2024-DVFAXW</r25:event_locator>
+      <r25:parent_id xl:href="event.xml?event_id=15231761">15231761</r25:parent_id>
+      <r25:cabinet_id xl:href="event.xml?event_id=15231758">15231758</r25:cabinet_id>
+      <r25:cabinet_name>UNIVERSITY OF WASHINGTON EVENTS</r25:cabinet_name>
+      <r25:registration_url/>
+      <r25:last_mod_user>eventapp</r25:last_mod_user>
+      <r25:last_mod_dt>2024-05-02T15:16:17-07:00</r25:last_mod_dt>
+      <r25:creation_dt>2024-05-02T15:16:22-07:00</r25:creation_dt>
+      <r25:organization crc="00000021" status="est">
+         <r25:organization_id xl:href="organization.xml?organization_id=4211">4211</r25:organization_id>
+         <r25:organization_name>UWS Classroom Technology and Events</r25:organization_name>
+         <r25:organization_title>Seattle - Classroom Technology and Events</r25:organization_title>
+         <r25:primary>T</r25:primary>
+         <r25:organization_inherited>0</r25:organization_inherited>
+         <r25:organization_details crc="0000002A"
+                                   status="est"
+                                   xl:href="organization.xml?organization_id=4211">
+            <r25:account_number/>
+            <r25:abbreviation/>
+            <r25:organization_rating_id/>
+            <r25:organization_rating/>
+            <r25:organization_type crc="0000002A" status="est" xl:href="orgtypes.xml?type_id=22">
+               <r25:organization_type_id>22</r25:organization_type_id>
+               <r25:organization_type_name>Administrative Unit</r25:organization_type_name>
+            </r25:organization_type>
+         </r25:organization_details>
+      </r25:organization>
+      <r25:profile id="ByJDMTc0NjkHEkMxOTQ1NA==" crc="00000021" status="est">
+         <r25:profile_id xl:href="ev_profile.xml?profile_id=15841974">15841974</r25:profile_id>
+         <r25:profile_name>Rsrv_15841974</r25:profile_name>
+         <r25:profile_code/>
+         <r25:profile_description/>
+         <r25:prof_use>1</r25:prof_use>
+         <r25:prof_use_name>Reservation</r25:prof_use_name>
+         <r25:expected_count/>
+         <r25:registered_count/>
+         <r25:rec_type_id>0</r25:rec_type_id>
+         <r25:rec_type_name>Single Date/Time</r25:rec_type_name>
+         <r25:pre_event/>
+         <r25:post_event/>
+         <r25:profile_comments/>
+         <r25:init_start_dt>2024-05-04T08:30:00-07:00</r25:init_start_dt>
+         <r25:init_end_dt>2024-05-04T17:30:00-07:00</r25:init_end_dt>
+         <r25:reservation crc="00000021"
+                          status="est"
+                          xl:href="reservation.xml?rsrv_id=72620250">
+            <r25:reservation_id>72620250</r25:reservation_id>
+            <r25:reservation_state>1</r25:reservation_state>
+            <r25:reservation_start_dt>2024-05-04T08:30:00-07:00</r25:reservation_start_dt>
+            <r25:reservation_end_dt>2024-05-04T17:30:00-07:00</r25:reservation_end_dt>
+            <r25:event_start_dt>2024-05-04T08:30:00-07:00</r25:event_start_dt>
+            <r25:event_end_dt>2024-05-04T17:30:00-07:00</r25:event_end_dt>
+            <r25:pre_event_dt>2024-05-04T08:30:00-07:00</r25:pre_event_dt>
+            <r25:post_event_dt>2024-05-04T17:30:00-07:00</r25:post_event_dt>
+            <r25:rsrv_comment_id/>
+            <r25:rsrv_comments/>
+            <r25:attendee_count/>
+            <r25:space_reservation crc="00000021" status="est">
+               <r25:space_id>5050</r25:space_id>
+               <r25:space xl:href="space.xml?space_id=5050">
+                  <r25:space_name>MGH  251</r25:space_name>
+                  <r25:formal_name>Seattle- Mary Gates Hall 251</r25:formal_name>
+                  <r25:max_capacity>40</r25:max_capacity>
+                  <r25:partition_name>UWS Mary Gates Hall</r25:partition_name>
+               </r25:space>
+               <r25:layout_id>26</r25:layout_id>
+               <r25:layout_name>As Is</r25:layout_name>
+               <r25:default_layout_capacity>40</r25:default_layout_capacity>
+               <r25:selected_layout_capacity>40</r25:selected_layout_capacity>
+               <r25:share>F</r25:share>
+               <r25:attendance/>
+               <r25:space_instructions/>
+               <r25:rating>100</r25:rating>
+            </r25:space_reservation>
+         </r25:reservation>
+      </r25:profile>
+      <r25:category crc="00000021" status="est" xl:href="evcat.xml?category_id=400">
+         <r25:category_id>400</r25:category_id>
+         <r25:category_name>Campus - Seattle</r25:category_name>
+         <r25:category_defn_state>1</r25:category_defn_state>
+         <r25:category_sort_order>38</r25:category_sort_order>
+      </r25:category>
+      <r25:event_history crc="00000021" status="est">
+         <r25:history_type_id>1</r25:history_type_id>
+         <r25:history_type_name>State</r25:history_type_name>
+         <r25:history_sequence>1</r25:history_sequence>
+         <r25:history_dt>2024-05-02T15:16:00-07:00</r25:history_dt>
+         <r25:event_state_id>2</r25:event_state_id>
+         <r25:event_state_name>Confirmed</r25:event_state_name>
+      </r25:event_history>
+      <r25:event_history crc="00000021" status="est">
+         <r25:history_type_id>4</r25:history_type_id>
+         <r25:history_type_name>Bill Date (for pricing)</r25:history_type_name>
+         <r25:history_sequence>1</r25:history_sequence>
+         <r25:history_dt>2024-05-02T00:00:00-07:00</r25:history_dt>
+         <r25:event_state_id/>
+         <r25:event_state_name/>
+      </r25:event_history>
+      <r25:approval crc="00000021" status="est">
+         <r25:approval_id>3882190</r25:approval_id>
+         <r25:approval_type_id>1</r25:approval_type_id>
+         <r25:approval_type_name>Notification</r25:approval_type_name>
+         <r25:respond_by>2024-05-05T00:00:00-07:00</r25:respond_by>
+         <r25:object_id xl:href="">433</r25:object_id>
+         <r25:object_type>7</r25:object_type>
+         <r25:object_type_name>event type</r25:object_type_name>
+         <r25:request_quantity/>
+         <r25:notify_type_id>1</r25:notify_type_id>
+         <r25:notify_type_name>One</r25:notify_type_name>
+         <r25:approval_profile_id/>
+         <r25:approval_profile_name/>
+         <r25:approval_name>UWS Event</r25:approval_name>
+         <r25:approval_state>1</r25:approval_state>
+         <r25:approval_state_name>Active</r25:approval_state_name>
+         <r25:task_blocked>F</r25:task_blocked>
+         <r25:approval_comments/>
+         <r25:approval_contact crc="00000021"
+                               status="est"
+                               xl:href="contact.xml?contact_id=15225399">
+            <r25:approval_contact_id>15225399</r25:approval_contact_id>
+            <r25:approval_contact_name>JOETEST2</r25:approval_contact_name>
+            <r25:approval_contact_state>1</r25:approval_contact_state>
+            <r25:approval_contact_state_name>In Progress</r25:approval_contact_state_name>
+            <r25:notification_type_id>2</r25:notification_type_id>
+            <r25:notification_type_name>Authorization</r25:notification_type_name>
+            <r25:read_state>F</r25:read_state>
+            <r25:read_state_name>unread</r25:read_state_name>
+            <r25:approval_history>
+               <r25:history_date>2024-05-02T15:16:17-07:00</r25:history_date>
+               <r25:history_contact_id>15225399</r25:history_contact_id>
+               <r25:history_contact_name>JOETEST2</r25:history_contact_name>
+               <r25:history_notify_state>1</r25:history_notify_state>
+               <r25:history_notify_state_name>In Progress</r25:history_notify_state_name>
+            </r25:approval_history>
+         </r25:approval_contact>
+      </r25:approval>
+      <r25:role crc="00000021" status="est">
+         <r25:role_id>-2</r25:role_id>
+         <r25:role_name>Scheduler</r25:role_name>
+         <r25:role_sort_order>2</r25:role_sort_order>
+         <r25:contact crc="00000034"
+                      status="est"
+                      xl:href="contact.xml?contact_id=15226673">
+            <r25:contact_id>15226673</r25:contact_id>
+            <r25:contact_name>EVENT SERVICES, SEATTLE-</r25:contact_name>
+            <r25:contact_first_name>SEATTLE-</r25:contact_first_name>
+            <r25:contact_middle_name/>
+            <r25:contact_last_name>EVENT SERVICES</r25:contact_last_name>
+            <r25:formatted_address/>
+            <r25:phone>206-616-1287</r25:phone>
+            <r25:fax/>
+            <r25:email>eventapp@uw.edu</r25:email>
+         </r25:contact>
+      </r25:role>
+   </r25:event>
+</r25:events>

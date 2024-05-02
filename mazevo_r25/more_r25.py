@@ -261,7 +261,7 @@ def update_value(node, name, value):
     if (
         (not value and not element.text)
         or element.text == value
-        or (element.text and (element.text.lower() == value.lower()))
+        or (element.text and value and (element.text.lower() == str(value).lower()))
     ):
         # no change
         return element
@@ -270,7 +270,7 @@ def update_value(node, name, value):
         "changing %s from %s to %s"
         % (element.getroottree().getpath(element), element.text, value)
     )
-    element.text = value
+    element.text = str(value) if value else value
 
     # mark ancestors as modified
     while "status" in node.attrib and node.attrib["status"] == "est":

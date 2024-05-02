@@ -44,8 +44,9 @@ def update_get_status_map(mazevo_statuses):
                 statusmap.action = MazevoStatusMap.ACTION_ADD
             else:
                 statusmap.action = MazevoStatusMap.ACTION_REMOVE
+            statusmap.save()
         if statusmap.event_type_id is None:
             statusmap.event_type_id = settings.MAZEVO_R25_EVENTTYPE_DEFAULT
-        statusmap.save()
+            statusmap.save()
 
     return MazevoStatusMap.objects.in_bulk()

@@ -68,6 +68,8 @@ class MazevoStatusMap(models.Model):
 
     @property
     def status_name(self):
+        if self.status_id not in self.status_names:
+            return ''
         return self.status_names[self.status_id]
 
     @property

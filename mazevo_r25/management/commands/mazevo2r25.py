@@ -141,6 +141,10 @@ class Command(BaseCommand):
 
         status_map = update_get_status_map(status_list)
         for id in status_map:
+            if id not in statuses:
+                logger.warning(
+                    "Mapped status {} missing from Mazevo status list".format(id))
+                continue
             if status_map[id].action != MazevoStatusMap.ACTION_IGNORE:
                 search_statuses.append(id)
         logger.info(

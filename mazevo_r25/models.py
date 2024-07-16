@@ -27,6 +27,8 @@ class MazevoRoomSpace(models.Model):
 
     @property
     def room_name(self):
+        if self.room_id not in self.room_names:
+            return ''
         return self.room_names[self.room_id]
 
     @property

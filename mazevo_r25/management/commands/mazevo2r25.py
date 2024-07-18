@@ -220,6 +220,13 @@ class Command(BaseCommand):
                 )
             )
 
+            if booking.setup_minutes or booking.teardown_minutes:
+                logger.debug(
+                    "\tSetup Minutes: {}, Teardown Minutes: {}".format(
+                        booking.setup_minutes, booking.teardown_minutes
+                    )
+                )
+
             r25_event = None
             try:
                 events = get_events(
@@ -342,6 +349,48 @@ class Command(BaseCommand):
             if wanted_booking:
                 r25_res.start_datetime = booking.date_time_start.isoformat()
                 r25_res.end_datetime = booking.date_time_end.isoformat()
+
+                # calculate weird setup and takedown time format
+                # P#DT##H##M
+                days = booking.setup_minutes // 1440
+                hours = booking.setup_minutes // 60 - days * 24
+                minutes = booking.setup_minutes % 60
+                if days or hours or minutes:
+                    r25_res.setup_tm = "P"
+                else:
+                    r25_res.setup_tm = None
+                if days:
+                    r25_res.setup_tm += "{}D".format(days)
+                if hours or minutes:
+                    r25_res.setup_tm += "T"
+                if hours:
+                    r25_res.setup_tm += "{:02d}H".format(hours)
+                if minutes:
+                    r25_res.setup_tm += "{:02d}M".format(minutes)
+
+                days = booking.teardown_minutes // 1440
+                hours = booking.teardown_minutes // 60 - days * 24
+                minutes = booking.teardown_minutes % 60
+                if days or hours or minutes:
+                    r25_res.tdown_tm = "P"
+                else:
+                    r25_res.tdown_tm = None
+                if days:
+                    r25_res.tdown_tm += "{}D".format(days)
+                if hours or minutes:
+                    r25_res.tdown_tm += "T"
+                if hours:
+                    r25_res.tdown_tm += "{:02}H".format(hours)
+                if minutes:
+                    r25_res.tdown_tm += "{:02}M".format(minutes)
+
+                r25_res.reservation_start_dt = (
+                    booking.date_time_start - datetime.timedelta(
+                        minutes=booking.setup_minutes)).isoformat()
+                r25_res.reservation_end_dt = (
+                    booking.date_time_end + datetime.timedelta(
+                        minutes=booking.teardown_minutes)).isoformat()
+
                 r25_res.state = r25_res.STANDARD_STATE
                 if r25_res.space_reservation is None:
                     r25_res.space_reservation = Space()

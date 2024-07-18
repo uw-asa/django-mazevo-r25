@@ -337,9 +337,9 @@ def update_event(event):
     """
     Create or update the given event in R25
 
-    Only the features supported by uw_r25 are supported here.
-    Some unsupported fields are initialized with hard-coded values suitable for
-    events from ASA's Mazevo instance.
+    We use some fields not supported by uw_r25, by just having more properties on the
+    event object. We start with the editable event xml that R25 provides to us, parse
+    it, make any needed changes, and send it back again as xml.
 
     :param event: a uw_r25.models.event
     :return: the new or updated event from R25, as a uw_r25.models.event
@@ -402,12 +402,58 @@ def update_event(event):
             pnode = add_node(enode, "profile")
             rnode = add_node(pnode, "reservation")
 
+        # add or update setup time
+        setup_node = None
+        try:
+            setup_node = pnode.xpath("r25:setup_profile", namespaces=nsmap)[0]
+        except IndexError:
+            pass
+
+        if setup_node is not None:
+            if res.setup_tm is None:
+                # We don't want a setup time. delete it
+                delete_node(setup_node)
+                setup_node = None
+
+        if res.setup_tm is not None:
+            if setup_node is None:
+                # We want a setup time. add it.
+                setup_node = add_node(pnode, "setup_profile")
+
+            # Update to our current setup time.
+            update_value(setup_node, "setup_tm", res.setup_tm)
+
+        # add or update takedown time
+        tdown_node = None
+        try:
+            tdown_node = pnode.xpath("r25:takedown_profile", namespaces=nsmap)[0]
+        except IndexError:
+            pass
+
+        if tdown_node is not None:
+            if res.tdown_tm is None:
+                # We don't want a takedown time. delete it
+                delete_node(tdown_node)
+                tdown_node = None
+
+        if res.tdown_tm is not None:
+            if tdown_node is None:
+                # We want a takedown time. add it.
+                tdown_node = add_node(pnode, "takedown_profile")
+
+            # Update to our current takedown time.
+            update_value(tdown_node, "tdown_tm", res.tdown_tm)
+
         update_value(pnode, "profile_name", res.profile_name)
         update_value(pnode, "init_start_dt", res.start_datetime)
         update_value(pnode, "init_end_dt", res.end_datetime)
 
-        update_value(rnode, "reservation_start_dt", res.start_datetime)
-        update_value(rnode, "reservation_end_dt", res.end_datetime)
+        # reservation_start_dt and reservation_end_dt are when setup time starts and
+        # takedown time ends. It looks like they will be ignored by the server and
+        # instead calculated from the values in setup_profile and takedown_profile.
+        update_value(rnode, "reservation_start_dt", res.reservation_start_dt)
+        update_value(rnode, "reservation_end_dt", res.reservation_end_dt)
+
         update_value(rnode, "event_start_dt", res.start_datetime)
         update_value(rnode, "event_end_dt", res.end_datetime)
         update_value(rnode, "pre_event_start_dt", res.start_datetime)

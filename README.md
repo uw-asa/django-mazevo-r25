@@ -8,7 +8,7 @@
 | mazevo\_r25/admin.py                                 |       43 |       28 |     35% |9-30, 43-69 |
 | mazevo\_r25/management/\_\_init\_\_.py               |        0 |        0 |    100% |           |
 | mazevo\_r25/management/commands/\_\_init\_\_.py      |        0 |        0 |    100% |           |
-| mazevo\_r25/management/commands/mazevo2r25.py        |      242 |      242 |      0% |     1-491 |
+| mazevo\_r25/management/commands/mazevo2r25.py        |      250 |      250 |      0% |     1-499 |
 | mazevo\_r25/migrations/0001\_initial.py              |        5 |        0 |    100% |           |
 | mazevo\_r25/migrations/0002\_mazevostatusmap.py      |        4 |        0 |    100% |           |
 | mazevo\_r25/migrations/0003\_auto\_20240716\_1651.py |        4 |        0 |    100% |           |
@@ -18,7 +18,7 @@
 | mazevo\_r25/tests/\_\_init\_\_.py                    |        0 |        0 |    100% |           |
 | mazevo\_r25/tests/test\_more\_r25.py                 |       27 |        0 |    100% |           |
 | mazevo\_r25/utils.py                                 |       32 |       32 |      0% |      1-52 |
-|                                            **TOTAL** |  **661** |  **458** | **31%** |           |
+|                                            **TOTAL** |  **669** |  **466** | **30%** |           |
 
 
 ## Setup coverage badge

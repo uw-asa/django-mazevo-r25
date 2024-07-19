@@ -152,6 +152,12 @@ class Command(BaseCommand):
             % ", ".join(statuses[status].description for status in search_statuses)
         )
 
+        # Mazevo works best with full tz-aware datetimes
+        start_date = datetime.datetime.combine(
+            start_date, datetime.datetime.min.time()).astimezone()
+        end_date = datetime.datetime.combine(
+            end_date, datetime.datetime.min.time()).astimezone()
+
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.

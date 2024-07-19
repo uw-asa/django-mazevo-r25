@@ -28,7 +28,7 @@ from mazevo_r25.more_r25 import (
 from mazevo_r25.utils import update_get_space_ids, update_get_status_map
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("mazevo_r25")
 
 
 class Command(BaseCommand):

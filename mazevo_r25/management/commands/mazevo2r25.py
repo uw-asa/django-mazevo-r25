@@ -214,8 +214,9 @@ class Command(BaseCommand):
                 % (current_num, len(bookings), booking.id, booking.event_name)
             )
             logger.debug(
-                "\tStatus: {}, space_id: {}".format(
-                    booking.status.description, booking.space_id
+                "\tStatus: {}, room: {}, space_id: {}".format(
+                    booking.status.description, booking.room_description,
+                    booking.space_id
                 )
             )
             logger.debug(

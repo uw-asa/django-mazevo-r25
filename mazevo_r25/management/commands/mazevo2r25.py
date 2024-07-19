@@ -161,12 +161,13 @@ class Command(BaseCommand):
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been
         # Created in R25, and we need to cancel it there.
-        # if options["booking"]:
-        #     logger.info("Looking for single booking %s" % options["booking"])
-        #     try:
-        #         bookings = [get_booking(options["booking"])]
-        #     except IndexError:
-        #         bookings = []
+        if options["booking"]:
+            logger.info("Looking for single booking %s" % options["booking"])
+            try:
+                bookings = PublicEvent().get_events_with_booking_details(
+                    [options["booking"]])
+            except IndexError:
+                bookings = []
         # elif options["event"]:
         #     logger.info("Looking for event %s" % options["event"])
         #     bookings = get_bookings2(
@@ -174,7 +175,7 @@ class Command(BaseCommand):
         #         start_date=start_date.isoformat(),
         #         end_date=end_date.isoformat(),
         #     )
-        if options["changed"]:
+        elif options["changed"]:
             logger.info("Looking for changed bookings")
             bookings = PublicEvent().get_events(
                 start=start_date.isoformat(),

@@ -155,8 +155,9 @@ class Command(BaseCommand):
         # Mazevo works best with full tz-aware datetimes
         start_date = datetime.datetime.combine(
             start_date, datetime.datetime.min.time()).astimezone()
-        end_date = datetime.datetime.combine(
-            end_date, datetime.datetime.min.time()).astimezone()
+        if not options["end"] == "max":
+            end_date = datetime.datetime.combine(
+                end_date, datetime.datetime.min.time()).astimezone()
 
         # Get all bookings in range, regardless of room, status, or event type.
         # We do this because a now-unwanted booking might already have been

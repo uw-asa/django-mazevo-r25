@@ -358,6 +358,10 @@ class Command(BaseCommand):
             r25_event.organization_id = settings.MAZEVO_R25_ORGANIZATION
 
             r25_res = r25_event.reservations[0]
+            r25_res.setup_tm = None
+            r25_res.tdown_tm = None
+            r25_res.reservation_start_dt = None
+            r25_res.reservation_end_dt = None
 
             if wanted_booking:
                 r25_res.start_datetime = booking.date_time_start.isoformat()
@@ -370,8 +374,6 @@ class Command(BaseCommand):
                 minutes = booking.setup_minutes % 60
                 if days or hours or minutes:
                     r25_res.setup_tm = "P"
-                else:
-                    r25_res.setup_tm = None
                 if days:
                     r25_res.setup_tm += "{}D".format(days)
                 if hours or minutes:
@@ -386,8 +388,6 @@ class Command(BaseCommand):
                 minutes = booking.teardown_minutes % 60
                 if days or hours or minutes:
                     r25_res.tdown_tm = "P"
-                else:
-                    r25_res.tdown_tm = None
                 if days:
                     r25_res.tdown_tm += "{}D".format(days)
                 if hours or minutes:

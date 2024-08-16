@@ -54,7 +54,7 @@ class MazevoStatusMapForm(forms.ModelForm):
         self.fields["status_id"].disabled = True
 
         event_type_id_widget = forms.Select()
-        event_type_id_widget.choices = [(0, "Not Defined")]
+        event_type_id_widget.choices = [(MazevoStatusMap.EVENT_TYPE_UNDEFINED, "Not Defined")]
         for event_type in MazevoStatusMap.event_type_names:
             event_type_id_widget.choices.append(
                 (

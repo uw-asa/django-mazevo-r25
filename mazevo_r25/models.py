@@ -64,6 +64,8 @@ class MazevoStatusMap(models.Model):
         (ACTION_ADD, "Add if not present in R25"),
     )
 
+    EVENT_TYPE_UNDEFINED = 0
+
     status_id = models.PositiveIntegerField(primary_key=True)
     action = models.SlugField(choices=ACTION_CHOICES, null=True)
     event_type_id = models.IntegerField(null=True)

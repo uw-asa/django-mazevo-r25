@@ -496,7 +496,7 @@ class Command(BaseCommand):
                 )
 
         # send email
-        if len(messages) > 0:
+        if options["update"] and len(messages) > 0:
             send_mail(
                 "Mazevo2R25 report",
                 "\n".join(messages),

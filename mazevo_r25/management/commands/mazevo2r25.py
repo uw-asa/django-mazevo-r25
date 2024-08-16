@@ -215,8 +215,8 @@ class Command(BaseCommand):
                 % (current_num, len(bookings), booking.id, booking.event_name)
             )
             logger.debug(
-                "\tStatus: {}, room: {}, space_id: {}".format(
-                    booking.status.description, booking.room_description,
+                "\tEvent: {}, Status: {}, room: {}, space_id: {}".format(
+                    booking.event_number, booking.status.description, booking.room_description,
                     booking.space_id
                 )
             )
@@ -277,22 +277,22 @@ class Command(BaseCommand):
                 # Server timeout, etc
                 self.stdout.write(
                     "Error retrieving R25 Event, skipping "
-                    "Booking %s: %s" % (booking.id, ex)
+                    "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
                 )
                 messages.append(
                     "Error retrieving R25 Event, skipping "
-                    "Booking %s: %s" % (booking.id, ex)
+                    "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
                 )
                 continue
             except XMLSyntaxError as ex:
                 # Bad response from R25 server - usually means outage
                 self.stdout.write(
                     "XML Error retrieving R25 Event, skipping "
-                    "Booking %s: %s" % (booking.id, ex)
+                    "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
                 )
                 messages.append(
                     "XML Error retrieving R25 Event, skipping "
-                    "Booking %s: %s" % (booking.id, ex)
+                    "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
                 )
                 continue
 
@@ -312,12 +312,12 @@ class Command(BaseCommand):
             elif booking.space_id is None:
                 if not booking.room_description.startswith("__"):
                     logger.warning(
-                        "No R25 space for Mazevo Booking %s: %s"
-                        % (booking.id, booking.room_description)
+                        "No R25 space for Mazevo Booking %s (%s): %s"
+                        % (booking.id, booking.event_number, booking.room_description)
                     )
                     messages.append(
-                        "No R25 space for Mazevo Booking %s: %s"
-                        % (booking.id, booking.room_description)
+                        "No R25 space for Mazevo Booking %s (%s): %s"
+                        % (booking.id, booking.event_number, booking.room_description)
                     )
                 wanted_booking = False
 
@@ -426,12 +426,12 @@ class Command(BaseCommand):
                 while ex:
                     if ex.msg_id == "EV_I_SPACECON":
                         logger.warning(
-                            "Conflict while syncing Mazevo Booking %s: %s"
-                            % (booking.id, ex.text)
+                            "Conflict while syncing Mazevo Booking %s (%s): %s"
+                            % (booking.id, booking.event_number, ex.text)
                         )
                         messages.append(
-                            "Conflict while syncing Mazevo Booking %s: %s"
-                            % (booking.id, ex.text)
+                            "Conflict while syncing Mazevo Booking %s (%s): %s"
+                            % (booking.id, booking.event_number, ex.text)
                         )
                         match = re.search(r"\[(?P<event_id>\d+)\]", ex.text)
                         if match:
@@ -455,44 +455,44 @@ class Command(BaseCommand):
 
                     else:
                         logger.warning(
-                            "R25 message while syncing Mazevo Booking %s to "
-                            "R25 Event %s: %s" % (booking.id, r25_event.event_id, ex)
+                            "R25 message while syncing Mazevo Booking %s (%s) to "
+                            "R25 Event %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                         )
                         messages.append(
-                            "R25 message while syncing Mazevo Booking %s to "
-                            "R25 Event %s: %s" % (booking.id, r25_event.event_id, ex)
+                            "R25 message while syncing Mazevo Booking %s (%s) to "
+                            "R25 Event %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                         )
 
                     ex = ex.next_msg
 
             except R25ErrorException as ex:
                 logger.warning(
-                    "R25 error while syncing Mazevo Booking %s to R25 Event "
-                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                    "R25 error while syncing Mazevo Booking %s (%s) to R25 Event "
+                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
                 messages.append(
-                    "R25 error while syncing Mazevo Booking %s to R25 Event "
-                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                    "R25 error while syncing Mazevo Booking %s (%s) to R25 Event "
+                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
 
             except DataFailureException as ex:
                 logger.warning(
-                    "HTTP error while syncing Mazevo Booking %s to R25 Event "
-                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                    "HTTP error while syncing Mazevo Booking %s (%s) to R25 Event "
+                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
                 messages.append(
-                    "HTTP error while syncing Mazevo Booking %s to R25 Event "
-                    " %s: %s" % (booking.id, r25_event.event_id, ex)
+                    "HTTP error while syncing Mazevo Booking %s (%s) to R25 Event "
+                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
 
             except TooManyRequestsException:
                 self.stdout.write(
-                    "Too Many Requests while syncing Mazevo Booking %s to "
-                    "R25 Event %s" % (booking.id, r25_event.event_id)
+                    "Too Many Requests while syncing Mazevo Booking %s (%s) to "
+                    "R25 Event %s" % (booking.id, booking.event_number, r25_event.event_id)
                 )
                 messages.append(
-                    "Too Many Requests while syncing Mazevo Booking %s to "
-                    "R25 Event %s" % (booking.id, r25_event.event_id)
+                    "Too Many Requests while syncing Mazevo Booking %s (%s) to "
+                    "R25 Event %s" % (booking.id, booking.event_number, r25_event.event_id)
                 )
 
         # send email

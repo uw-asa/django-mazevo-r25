@@ -349,7 +349,8 @@ class Command(BaseCommand):
             )
             r25_event.title = event_name.strip()
             r25_event.state = r25_event.CONFIRMED_STATE
-            r25_event.event_type_id = booking.mapped_status.event_type_id
+            if not booking.mapped_status.event_type_id == MazevoStatusMap.EVENT_TYPE_UNDEFINED:
+                r25_event.event_type_id = booking.mapped_status.event_type_id
             r25_event.node_type = "E"
             r25_event.organization_id = settings.MAZEVO_R25_ORGANIZATION
 

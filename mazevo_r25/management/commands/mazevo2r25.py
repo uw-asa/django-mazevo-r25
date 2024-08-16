@@ -111,6 +111,9 @@ class Command(BaseCommand):
 
         self.set_logger(options.get("verbosity"))
 
+        if options["changed"] and not options["end"]:
+            options["end"] = "max"
+
         if options["start"]:
             start_date = parse(options["start"]).date()
         else:

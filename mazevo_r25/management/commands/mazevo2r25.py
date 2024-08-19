@@ -119,7 +119,7 @@ class Command(BaseCommand):
         else:
             start_date = datetime.date.today()
         if options["end"] == "max":
-            end_date = datetime.date.max
+            end_date = start_date + datetime.timedelta(days=1000)
         elif options["end"]:
             end_date = parse(options["end"]).date()
         else:

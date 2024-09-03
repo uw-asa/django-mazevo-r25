@@ -67,7 +67,7 @@ class MazevoStatusMap(models.Model):
     EVENT_TYPE_UNDEFINED = 0
 
     status_id = models.PositiveIntegerField(primary_key=True)
-    action = models.SlugField(choices=ACTION_CHOICES, null=True)
+    action = models.SlugField(choices=ACTION_CHOICES, null=True, default=ACTION_IGNORE)
     event_type_id = models.IntegerField(null=True)
 
     @property

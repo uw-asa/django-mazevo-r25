@@ -39,12 +39,6 @@ def update_get_status_map(mazevo_statuses):
     """
     for status in mazevo_statuses:
         statusmap, _ = MazevoStatusMap.objects.get_or_create(status_id=status.id)
-        if statusmap.action is None:
-            if status.status_type == Status.STATUS_TYPE_BLOCKS_SPACE:
-                statusmap.action = MazevoStatusMap.ACTION_ADD
-            else:
-                statusmap.action = MazevoStatusMap.ACTION_REMOVE
-            statusmap.save()
         if statusmap.event_type_id is None:
             statusmap.event_type_id = settings.MAZEVO_R25_EVENTTYPE_DEFAULT
             statusmap.save()

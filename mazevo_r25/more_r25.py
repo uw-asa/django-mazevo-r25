@@ -3,6 +3,7 @@ import logging
 from lxml import etree
 from urllib.parse import quote, urlencode
 
+from restclients_core import models
 from restclients_core.exceptions import DataFailureException
 from uw_r25 import nsmap, get_resource
 from uw_r25.dao import R25_DAO
@@ -561,3 +562,64 @@ def list_item_from_xml(tree):
     id = int(tree.xpath("r25:id", namespaces=nsmap)[0].text)
     name = tree.xpath("r25:name", namespaces=nsmap)[0].text
     return (id, name)
+
+
+class Object(models.Model):
+    EVENT_TYPE = 1
+    ORGANIZATION_TYPE = 2
+    CONTACT_TYPE = 3
+    SPACE_TYPE = 4
+    RATE_SCHEDULE_TYPE = 5
+    RESOURCE_TYPE = 6
+    EVENT_TYPE_TYPE = 7
+    REPORT_TYPE = 9
+    TASK_SEARCH_TYPE = 10
+    EVENT_SEARCH_TYPE = 11
+    SPACE_SEARCH_TYPE = 14
+    RESOURCE_SEARCH_TYPE = 15
+    ORGANIZATION_SEARCH_TYPE = 16
+
+
+def object_from_xml(tree):
+    id = int(tree.xpath("r25:object_id", namespaces=nsmap)[0].text)
+    name = tree.xpath("r25:object_name", namespaces=nsmap)[0].text
+    return (id, name)
+
+
+def objects_from_xml(tree):
+    objects = []
+    for node in tree.xpath("//r25:object", namespaces=nsmap):
+        item = object_from_xml(node)
+        objects.append(item)
+    return objects
+
+
+def get_favorites(object_type):
+    """
+    Returns a list of favorite objects for the object type supplied in the argument
+    """
+    url = "favorites.xml"
+    url += "?object_type={}".format(object_type)
+    return dict(objects_from_xml(get_resource(url)))
+
+
+def add_favorite(object_type, object_id):
+    """
+    Make an individual object a favorite
+    """
+    url = "favorites.xml"
+    url += "?object_type={}&object_id={}".format(object_type, object_id)
+    result = put_resource(url, "")
+
+    return result
+
+
+def delete_favorite(object_type, object_id):
+    """
+    Remove an individual object as a favorite
+    """
+    url = "favorites.xml"
+    url += "?object_type={}&object_id={}".format(object_type, object_id)
+    result = delete_resource(url)
+
+    return result

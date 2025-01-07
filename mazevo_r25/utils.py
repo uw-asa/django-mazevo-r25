@@ -1,5 +1,7 @@
 import logging
 
+from django.conf import settings
+
 from .models import MazevoRoomSpace, MazevoStatusMap
 from .more_r25 import (Object, get_space_by_short_name, add_favorite, delete_favorite,
                        get_favorites)

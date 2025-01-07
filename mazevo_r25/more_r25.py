@@ -9,6 +9,7 @@ from uw_r25 import nsmap, get_resource
 from uw_r25.dao import R25_DAO
 from uw_r25.events import events_from_xml
 from uw_r25.models import Event
+from uw_r25.reservations import reservations_from_xml
 from uw_r25.spaces import spaces_from_xml
 
 
@@ -623,3 +624,14 @@ def delete_favorite(object_type, object_id):
     result = delete_resource(url)
 
     return result
+
+
+def get_reservations_attrs(**kwargs):
+    kwargs["scope"] = "extended"
+    url = "reservations.xml"
+    if len(kwargs):
+        url += "?{}".format(urlencode(kwargs))
+
+    result = get_resource(url)
+
+    return (reservations_from_xml(result), dict(result.attrib))

@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from lxml.etree import XMLSyntaxError
 from restclients_core.exceptions import DataFailureException
+from restclients_core.util.retry import retry
 from urllib3.exceptions import InsecureRequestWarning
 from uw_mazevo.api import PublicConfiguration, PublicEvent
 from uw_r25.events import get_event_by_id, get_events
@@ -114,6 +115,10 @@ class Command(BaseCommand):
             help="Update R25 Events",
         )
 
+    @retry(DataFailureException, status_codes=[0, 429], logger=logger)
+    def get_events(self, **kwargs):
+        return get_events(**kwargs)
+
     def handle(self, *args, **options):
         start_time = time.time()
 
@@ -206,7 +211,6 @@ class Command(BaseCommand):
 
         mazevo_events = {}
         current_num = 0
-        r25_event_delay = 0
         for booking in bookings:
             current_num += 1
 
@@ -250,20 +254,12 @@ class Command(BaseCommand):
 
             r25_event = None
             try:
-                # add a delay between fetches so we don't get rate-limited
-                time.sleep(r25_event_delay + 1.0)
-                cur_time = time.time()
 
-                events = get_events(
+                events = self.get_events(
                     starts_with="%d_" % booking.id,
                     scope="extended",
                     include="reservations",
                 )
-
-                fetch_time = time.time() - cur_time
-                r25_event_delay = max(fetch_time, r25_event_delay)
-                logger.debug("fetched in {}s, delay now {}s".format(
-                    fetch_time, r25_event_delay + 1.0))
 
                 r25_event = events[0]
 

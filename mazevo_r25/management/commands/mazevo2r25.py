@@ -1,4 +1,5 @@
 import datetime
+from io import StringIO
 import logging
 import re
 import requests
@@ -29,6 +30,12 @@ from mazevo_r25.utils import update_get_space_ids, update_get_status_map
 
 
 logger = logging.getLogger("mazevo_r25")
+
+# save warnings to mail out after execution
+msg_stream = StringIO()
+msg_handler = logging.StreamHandler(stream=msg_stream)
+msg_handler.setLevel(logging.WARNING)
+logger.addHandler(msg_handler)
 
 
 class Command(BaseCommand):
@@ -107,7 +114,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        messages = []
 
         self.set_logger(options.get("verbosity"))
 
@@ -251,14 +257,9 @@ class Command(BaseCommand):
 
                 if len(events) > 1:
                     logger.warning("\tFound multiple R25 events")
-                    messages.append("\tFound multiple R25 events")
                     for event in events:
                         if event.reservations[0].space_reservation is None:
                             logger.warning(
-                                "\tFound R25 event with no space "
-                                "reservation %s: %s" % (event.event_id, event.name)
-                            )
-                            messages.append(
                                 "\tFound R25 event with no space "
                                 "reservation %s: %s" % (event.event_id, event.name)
                             )
@@ -278,22 +279,14 @@ class Command(BaseCommand):
                 pass
             except DataFailureException as ex:
                 # Server timeout, etc
-                self.stdout.write(
-                    "Error retrieving R25 Event, skipping "
-                    "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
-                )
-                messages.append(
+                logger.warning(
                     "Error retrieving R25 Event, skipping "
                     "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
                 )
                 continue
             except XMLSyntaxError as ex:
                 # Bad response from R25 server - usually means outage
-                self.stdout.write(
-                    "XML Error retrieving R25 Event, skipping "
-                    "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
-                )
-                messages.append(
+                logger.warning(
                     "XML Error retrieving R25 Event, skipping "
                     "Booking %s (%s): %s" % (booking.id, booking.event_number, ex)
                 )
@@ -315,10 +308,6 @@ class Command(BaseCommand):
             elif booking.space_id is None:
                 if not booking.room_description.startswith("__"):
                     logger.warning(
-                        "No R25 space for Mazevo Booking %s (%s): %s"
-                        % (booking.id, booking.event_number, booking.room_description)
-                    )
-                    messages.append(
                         "No R25 space for Mazevo Booking %s (%s): %s"
                         % (booking.id, booking.event_number, booking.room_description)
                     )
@@ -433,10 +422,6 @@ class Command(BaseCommand):
                             "Conflict while syncing Mazevo Booking %s (%s): %s"
                             % (booking.id, booking.event_number, ex.text)
                         )
-                        messages.append(
-                            "Conflict while syncing Mazevo Booking %s (%s): %s"
-                            % (booking.id, booking.event_number, ex.text)
-                        )
                         match = re.search(r"\[(?P<event_id>\d+)\]", ex.text)
                         if match:
                             try:
@@ -444,25 +429,14 @@ class Command(BaseCommand):
                                 logger.warning(
                                     "Existing event: %s" % old_event.live_url()
                                 )
-                                messages.append(
-                                    "Existing event: %s" % old_event.live_url()
-                                )
                             except Exception:
                                 logger.warning("Unknown event ")
-                                messages.append("Unknown event ")
                             logger.warning(
-                                "Is blocking event: %s" % r25_event.live_url()
-                            )
-                            messages.append(
                                 "Is blocking event: %s" % r25_event.live_url()
                             )
 
                     else:
                         logger.warning(
-                            "R25 message while syncing Mazevo Booking %s (%s) to "
-                            "R25 Event %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
-                        )
-                        messages.append(
                             "R25 message while syncing Mazevo Booking %s (%s) to "
                             "R25 Event %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                         )
@@ -474,39 +448,32 @@ class Command(BaseCommand):
                     "R25 error while syncing Mazevo Booking %s (%s) to R25 Event "
                     " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
-                messages.append(
-                    "R25 error while syncing Mazevo Booking %s (%s) to R25 Event "
-                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
-                )
 
             except DataFailureException as ex:
                 logger.warning(
                     "HTTP error while syncing Mazevo Booking %s (%s) to R25 Event "
                     " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
-                messages.append(
-                    "HTTP error while syncing Mazevo Booking %s (%s) to R25 Event "
-                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
-                )
 
             except TooManyRequestsException:
-                self.stdout.write(
-                    "Too Many Requests while syncing Mazevo Booking %s (%s) to "
-                    "R25 Event %s" % (booking.id, booking.event_number, r25_event.event_id)
-                )
-                messages.append(
+                logger.warning(
                     "Too Many Requests while syncing Mazevo Booking %s (%s) to "
                     "R25 Event %s" % (booking.id, booking.event_number, r25_event.event_id)
                 )
 
         # send email
+        messages = msg_stream.getvalue()
         if options["update"] and len(messages) > 0:
-            send_mail(
-                "Mazevo2R25 report",
-                "\n".join(messages),
-                settings.MAZEVO_R25_EMAIL_HOST_USER,
-                settings.MAZEVO_R25_EMAIL_RECIPIENTS,
-                fail_silently=False,
-                auth_user=settings.MAZEVO_R25_EMAIL_HOST_USER,
-                auth_password=settings.MAZEVO_R25_EMAIL_HOST_PASSWORD,
-            )
+            try:
+                send_mail(
+                    "Mazevo2R25 report",
+                    messages,
+                    settings.MAZEVO_R25_EMAIL_HOST_USER,
+                    settings.MAZEVO_R25_EMAIL_RECIPIENTS,
+                    fail_silently=False,
+                    auth_user=settings.MAZEVO_R25_EMAIL_HOST_USER,
+                    auth_password=settings.MAZEVO_R25_EMAIL_HOST_PASSWORD,
+                )
+            except Exception:
+                print("Email not configured. Mazevo2R25 report:")
+                print(messages)

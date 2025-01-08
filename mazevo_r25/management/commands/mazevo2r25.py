@@ -5,6 +5,7 @@ import re
 import requests
 import six
 import sys
+import time
 import unicodedata
 
 from dateutil.parser import parse
@@ -114,6 +115,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        start_time = time.time()
 
         self.set_logger(options.get("verbosity"))
 
@@ -204,6 +206,7 @@ class Command(BaseCommand):
 
         mazevo_events = {}
         current_num = 0
+        r25_event_delay = 0
         for booking in bookings:
             current_num += 1
 
@@ -247,11 +250,20 @@ class Command(BaseCommand):
 
             r25_event = None
             try:
+                # add a delay between fetches so we don't get rate-limited
+                time.sleep(r25_event_delay + 1.0)
+                cur_time = time.time()
+
                 events = get_events(
                     starts_with="%d_" % booking.id,
                     scope="extended",
                     include="reservations",
                 )
+
+                fetch_time = time.time() - cur_time
+                r25_event_delay = max(fetch_time, r25_event_delay)
+                logger.debug("fetched in {}s, delay now {}s".format(
+                    fetch_time, r25_event_delay + 1.0))
 
                 r25_event = events[0]
 
@@ -477,3 +489,5 @@ class Command(BaseCommand):
             except Exception:
                 print("Email not configured. Mazevo2R25 report:")
                 print(messages)
+
+        logger.debug("time: {}".format(time.time() - start_time))

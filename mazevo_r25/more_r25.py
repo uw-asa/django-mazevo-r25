@@ -5,6 +5,7 @@ from urllib.parse import quote, urlencode
 
 from restclients_core import models
 from restclients_core.exceptions import DataFailureException
+from restclients_core.util.retry import retry
 from uw_r25 import nsmap, get_resource
 from uw_r25.dao import R25_DAO
 from uw_r25.events import events_from_xml
@@ -14,6 +15,9 @@ from uw_r25.spaces import spaces_from_xml
 
 
 logger = logging.getLogger(__name__)
+
+
+RETRY_STATUS_CODES = [0, 429]
 
 
 def live_url(self):
@@ -626,6 +630,7 @@ def delete_favorite(object_type, object_id):
     return result
 
 
+@retry(DataFailureException, status_codes=RETRY_STATUS_CODES, logger=logger)
 def get_reservations_attrs(**kwargs):
     kwargs["scope"] = "extended"
     url = "reservations.xml"

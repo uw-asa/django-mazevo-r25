@@ -31,7 +31,7 @@ def update_get_space_ids(mazevo_rooms):
                 space = get_space_by_short_name(room.description)
                 room_space.space_id = space.space_id
                 room_space.save()
-            except Exception:
+            except IndexError:
                 if room.description.startswith("_"):
                     logger.info("No R25 space found for {}".format(room.description))
                     continue

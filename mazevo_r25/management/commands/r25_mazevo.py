@@ -199,7 +199,6 @@ class Command(BaseCommand):
                 start_dt = datetime.datetime.fromisoformat(reservation.start_datetime)
                 end_dt = datetime.datetime.fromisoformat(reservation.end_datetime)
                 date = start_dt.date()
-                week = term.get_calendar_week_of_term_for_date(start_dt)
                 dayname = PublicCourses().DAYS_OF_WEEK[date.isoweekday() % 7]
 
                 # Weeks are Sunday To Saturday
@@ -231,9 +230,9 @@ class Command(BaseCommand):
                     course["meetingTimesDict"][key] = {}
 
                 # this week doesn't exist for this meeting time and place yet
-                if week not in course["meetingTimesDict"][key]:
+                if week_start not in course["meetingTimesDict"][key]:
                     # add this week to meeting/week dict
-                    course["meetingTimesDict"][key][week] = {
+                    course["meetingTimesDict"][key][week_start] = {
                         "startDate": week_start,
                         "endDate": week_end,
                         "startTime": s_time,
@@ -251,7 +250,7 @@ class Command(BaseCommand):
                     }
 
                 # Finally, make this day active for this time, place, and week
-                course["meetingTimesDict"][key][week][dayname] = True
+                course["meetingTimesDict"][key][week_start][dayname] = True
 
             # Last page?
             if not int(attrs["page_num"]) < int(attrs["page_count"]):

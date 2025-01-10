@@ -8,7 +8,8 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from mazevo_r25.more_r25 import get_reservations_attrs
 from uw_mazevo.api import PublicCourses
-from uw_sws.term import get_current_term, get_next_term, get_term_by_year_and_quarter
+from uw_sws.term import (get_current_term, get_next_term, get_term_after,
+                         get_term_by_year_and_quarter)
 from uw_r25.models import Reservation
 
 
@@ -99,7 +100,9 @@ class Command(BaseCommand):
 
         self.set_logger(options.get("verbosity"))
 
-        if options["term"] == "next":
+        if options["term"] == "afternext":
+            term = get_term_after(get_next_term())
+        elif options["term"] == "next":
             term = get_next_term()
         elif options["term"]:
             first, second = re.split(r'\W', options["term"])

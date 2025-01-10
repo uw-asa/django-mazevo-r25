@@ -118,6 +118,10 @@ class Command(BaseCommand):
         }
 
         if options["finals"]:
+            if term.last_day_instruction == term.last_final_exam_date:
+                logger.info("Can't get finals for term without finals week")
+                return
+
             import_term["termDescription"] += " Finals"
             import_term["startDate"] = (term.last_day_instruction
                                         + datetime.timedelta(days=1)).isoformat()

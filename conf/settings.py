@@ -88,6 +88,10 @@ MAZEVO_R25_REMOVE_STATUSES = [
     "Tentative PCS",
 ]
 
+# R25 Event types for Mazevo course import
+MAZEVO_R25_EVENTTYPE_TS_SECTION = 459
+MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL = 472
+
 # Map Mazevo Booking Status to R25 Event Type
 MAZEVO_R25_EVENTTYPE_DEFAULT = "433"  # UWS Event
 MAZEVO_R25_EVENTTYPE_MAP = {

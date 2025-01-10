@@ -32,6 +32,8 @@ setup(
         'UW-RestClients-GWS<2.0 ; python_version < "3.0"',
         'UW-RestClients-GWS ; python_version >= "3.0"',
         "UW-RestClients-R25",
+        'UW-RestClients-SWS<2.0 ; python_version < "3.0"',
+        'UW-RestClients-SWS ; python_version >= "3.0"',
     ],
     license="Apache License, Version 2.0",
     description="Django app to generate R25 events from Mazevo",

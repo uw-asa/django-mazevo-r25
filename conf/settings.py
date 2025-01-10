@@ -88,18 +88,12 @@ MAZEVO_R25_REMOVE_STATUSES = [
     "Tentative PCS",
 ]
 
-# R25 Event types for Mazevo course import
+# R25 event types for courses to import to Mazevo
 MAZEVO_R25_EVENTTYPE_TS_SECTION = 459
 MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL = 472
 
-# Map Mazevo Booking Status to R25 Event Type
-MAZEVO_R25_EVENTTYPE_DEFAULT = "433"  # UWS Event
-MAZEVO_R25_EVENTTYPE_MAP = {
-    "Academic Final Exam": "475",  # UWS ES_Final
-    "CAAMS Booking": "467",  # UWS CAAMS
-    "Blackout": "416",  # Repair/Maintenance
-    "Event Finalized (DAX Bypass)": "416",  # Repair/Maintenance
-}
+# Default R25 event type for bookings imported from Mazevo
+MAZEVO_R25_EVENTTYPE_DEFAULT = '433'    # UWS Event
 
 MAZEVO_R25_EMAIL_HOST_USER = ""
 MAZEVO_R25_EMAIL_HOST_PASSWORD = ""

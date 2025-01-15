@@ -186,13 +186,24 @@ class Command(BaseCommand):
                 if reservation.event_id not in courses:
                     matches = event_pat.match(reservation.event_name)
                     courses[reservation.event_id] = {
-                        "courseTitle": reservation.event_name,
+                        "courseTitle": reservation.event_title,
                         "subjectCode": matches.group("curric"),
                         "courseNumber": matches.group("number"),
                         "section": matches.group("section"),
-                        "enrollment": 0,
+                        "enrollment": reservation.registered_count,
                         "meetingTimesDict": {},
                     }
+                    if (reservation.event_notes and
+                            "SAFECAMPUS" in reservation.event_notes):
+                        """
+                        For unlisted meetings, make it show:
+                            ----- In use -----
+                        Once everything is concatenated together.
+                        """
+                        courses[reservation.event_id]["subjectCode"] = "-"
+                        courses[reservation.event_id]["courseNumber"] = "-"
+                        courses[reservation.event_id]["section"] = "-"
+                        courses[reservation.event_id]["courseTitle"] = "In use -----"
 
                 course = courses[reservation.event_id]
 
@@ -210,7 +221,7 @@ class Command(BaseCommand):
                 s_time = start_dt.strftime("%H%M")
                 e_time = end_dt.strftime("%H%M")
 
-                # Some R25 spaces do not have whitesspace between building and
+                # Some R25 spaces do not have whitespace between building and
                 # room. First 4 characters are building, rest is room.
                 if " " not in reservation.space_reservation.name:
                     reservation.space_reservation.name = \

@@ -339,6 +339,22 @@ def delete_node(node):
     return node
 
 
+@retry(DataFailureException, status_codes=RETRY_STATUS_CODES, logger=logger)
+def get_editable_event(event):
+    """
+    Retrieves from R25 the editable version of the event, or a new blank event
+    if necessary.
+    """
+    if event.event_id is None:
+        # Create a new event
+        url = "events.xml"
+        return post_resource(url)
+
+    else:
+        url = "event.xml?event_id=%s&mode=edit" % event.event_id
+        return get_resource(url)
+
+
 def update_event(event):
     """
     Create or update the given event in R25
@@ -351,25 +367,16 @@ def update_event(event):
     :return: the new or updated event from R25, as a uw_r25.models.event
     """
 
-    # Start with xml from R25, by requesting a new blank event, or getting the
-    # editable version of our existing event
-    if event.event_id is None:
-        # Create a new event
-        url = "events.xml"
-        event_tree = post_resource(url)
-        enode = event_tree.xpath("r25:event", namespaces=nsmap)[0]
+    event_tree = get_editable_event(event)
+    enode = event_tree.xpath("r25:event", namespaces=nsmap)[0]
 
+    if event.event_id is None:
         event.event_id = enode.xpath("r25:event_id", namespaces=nsmap)[0].text
         logger.debug("created new event %s" % event.event_id)
 
         # delete the blank profile
         pnode = enode.xpath("r25:profile", namespaces=nsmap)[0]
         enode.remove(pnode)
-
-    else:
-        url = "event.xml?event_id=%s&mode=edit" % event.event_id
-        event_tree = get_resource(url)
-        enode = event_tree.xpath("r25:event", namespaces=nsmap)[0]
 
     update_value(enode, "alien_uid", event.alien_uid)
     update_value(enode, "event_name", event.name)

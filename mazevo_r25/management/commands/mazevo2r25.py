@@ -232,8 +232,8 @@ class Command(BaseCommand):
             )
             logger.debug(
                 "\tEvent: {}, Status: {}, room: {}, space_id: {}".format(
-                    booking.event_number, booking.status.description, booking.room_description,
-                    booking.space_id
+                    booking.event_number, booking.status.description,
+                    booking.room_description, booking.space_id
                 )
             )
             logger.debug(
@@ -349,7 +349,8 @@ class Command(BaseCommand):
             )
             r25_event.title = event_name.strip()
             r25_event.state = r25_event.CONFIRMED_STATE
-            if not booking.mapped_status.event_type_id == MazevoStatusMap.EVENT_TYPE_UNDEFINED:
+            if (not booking.mapped_status.event_type_id ==
+                    MazevoStatusMap.EVENT_TYPE_UNDEFINED):
                 r25_event.event_type_id = booking.mapped_status.event_type_id
             r25_event.node_type = "E"
             r25_event.organization_id = settings.MAZEVO_R25_ORGANIZATION
@@ -445,28 +446,29 @@ class Command(BaseCommand):
 
                     else:
                         logger.warning(
-                            "R25 message while syncing Mazevo Booking %s (%s) to "
-                            "R25 Event %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
+                            "R25 message while syncing Mazevo Booking %s (%s) to R25 "
+                            "Event %s: %s" % (booking.id, booking.event_number,
+                                              r25_event.event_id, ex)
                         )
 
                     ex = ex.next_msg
 
             except R25ErrorException as ex:
                 logger.warning(
-                    "R25 error while syncing Mazevo Booking %s (%s) to R25 Event "
-                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
+                    "R25 error while syncing Mazevo Booking %s (%s) to R25 Event %s: "
+                    "%s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
 
             except DataFailureException as ex:
                 logger.warning(
-                    "HTTP error while syncing Mazevo Booking %s (%s) to R25 Event "
-                    " %s: %s" % (booking.id, booking.event_number, r25_event.event_id, ex)
+                    "HTTP error while syncing Mazevo Booking %s (%s) to R25 Event %s: "
+                    "%s" % (booking.id, booking.event_number, r25_event.event_id, ex)
                 )
 
             except TooManyRequestsException:
                 logger.warning(
-                    "Too Many Requests while syncing Mazevo Booking %s (%s) to "
-                    "R25 Event %s" % (booking.id, booking.event_number, r25_event.event_id)
+                    "Too Many Requests while syncing Mazevo Booking %s (%s) to R25 "
+                    "Event %s" % (booking.id, booking.event_number, r25_event.event_id)
                 )
 
         # send email

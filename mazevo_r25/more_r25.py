@@ -505,6 +505,11 @@ def update_event(event):
 
     url = "event.xml?event_id=%s&return_doc=T" % event.event_id
 
+    return _update_event(url, event_tree)
+
+
+@retry(DataFailureException, status_codes=RETRY_STATUS_CODES, logger=logger)
+def _update_event(url, event_tree):
     return events_from_xml(put_resource(url, etree.tostring(event_tree)))[0]
 
 

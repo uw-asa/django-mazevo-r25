@@ -165,6 +165,13 @@ class Command(BaseCommand):
             "end_dt": term.last_final_exam_date.isoformat(),
         }
 
+        # search for events in categories we want to be unlisted
+        unlisted_events = get_event_list(
+            **reservation_search, category_id="+".join(
+                settings.MAZEVO_R25_CATEGORIES_UNLISTED))
+
+        unlisted_event_ids = dict(unlisted_events).keys()
+
         paginate = "T"
         page = 1
 
@@ -194,7 +201,8 @@ class Command(BaseCommand):
                         "enrollment": reservation.registered_count,
                         "meetingTimesDict": {},
                     }
-                    if (reservation.event_notes and
+                    if event_id in unlisted_event_ids or (
+                            reservation.event_notes and
                             "safecampus" in reservation.event_notes.lower()):
                         """
                         For unlisted meetings, make it show:
@@ -267,27 +275,6 @@ class Command(BaseCommand):
             # Last page?
             if not int(attrs["page_num"]) < int(attrs["page_count"]):
                 break
-
-        # search for events in categories we want to be unlisted
-        eventlist = get_event_list(
-            **reservation_search, category_id="+".join(
-                settings.MAZEVO_R25_CATEGORIES_UNLISTED))
-
-        for (event_id, event_name) in eventlist:
-            if event_id not in courses:
-                continue
-            if courses[event_id]["subjectCode"] == "-":
-                continue
-
-            """
-            For unlisted meetings, make the name be only:
-                ----- In use -----
-            Once everything is concatenated together.
-            """
-            courses[event_id]["subjectCode"] = "-"
-            courses[event_id]["courseNumber"] = "-"
-            courses[event_id]["section"] = "-"
-            courses[event_id]["courseTitle"] = "In use -----"
 
         logger.info("Courses to upload: {}".format(len(courses)))
 

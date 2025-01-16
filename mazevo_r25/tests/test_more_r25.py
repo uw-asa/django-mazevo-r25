@@ -16,7 +16,7 @@ class TestMoreR25(TestCase):
         self.assertEqual(space.space_id, "1001")
 
     def test_get_space_list(self):
-        spaces = get_space_list()
+        spaces = list(get_space_list().items())
         self.assertEqual(len(spaces), 3)
         space = spaces[2]
         self.assertEqual(len(space), 2)

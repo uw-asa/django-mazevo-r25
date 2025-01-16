@@ -19,7 +19,7 @@ class MazevoRoomSpace(models.Model):
 
     @cachedclassproperty
     def space_names(cls):
-        return dict(get_space_list())
+        return get_space_list()
 
     room_id = models.PositiveIntegerField(primary_key=True)
     space_id = models.PositiveIntegerField(unique=True, null=True, default=None)
@@ -53,7 +53,7 @@ class MazevoStatusMap(models.Model):
 
     @cachedclassproperty
     def event_type_names(cls):
-        return dict(get_event_type_list(all_types="T"))
+        return get_event_type_list(all_types="T")
 
     ACTION_IGNORE = "ignore"
     ACTION_REMOVE = "remove"

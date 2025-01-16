@@ -170,7 +170,7 @@ class Command(BaseCommand):
             **reservation_search, category_id="+".join(
                 settings.MAZEVO_R25_CATEGORIES_UNLISTED))
 
-        unlisted_event_ids = dict(unlisted_events).keys()
+        unlisted_event_ids = unlisted_events.keys()
 
         paginate = "T"
         page = 1

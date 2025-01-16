@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import json
 import logging
 from lxml import etree
@@ -577,17 +578,12 @@ def get_event_list(**kwargs):
 
 
 def list_items_from_xml(tree):
-    items = []
+    items = OrderedDict()
     for node in tree.xpath("//r25:item", namespaces=nsmap):
-        item = list_item_from_xml(node)
-        items.append(item)
+        id = int(node.xpath("r25:id", namespaces=nsmap)[0].text)
+        name = node.xpath("r25:name", namespaces=nsmap)[0].text
+        items[id] = name
     return items
-
-
-def list_item_from_xml(tree):
-    id = int(tree.xpath("r25:id", namespaces=nsmap)[0].text)
-    name = tree.xpath("r25:name", namespaces=nsmap)[0].text
-    return (id, name)
 
 
 class Object(models.Model):

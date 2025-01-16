@@ -566,6 +566,16 @@ def get_space_list(**kwargs):
     return list_items_from_xml(get_resource(url))
 
 
+def get_event_list(**kwargs):
+    """
+    Get the list of event ids and names
+    """
+    url = "events.xml"
+    kwargs["scope"] = "list"
+    url += "?{}".format(urlencode(kwargs))
+    return list_items_from_xml(get_resource(url))
+
+
 def list_items_from_xml(tree):
     items = []
     for node in tree.xpath("//r25:item", namespaces=nsmap):

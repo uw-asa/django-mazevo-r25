@@ -6,12 +6,12 @@ import sys
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from mazevo_r25.more_r25 import get_reservations_attrs
 from uw_mazevo.api import PublicCourses
 from uw_sws.term import (get_current_term, get_next_term, get_term_after,
                          get_term_by_year_and_quarter)
 from uw_r25.models import Reservation
 
+from mazevo_r25.more_r25 import get_event_list, get_reservations_attrs
 
 logger = logging.getLogger("r25_mazevo")
 
@@ -195,7 +195,7 @@ class Command(BaseCommand):
                         "meetingTimesDict": {},
                     }
                     if (reservation.event_notes and
-                            "SAFECAMPUS" in reservation.event_notes):
+                            "safecampus" in reservation.event_notes.lower()):
                         """
                         For unlisted meetings, make it show:
                             ----- In use -----
@@ -267,6 +267,27 @@ class Command(BaseCommand):
             # Last page?
             if not int(attrs["page_num"]) < int(attrs["page_count"]):
                 break
+
+        # search for events in categories we want to be unlisted
+        eventlist = get_event_list(
+            **reservation_search, category_id="+".join(
+                settings.MAZEVO_R25_CATEGORIES_UNLISTED))
+
+        for (event_id, event_name) in eventlist:
+            if event_id not in courses:
+                continue
+            if courses[event_id]["subjectCode"] == "-":
+                continue
+
+            """
+            For unlisted meetings, make the name be only:
+                ----- In use -----
+            Once everything is concatenated together.
+            """
+            courses[event_id]["subjectCode"] = "-"
+            courses[event_id]["courseNumber"] = "-"
+            courses[event_id]["section"] = "-"
+            courses[event_id]["courseTitle"] = "In use -----"
 
         logger.info("Courses to upload: {}".format(len(courses)))
 

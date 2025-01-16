@@ -183,9 +183,10 @@ class Command(BaseCommand):
             page += 1
 
             for reservation in reservations:
-                if reservation.event_id not in courses:
+                event_id = int(reservation.event_id)
+                if event_id not in courses:
                     matches = event_pat.match(reservation.event_name)
-                    courses[reservation.event_id] = {
+                    courses[event_id] = {
                         "courseTitle": reservation.event_title,
                         "subjectCode": matches.group("curric"),
                         "courseNumber": matches.group("number"),
@@ -200,12 +201,12 @@ class Command(BaseCommand):
                             ----- In use -----
                         Once everything is concatenated together.
                         """
-                        courses[reservation.event_id]["subjectCode"] = "-"
-                        courses[reservation.event_id]["courseNumber"] = "-"
-                        courses[reservation.event_id]["section"] = "-"
-                        courses[reservation.event_id]["courseTitle"] = "In use -----"
+                        courses[event_id]["subjectCode"] = "-"
+                        courses[event_id]["courseNumber"] = "-"
+                        courses[event_id]["section"] = "-"
+                        courses[event_id]["courseTitle"] = "In use -----"
 
-                course = courses[reservation.event_id]
+                course = courses[event_id]
 
                 start_dt = datetime.datetime.fromisoformat(reservation.start_datetime)
                 end_dt = datetime.datetime.fromisoformat(reservation.end_datetime)

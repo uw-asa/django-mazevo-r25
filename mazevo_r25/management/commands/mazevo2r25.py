@@ -115,7 +115,7 @@ class Command(BaseCommand):
             help="Update R25 Events",
         )
 
-    @retry(DataFailureException, status_codes=[0, 429, 500], logger=logger)
+    @retry(DataFailureException, status_codes=[0, 429, 500])
     def get_events(self, **kwargs):
         return get_events(**kwargs)
 

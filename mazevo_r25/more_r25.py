@@ -339,7 +339,7 @@ def delete_node(node):
     return node
 
 
-@retry(DataFailureException, status_codes=RETRY_STATUS_CODES, logger=logger)
+@retry(DataFailureException, status_codes=RETRY_STATUS_CODES)
 def get_editable_event(event):
     """
     Retrieves from R25 the editable version of the event, or a new blank event
@@ -515,7 +515,7 @@ def update_event(event):
     return _update_event(url, event_tree)
 
 
-@retry(DataFailureException, status_codes=RETRY_STATUS_CODES, logger=logger)
+@retry(DataFailureException, status_codes=RETRY_STATUS_CODES)
 def _update_event(url, event_tree):
     return events_from_xml(put_resource(url, etree.tostring(event_tree)))[0]
 
@@ -716,7 +716,7 @@ def reservations_from_xml(tree):
     return reservations
 
 
-@retry(DataFailureException, status_codes=RETRY_STATUS_CODES, logger=logger)
+@retry(DataFailureException, status_codes=RETRY_STATUS_CODES)
 def get_reservations_attrs(**kwargs):
     kwargs["scope"] = "extended"
     url = "reservations.xml"

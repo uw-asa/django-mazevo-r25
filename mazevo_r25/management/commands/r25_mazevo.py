@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand
 from uw_mazevo.api import PublicCourses
 from uw_sws.term import (get_current_term, get_next_term, get_term_after,
                          get_term_by_year_and_quarter)
-from uw_r25.models import Reservation
+from uw_r25.models import Event, Reservation
 
 from mazevo_r25.more_r25 import get_event_list, get_reservations_attrs
 
@@ -151,24 +151,18 @@ class Command(BaseCommand):
         favorites is maintained automatically by the separate tool mazevo2r25.
         """
 
-        reservation_search = {
-            "event_type_id": (
-                settings.MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL if options["finals"]
-                else settings.MAZEVO_R25_EVENTTYPE_TS_SECTION),
-            "space_favorite": "T",
-            "space_match": "occurrence",
-            "state": "+".join([Reservation.STANDARD_STATE,
-                               Reservation.EXCEPTION_STATE,
-                               Reservation.WARNING_STATE,
-                               Reservation.OVERRIDE_STATE]),
-            "start_dt": term.first_day_quarter.isoformat(),
-            "end_dt": term.last_final_exam_date.isoformat(),
-        }
-
         # search for events in categories we want to be unlisted
         unlisted_events = get_event_list(
-            **reservation_search, category_id="+".join(
-                settings.MAZEVO_R25_CATEGORIES_UNLISTED))
+            event_type_id=(
+                settings.MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL if options["finals"]
+                else settings.MAZEVO_R25_EVENTTYPE_TS_SECTION),
+            space_favorite="T",
+            state="+".join([Event.TENTATIVE_STATE,
+                            Event.CONFIRMED_STATE,
+                            Event.SEALED_STATE]),
+            reservation_start_dt=term.first_day_quarter.isoformat(),
+            reservation_end_dt=term.last_final_exam_date.isoformat(),
+            category_id="+".join(settings.MAZEVO_R25_CATEGORIES_UNLISTED))
 
         unlisted_event_ids = unlisted_events.keys()
 
@@ -178,7 +172,18 @@ class Command(BaseCommand):
         while True:
 
             (reservations, attrs) = get_reservations_attrs(
-                **reservation_search, paginate=paginate, page=page, page_size=1000)
+                event_type_id=(
+                    settings.MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL if options["finals"]
+                    else settings.MAZEVO_R25_EVENTTYPE_TS_SECTION),
+                space_favorite="T",
+                space_match="occurrence",
+                state="+".join([Reservation.STANDARD_STATE,
+                                Reservation.EXCEPTION_STATE,
+                                Reservation.WARNING_STATE,
+                                Reservation.OVERRIDE_STATE]),
+                start_dt=term.first_day_quarter.isoformat(),
+                end_dt=term.last_final_exam_date.isoformat(),
+                paginate=paginate, page=page, page_size=1000)
 
             if page == 1:
                 logger.info("Total reservations: {}".format(attrs["total_results"]))

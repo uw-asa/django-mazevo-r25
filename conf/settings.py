@@ -71,23 +71,6 @@ EVENT_SCHEDULER_GROUP = "uw_asa_it_events_schedulers"
 
 MAZEVO_R25_ORGANIZATION = ""
 
-# Statuses to ignore entirely
-MAZEVO_R25_IGNORE_STATUSES = [
-    "Academic Confirmed",
-    "Academic Conflict",
-    "Academic Crosslist",
-]
-
-# Statuses for which R25 Reservations will not be made, or if already
-# existing, will be cancelled. These are in addition to any status
-# which doesn't "Block Space".
-MAZEVO_R25_REMOVE_STATUSES = [
-    "Blackout",
-    "Requested",
-    "Tentative",
-    "Tentative PCS",
-]
-
 # R25 event types for courses to import to Mazevo
 MAZEVO_R25_EVENTTYPE_TS_SECTION = 459
 MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL = 472

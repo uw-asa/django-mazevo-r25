@@ -72,8 +72,10 @@ EVENT_SCHEDULER_GROUP = "uw_asa_it_events_schedulers"
 MAZEVO_R25_ORGANIZATION = ""
 
 # R25 event types for courses to import to Mazevo
-MAZEVO_R25_EVENTTYPE_TS_SECTION = 459
-MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL = 472
+MAZEVO_R25_EVENTTYPES_ACADEMIC_IMPORT = [
+    "459",  # TS_SECTION
+    "472",  # TS_SECTION_FINAL
+]
 
 # Default R25 event type for bookings imported from Mazevo
 MAZEVO_R25_EVENTTYPE_DEFAULT = '433'    # UWS Event

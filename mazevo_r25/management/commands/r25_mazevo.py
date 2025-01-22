@@ -90,11 +90,6 @@ class Command(BaseCommand):
             action="store_true",
             help="Update the term in Mazevo",
         )
-        parser.add_argument(
-            "--finals",
-            action="store_true",
-            help="Get finals, rather than instruction days",
-        )
 
     def handle(self, *args, **options):
 
@@ -120,18 +115,8 @@ class Command(BaseCommand):
             "termDescription": "{} {}".format(term.quarter, term.year).title(),
         }
 
-        if options["finals"]:
-            if term.last_day_instruction == term.last_final_exam_date:
-                logger.info("Can't get finals for term without finals week")
-                return
-
-            import_term["termDescription"] += " Finals"
-            import_term["startDate"] = (term.last_day_instruction
-                                        + datetime.timedelta(days=1)).isoformat()
-            import_term["endDate"] = term.last_final_exam_date.isoformat()
-        else:
-            import_term["startDate"] = term.first_day_quarter.isoformat()
-            import_term["endDate"] = term.last_day_instruction.isoformat()
+        import_term["startDate"] = term.first_day_quarter.isoformat()
+        import_term["endDate"] = term.last_final_exam_date.isoformat()
 
         logger.info("Retrieving R25 reservations for {}".format(
             import_term["termDescription"]))
@@ -141,11 +126,8 @@ class Command(BaseCommand):
         """
         Querying R25 reservations:
 
-        We search for event type of either TS_SECTION for course meetings, or
-        TS_SECTION_FINAL for final exams. We can't do both at once because for
-        one thing, event type isn't returned by the rest client, and we'd want
-        to use it in order to separate them into different terms for import to
-        Mazevo.
+        We search for event types of TS_SECTION for course meetings, and
+        TS_SECTION_FINAL for final exams.
 
         We only search the spaces marked as our "favorites" in R25. The list of
         favorites is maintained automatically by the separate tool mazevo2r25.
@@ -153,9 +135,7 @@ class Command(BaseCommand):
 
         # search for events in categories we want to be unlisted
         unlisted_events = get_event_list(
-            event_type_id=(
-                settings.MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL if options["finals"]
-                else settings.MAZEVO_R25_EVENTTYPE_TS_SECTION),
+            event_type_id="+".join(settings.MAZEVO_R25_EVENTTYPES_ACADEMIC_IMPORT),
             space_favorite="T",
             state="+".join([Event.TENTATIVE_STATE,
                             Event.CONFIRMED_STATE,
@@ -172,9 +152,7 @@ class Command(BaseCommand):
         while True:
 
             (reservations, attrs) = get_reservations_attrs(
-                event_type_id=(
-                    settings.MAZEVO_R25_EVENTTYPE_TS_SECTION_FINAL if options["finals"]
-                    else settings.MAZEVO_R25_EVENTTYPE_TS_SECTION),
+                event_type_id="+".join(settings.MAZEVO_R25_EVENTTYPES_ACADEMIC_IMPORT),
                 space_favorite="T",
                 space_match="occurrence",
                 state="+".join([Reservation.STANDARD_STATE,

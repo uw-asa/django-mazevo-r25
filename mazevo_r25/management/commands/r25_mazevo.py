@@ -82,7 +82,8 @@ class Command(BaseCommand):
         parser.add_argument(
             "-t",
             "--term",
-            help="Term to upload. Default is current term. 'next' for next term",
+            default="0",
+            help="Single digit <n> for <n>th next term. Default is 0 (current term)",
         )
         parser.add_argument(
             "-u",
@@ -99,6 +100,11 @@ class Command(BaseCommand):
             term = get_term_after(get_next_term())
         elif options["term"] == "next":
             term = get_next_term()
+        elif len(options["term"]) < 2 and options["term"].isnumeric():
+            # get <n> terms ahead (current term is 0)
+            term = get_current_term()
+            for i in range(int(options["term"])):
+                term = get_term_after(term)
         elif options["term"]:
             first, second = re.split(r'\W', options["term"])
             if first.isdigit():
@@ -304,6 +310,10 @@ class Command(BaseCommand):
             del course["meetingTimesDict"]
 
         logger.info("Meetings to upload: {}".format(meeting_count))
+
+        if meeting_count < 1:
+            logger.warning("No meetings found. Exiting now")
+            return
 
         import_term["courses"] = list(courses.values())
 

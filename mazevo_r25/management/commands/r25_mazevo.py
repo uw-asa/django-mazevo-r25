@@ -133,7 +133,7 @@ class Command(BaseCommand):
         import_term = {
             "termDescription": "{} {}".format(term.quarter, term.year).title(),
             "startDate": term.first_day_quarter.isoformat(),
-            "endDate": term.last_final_exam_date.isoformat(),
+            "endDate": term.grade_submission_deadline.isoformat(),
         }
 
         logger.info("Retrieving R25 reservations for {}".format(
@@ -159,7 +159,7 @@ class Command(BaseCommand):
                             Event.CONFIRMED_STATE,
                             Event.SEALED_STATE]),
             reservation_start_dt=term.first_day_quarter.isoformat(),
-            reservation_end_dt=term.last_final_exam_date.isoformat(),
+            reservation_end_dt=term.grade_submission_deadline.isoformat(),
             category_id="+".join(settings.MAZEVO_R25_CATEGORIES_UNLISTED))
 
         unlisted_event_ids = unlisted_events.keys()
@@ -178,7 +178,7 @@ class Command(BaseCommand):
                                 Reservation.WARNING_STATE,
                                 Reservation.OVERRIDE_STATE]),
                 start_dt=term.first_day_quarter.isoformat(),
-                end_dt=term.last_final_exam_date.isoformat(),
+                end_dt=term.grade_submission_deadline.isoformat(),
                 paginate=paginate, page=page, page_size=1000)
 
             if page == 1:

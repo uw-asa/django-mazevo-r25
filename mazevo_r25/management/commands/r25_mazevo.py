@@ -64,7 +64,7 @@ room_pat = re.compile(r"""
 
 
 class Command(BaseCommand):
-    help = "uploads course data from SWS to Mazevo"
+    help = "Get course data from R25 and upload it to Mazevo"
 
     def set_logger(self, verbosity):
         """
@@ -97,12 +97,6 @@ class Command(BaseCommand):
             "--term",
             default="0",
             help="Single digit <n> for <n>th next term. Default is 0 (current term)",
-        )
-        parser.add_argument(
-            "-u",
-            "--update",
-            action="store_true",
-            help="Update the term in Mazevo",
         )
 
     def handle(self, *args, **options):
@@ -334,10 +328,5 @@ class Command(BaseCommand):
             return
 
         import_term["courses"] = list(courses.values())
-
-        # by default, don't actually make changes
-        if not options["update"]:
-            logger.info("Not running with --update. Exiting now")
-            return
 
         PublicCourses().import_term(import_term)

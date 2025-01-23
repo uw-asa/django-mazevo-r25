@@ -33,34 +33,44 @@ EXAM:* STAT 391 A XL STAT391A 20251
 INFO 201 A /AUT25 Large Lecture
 MUSEN 350/550/AUT25 Large Lecture               # No section!
 STAT/SOC/CS&SS 221 /AUT25 Large Lecture         # No section!
+STAT/SOC /CS&SS 221 / WIN26 Large Lect          # extra space in currics
 """
-
 event_pat = re.compile(
     r"""
-    ^                       # start at beginning
-    (?:\*?)                 # optional asterisk (why?)
-    (?P<exam>EXAM:\*?\ )?   # it's an exam, and another asterisk?
-    (?P<curric>[A-Z &]+)    # curric abbrev, can contain space, &
-    (?:\/[A-Z &]+)*         # additional currics, separated by slashes
-    [ ]                     # space separator
-    (?P<number>\d{3})       # course number, 3 digits
-    (?:\/\d{3})*            # additional numbers, separated by slashes
-    [ ]*                    # optional space separator
-    (?P<section>\w{0,2})    # section, 1 or 2 letters
-                            # rest is ignored
+    ^                               # start at beginning
+    (?:\*?)                         # optional asterisk
+    (?P<exam>EXAM:\*?\ )?           # it's an exam, and another asterisk?
+    (?P<curric>[A-Z &]+?)           # curric abbrev, can contain space, &
+    (?:\ ?\/                        # slash separator, maybe an extra space
+     (?P<curric2>[A-Z &]+?))?       # second curric
+    (?:\ ?\/                        # slash separator, maybe an extra space
+     (?P<curric3>[A-Z &]+?))?       # third curric
+    [ ]                             # space separator
+    (?P<number>\d{3})               # course number, 3 digits
+    (?:\/                           # slash separator
+     (?P<number2>\d{3}))?           # second number
+    [ ]*                            # optional space separator
+    (?P<section>\w{0,2})            # section, 1 or 2 letters, or absent
+                                    # rest is ignored
     """, re.VERBOSE)
 
+"""
 # some room names to match
-# 'BAG  260'
-# 'HST T568'
-# 'SWS  026-030'
-room_pat = re.compile(r"""
-                      ^                             # start at beginning
-                      (?P<building>[A-Z]+[0-9]?)\s+ # building code
-                      (?P<room>[A-Z]?\d{2,3}[A-Z]?) # room number
-                      (?:-.*)?                      # room "extension"
-                      $                             # end at end
-""", re.VERBOSE)
+BAG  260
+HST T568
+SWS  026-030
+CSE2 G20
+GNOMS060
+"""
+room_pat = re.compile(
+    r"""
+    ^                               # start at beginning
+    (?P<building>[A-Z0-9]{,4}?)     # building code, 4 chars or less
+    [ ]*                            # optional space separator
+    (?P<room>[A-Z]?\d{2,3}[A-Z]?)   # room number, 2 or 3 digits
+    (?:-.*)?                        # combined room number, ignore it
+    $                               # end at end
+    """, re.VERBOSE)
 
 
 class Command(BaseCommand):

@@ -202,6 +202,12 @@ class Command(BaseCommand):
                         "enrollment": reservation.registered_count,
                         "meetingTimesDict": {},
                     }
+                    if not courses[event_id]["section"]:
+                        logger.info("No section for {}".format(reservation.event_name))
+                        courses[event_id]["section"] = "-"
+                    if not courses[event_id]["enrollment"]:
+                        courses[event_id]["enrollment"] = "0"
+
                     if event_id in unlisted_event_ids or (
                             reservation.event_notes and
                             "safecampus" in reservation.event_notes.lower()):

@@ -15,27 +15,40 @@ from mazevo_r25.more_r25 import get_event_list, get_reservations_attrs
 
 logger = logging.getLogger("r25_mazevo")
 
-# some event names to match
-# '*ASL 302 A ASL302A 20251'
-# '*BIO A 206 A BIOA206A 20251'
-# '*BIO A 344 A XL BIOA344A 20251'
-# 'A A 210 A AA210A 20251'
-# 'ACADEM 198 AA ACADEM198AA 20251'
-# 'AFRAM 241 A XL AFRAM241A 20251'
-# '*CS&SS 221 A XL CS&SS221A 20251'
-# '*EXAM: AMATH 502 A XL AMATH502A 20251'
-# '*AMATH 502 A XL AMATH502A 20251'
-# 'EXAM:* STAT 391 A XL STAT391A 20251'
+"""
+# There's a variety of formats to look out for when matching course names in R25.
+# Here's some examples of ones we currently handle:
+*ASL 302 A ASL302A 20251
+*BIO A 206 A BIOA206A 20251
+*BIO A 344 A XL BIOA344A 20251
+A A 210 A AA210A 20251
+ACADEM 198 AA ACADEM198AA 20251
+AFRAM 241 A XL AFRAM241A 20251
+*CS&SS 221 A XL CS&SS221A 20251
+*EXAM: AMATH 502 A XL AMATH502A 20251
+*AMATH 502 A XL AMATH502A 20251
+EXAM:* STAT 391 A XL STAT391A 20251
 
-event_pat = re.compile(r"""
-                       ^                        # start at beginning
-                       (?:\*?)                  # optional asterisk (why?)
-                       (?P<exam>EXAM:\*? )?     # it's an exam, and another asterisk?
-                       (?P<curric>[A-Z &]+)\s+  # curric abbrev, can contain space, &
-                       (?P<number>\d{3})\s+     # course number, 3 digits
-                       (?P<section>\w{1,2})\s+  # section, 1 or 2 letters
-                                                # rest is ignored
-""", re.VERBOSE)
+# These are for rooms on hold in advance of the actual TS import
+INFO 201 A /AUT25 Large Lecture
+MUSEN 350/550/AUT25 Large Lecture               # No section!
+STAT/SOC/CS&SS 221 /AUT25 Large Lecture         # No section!
+"""
+
+event_pat = re.compile(
+    r"""
+    ^                       # start at beginning
+    (?:\*?)                 # optional asterisk (why?)
+    (?P<exam>EXAM:\*?\ )?   # it's an exam, and another asterisk?
+    (?P<curric>[A-Z &]+)    # curric abbrev, can contain space, &
+    (?:\/[A-Z &]+)*         # additional currics, separated by slashes
+    [ ]                     # space separator
+    (?P<number>\d{3})       # course number, 3 digits
+    (?:\/\d{3})*            # additional numbers, separated by slashes
+    [ ]*                    # optional space separator
+    (?P<section>\w{0,2})    # section, 1 or 2 letters
+                            # rest is ignored
+    """, re.VERBOSE)
 
 # some room names to match
 # 'BAG  260'

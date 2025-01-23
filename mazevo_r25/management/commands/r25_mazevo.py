@@ -119,10 +119,9 @@ class Command(BaseCommand):
 
         import_term = {
             "termDescription": "{} {}".format(term.quarter, term.year).title(),
+            "startDate": term.first_day_quarter.isoformat(),
+            "endDate": term.last_final_exam_date.isoformat(),
         }
-
-        import_term["startDate"] = term.first_day_quarter.isoformat()
-        import_term["endDate"] = term.last_final_exam_date.isoformat()
 
         logger.info("Retrieving R25 reservations for {}".format(
             import_term["termDescription"]))

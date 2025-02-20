@@ -336,6 +336,13 @@ class Command(BaseCommand):
                 r25_res.space_reservation = None
                 r25_event.reservations.append(r25_res)
 
+            if ( not wanted_booking and
+                 r25_event.state == r25_event.CANCELLED_STATE ):
+
+                # Don't bother updating it
+                logger.debug("\tSkipping update of already cancelled event")
+                continue
+
             event_name = booking.event_name
             if isinstance(event_name, six.text_type):
                 event_name = unicodedata.normalize("NFKD", event_name).encode(

@@ -195,6 +195,8 @@ class Command(BaseCommand):
             page += 1
 
             for reservation in reservations:
+                if not reservation.space_reservation:
+                    continue
                 event_id = int(reservation.event_id)
                 if event_id not in courses:
                     matches = event_pat.match(reservation.event_name)

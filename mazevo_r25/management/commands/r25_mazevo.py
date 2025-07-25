@@ -143,9 +143,9 @@ class Command(BaseCommand):
             "termDescription": "{} {}".format(term.quarter, term.year).title(),
             # can't use term.first_day_quarter because of early start classes
             "startDate": (
-                prev_term.grade_submission_deadline + datetime.timedelta(days=1)
+                prev_term.last_final_exam_date + datetime.timedelta(days=1)
                 ).isoformat(),
-            "endDate": term.grade_submission_deadline.isoformat(),
+            "endDate": term.last_final_exam_date.isoformat(),
         }
 
         logger.info("Retrieving R25 reservations for {}: {} - {}".format(

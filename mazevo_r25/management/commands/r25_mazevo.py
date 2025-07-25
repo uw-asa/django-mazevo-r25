@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from uw_mazevo.api import PublicCourses
 from uw_sws.term import (get_current_term, get_next_term, get_term_after,
-                         get_term_by_year_and_quarter)
+                         get_term_before, get_term_by_year_and_quarter)
 from uw_r25.models import Event, Reservation
 
 from mazevo_r25.more_r25 import get_event_list, get_reservations_attrs
@@ -134,14 +134,23 @@ class Command(BaseCommand):
         else:
             term = get_current_term()
 
+        prev_term = get_term_before(term)
+
+        # import_term is the data structure we upload to Mazevo.
+        # By coincidence, this format of startDate and endDate also works for the R25
+        # API, so we re-use it in those queries.
         import_term = {
             "termDescription": "{} {}".format(term.quarter, term.year).title(),
-            "startDate": term.first_day_quarter.isoformat(),
+            # can't use term.first_day_quarter because of early start classes
+            "startDate": (
+                prev_term.grade_submission_deadline + datetime.timedelta(days=1)
+                ).isoformat(),
             "endDate": term.grade_submission_deadline.isoformat(),
         }
 
-        logger.info("Retrieving R25 reservations for {}".format(
-            import_term["termDescription"]))
+        logger.info("Retrieving R25 reservations for {}: {} - {}".format(
+            import_term["termDescription"],
+            import_term["startDate"], import_term["endDate"]))
 
         courses = {}
 
@@ -162,8 +171,8 @@ class Command(BaseCommand):
             state="+".join([Event.TENTATIVE_STATE,
                             Event.CONFIRMED_STATE,
                             Event.SEALED_STATE]),
-            reservation_start_dt=term.first_day_quarter.isoformat(),
-            reservation_end_dt=term.grade_submission_deadline.isoformat(),
+            reservation_start_dt=import_term["startDate"],
+            reservation_end_dt=import_term["endDate"],
             category_id="+".join(settings.MAZEVO_R25_CATEGORIES_UNLISTED))
 
         unlisted_event_ids = unlisted_events.keys()
@@ -181,8 +190,8 @@ class Command(BaseCommand):
                                 Reservation.EXCEPTION_STATE,
                                 Reservation.WARNING_STATE,
                                 Reservation.OVERRIDE_STATE]),
-                start_dt=term.first_day_quarter.isoformat(),
-                end_dt=term.grade_submission_deadline.isoformat(),
+                start_dt=import_term["startDate"],
+                end_dt=import_term["endDate"],
                 paginate=paginate, page=page, page_size=1000)
 
             if page == 1:

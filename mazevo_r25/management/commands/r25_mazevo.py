@@ -214,14 +214,15 @@ class Command(BaseCommand):
                         "subjectCode": matches.group("curric"),
                         "courseNumber": matches.group("number"),
                         "section": matches.group("section"),
-                        "enrollment": reservation.registered_count,
+                        # "enrollment": reservation.registered_count,
+                        "enrollment": "0",
                         "meetingTimesDict": {},
                     }
                     if not courses[event_id]["section"]:
                         logger.info("No section for {}".format(reservation.event_name))
                         courses[event_id]["section"] = "-"
-                    if not courses[event_id]["enrollment"]:
-                        courses[event_id]["enrollment"] = "0"
+                    # if not courses[event_id]["enrollment"]:
+                    #     courses[event_id]["enrollment"] = "0"
 
                     if event_id in unlisted_event_ids or (
                             reservation.event_notes and

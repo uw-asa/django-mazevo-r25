@@ -34,22 +34,29 @@ INFO 201 A /AUT25 Large Lecture
 MUSEN 350/550/AUT25 Large Lecture               # No section!
 STAT/SOC/CS&SS 221 /AUT25 Large Lecture         # No section!
 STAT/SOC /CS&SS 221 / WIN26 Large Lect          # extra space in currics
+
+# breakout/review?
+STAT-394-A / MATH-394-A
+
+# other extras
+WIN26- ME 520 A Setup
 """
 event_pat = re.compile(
     r"""
     ^                               # start at beginning
     (?:\*?)                         # optional asterisk
+    (?:(WIN|SPR|SUM|AUT)\d\d-\ )?   # quarter prefix
     (?P<exam>EXAM:\*?\ )?           # it's an exam, and another asterisk?
     (?P<curric>[A-Z &]+?)           # curric abbrev, can contain space, &
     (?:\ ?\/                        # slash separator, maybe an extra space
      (?P<curric2>[A-Z &]+?))?       # second curric
     (?:\ ?\/                        # slash separator, maybe an extra space
      (?P<curric3>[A-Z &]+?))?       # third curric
-    [ ]                             # space separator
+    [ -]                            # space or dash separator
     (?P<number>\d{3})               # course number, 3 digits
     (?:\/                           # slash separator
      (?P<number2>\d{3}))?           # second number
-    [ ]*                            # optional space separator
+    [ -]*                           # optional space or dash separator
     (?P<section>\w{0,2})            # section, 1 or 2 letters, or absent
                                     # rest is ignored
     """, re.VERBOSE)
@@ -61,13 +68,14 @@ HST T568
 SWS  026-030
 CSE2 G20
 GNOMS060
+HSB BB1404
 """
 room_pat = re.compile(
     r"""
     ^                               # start at beginning
     (?P<building>[A-Z0-9]{,4}?)     # building code, 4 chars or less
     [ ]*                            # optional space separator
-    (?P<room>[A-Z]?\d{2,3}[A-Z]?)   # room number, 2 or 3 digits
+    (?P<room>[A-Z]{0,2}\d{2,4}[A-Z]?) # room number, 2 to 4 digits
     (?:-.*)?                        # combined room number, ignore it
     $                               # end at end
     """, re.VERBOSE)
@@ -208,7 +216,7 @@ class Command(BaseCommand):
                     continue
                 event_id = int(reservation.event_id)
                 if event_id not in courses:
-                    matches = event_pat.match(reservation.event_name)
+                    matches = event_pat.match(reservation.event_name.strip())
                     courses[event_id] = {
                         "courseTitle": reservation.event_title,
                         "subjectCode": matches.group("curric"),

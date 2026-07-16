@@ -1,10 +1,13 @@
+from collections import Counter
 from collections import OrderedDict
 import datetime
+from io import StringIO
 import logging
 import re
 import sys
 
 from django.conf import settings
+from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from uw_mazevo.api import PublicCourses
 from uw_sws.term import (get_current_term, get_next_term, get_term_after,
@@ -14,6 +17,12 @@ from uw_r25.models import Event, Reservation
 from mazevo_r25.more_r25 import get_event_list, get_reservations_attrs
 
 logger = logging.getLogger("r25_mazevo")
+
+# save warnings to mail out after execution
+msg_stream = StringIO()
+msg_handler = logging.StreamHandler(stream=msg_stream)
+msg_handler.setLevel(logging.WARNING)
+logger.addHandler(msg_handler)
 
 """
 # There's a variety of formats to look out for when matching course names in R25.
@@ -218,6 +227,9 @@ class Command(BaseCommand):
                 event_id = int(reservation.event_id)
                 if event_id not in courses:
                     matches = event_pat.match(reservation.event_name.strip())
+                    if matches is None:
+                        logger.warning("Unable to determine course from event name {}. Not importing".format(reservation.event_name))
+                        continue
                     courses[event_id] = {
                         "courseTitle": reservation.event_title,
                         "subjectCode": matches.group("curric"),
@@ -228,7 +240,7 @@ class Command(BaseCommand):
                         "meetingTimesDict": {},
                     }
                     if not courses[event_id]["section"]:
-                        logger.info("No section for {}".format(reservation.event_name))
+                        logger.warning("Unable to determine section for {}. using '-'".format(reservation.event_name))
                         courses[event_id]["section"] = "-"
                     # if not courses[event_id]["enrollment"]:
                     #     courses[event_id]["enrollment"] = "0"
@@ -361,3 +373,24 @@ class Command(BaseCommand):
         import_term["courses"] = list(courses.values())
 
         PublicCourses().import_term(import_term)
+
+        # send email
+        messages = []
+        for message, count in Counter(msg_stream.getvalue().split("\n")).items():
+            if len(message) > 0:
+                messages.append("{} (repeated {} time(s))".format(message, count))
+        if False: #len(messages) > 0:
+            try:
+                send_mail(
+                    "R25 to Mazeveo Term Import: {}".format(import_term["termDescription"]),
+                    "\n".join(messages),
+                    settings.MAZEVO_R25_EMAIL_HOST_USER,
+                    settings.MAZEVO_R25_EMAIL_RECIPIENTS,
+                    fail_silently=False,
+                    auth_user=settings.MAZEVO_R25_EMAIL_HOST_USER,
+                    auth_password=settings.MAZEVO_R25_EMAIL_HOST_PASSWORD,
+                )
+            except Exception:
+                print("Email not configured. R25_Mazevo report:")
+                print("\n".join(messages))
+

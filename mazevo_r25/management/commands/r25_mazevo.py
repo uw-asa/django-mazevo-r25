@@ -34,6 +34,7 @@ INFO 201 A /AUT25 Large Lecture
 MUSEN 350/550/AUT25 Large Lecture               # No section!
 STAT/SOC/CS&SS 221 /AUT25 Large Lecture         # No section!
 STAT/SOC /CS&SS 221 / WIN26 Large Lect          # extra space in currics
++RADGY 693 A 2026 [#45525]
 
 # breakout/review?
 STAT-394-A / MATH-394-A
@@ -44,7 +45,7 @@ WIN26- ME 520 A Setup
 event_pat = re.compile(
     r"""
     ^                               # start at beginning
-    (?:\*?)                         # optional asterisk
+    (?:\*|\+?)                      # optional asterisk or plus
     (?:(WIN|SPR|SUM|AUT)\d\d-\ )?   # quarter prefix
     (?P<exam>EXAM:\*?\ )?           # it's an exam, and another asterisk?
     (?P<curric>[A-Z &]+?)           # curric abbrev, can contain space, &

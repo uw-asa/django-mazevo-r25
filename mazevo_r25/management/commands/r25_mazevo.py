@@ -379,7 +379,7 @@ class Command(BaseCommand):
         for message, count in Counter(msg_stream.getvalue().split("\n")).items():
             if len(message) > 0:
                 messages.append("{} (repeated {} time(s))".format(message, count))
-        if False: #len(messages) > 0:
+        if len(messages) > 0:
             try:
                 send_mail(
                     "R25 to Mazeveo Term Import: {}".format(import_term["termDescription"]),
